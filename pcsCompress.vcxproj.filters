@@ -59,7 +59,10 @@
     <ClCompile Include="util\zjw_obj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\zjw_opengl.cpp">
+    <ClCompile Include="zjw_pcs_octree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zjw_opengl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_zjw_opengl.cpp">
@@ -67,9 +70,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_zjw_opengl.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="zjw_pcs_octree.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -82,14 +82,11 @@
     <CustomBuild Include="pcscompress.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="util\zjw_opengl.h">
+    <CustomBuild Include="zjw_opengl.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GeneratedFiles\ui_pcscompress.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
     <ClInclude Include="util\zjw_material.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -103,9 +100,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_pcs_octree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="innoreal_timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,10 +1,6 @@
 ﻿  moc_pcscompress.cpp
-  moc_zjw_opengl.cpp
   main.cpp
   pcscompress.cpp
-  zjw_obj.cpp
-  zjw_opengl.cpp
-  zjw_pcs_octree.cpp
   正在生成代码...
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\x64\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\x64\Debug\pcsCompress.pdb (Full PDB)

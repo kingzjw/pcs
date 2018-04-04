@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>pathTracingClass</class>
- <widget class="QMainWindow" name="pathTracingClass">
+ <class>pcsCompressClass</class>
+ <widget class="QMainWindow" name="pcsCompressClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>pathTracing</string>
+   <string>pcsCompress</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QTabWidget" name="tabWidget">
@@ -30,60 +30,6 @@
      <attribute name="title">
       <string>model</string>
      </attribute>
-     <widget class="QRadioButton" name="model2">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>60</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="mouseTracking">
-       <bool>true</bool>
-      </property>
-      <property name="text">
-       <string>model 2</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="modelList">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Model list</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="model1">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>40</y>
-        <width>71</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>model 1</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
     </widget>
     <widget class="QWidget" name="others">
      <attribute name="title">
@@ -139,7 +85,7 @@
   <customwidget>
    <class>ZjwOpenGL</class>
    <extends>QOpenGLWidget</extends>
-   <header>zjw_opengl.h</header>
+   <header location="global">zjw_opengl.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

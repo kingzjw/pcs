@@ -23,7 +23,7 @@ void pcsCompress::clickedOpenFileAction()
 
 	Vec3 min(ui.openGLWidget->objMesh.rangeMin);
 	Vec3 max((ui.openGLWidget->objMesh.rangeMax+Epsilon));
-	Vec3 cellSize(0.1);
+	Vec3 cellSize(0.6);
 	ui.openGLWidget->pcsOct.setParam(min,max,cellSize);
 	//TIME_START
 	ui.openGLWidget->pcsOct.buildPcsOctFrmPC(& ui.openGLWidget->objMesh);
