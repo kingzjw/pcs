@@ -100,8 +100,7 @@ public:
 	Vec3(double x, double y, double z) : x(x), y(y), z(z) { }
 	Vec3(const Vec2 &u, double z) : x(u.x), y(u.y), z(z) { }
 	Vec3(const Vec3 &u) : x(u.x), y(u.y), z(u.z) { }
-	Vec3 multiple(const Vec3 &u){return Vec3(x*u.x,y*u.y, z*u.z);};
-	Vec3 flip(){return Vec3(-x, -y, -z);};
+	
 	inline Vec3& operator = (const Vec3 &u) { x = u.x; y = u.y; z = u.z; return *this; }
 	inline Vec3 operator - () { return Vec3(-x, -y, -z); }
 	inline double* operator & () { return (double*)this; }
@@ -129,7 +128,16 @@ public:
 	friend inline Vec3 operator / (double num, const Vec3 &u) { return Vec3(num / u.x, num / u.y, num / u.z); }
 	friend inline Vec3 operator / (const Vec3 &u, const Vec3 &v) { return Vec3(u.x / v.x, u.y / v.y, u.z / v.z); }
 
-	//add function
+	//----------针对应用扩展，可以删除-----------------------
+	Vec3(const float p2[3]) : x(p2[0]), y(p2[1]), z(p2[2]) {}
+	operator double *() { return &x; }
+	operator const double*() const { return &x; }
+	bool operator< (const Vec3& p2) const { return x < p2.x && y < p2.y && z < p2.z; }
+	bool operator>=(const Vec3& p2) const { return x >= p2.x && y >= p2.y && z >= p2.z; }
+	//--------------------end add----------------------------------
+
+	Vec3 multiple(const Vec3 &u) { return Vec3(x*u.x, y*u.y, z*u.z); };
+	Vec3 flip() { return Vec3(-x, -y, -z); };
 
 	//归一化1
 	inline void normalize()

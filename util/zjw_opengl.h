@@ -6,6 +6,7 @@
 #include <iostream>   
 #include "util\zjw_obj.h"
 #include "util\zjw_macro.h"
+#include "zjw_pcs_octree.h"
 
 //#include <GL\glut.h>
 //#include <gl/GLU.h>
@@ -67,11 +68,12 @@ private:
 public:
 	//-----------------------------针对应用进行扩展--------------
 	ObjMesh objMesh;
-
+	PcsOctree pcsOct;
 	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树
 	int renderState;
 	void drawPointCloud(ObjMesh &objMesh);
-
+	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
+	void drawWireCube(Vec3 min, Vec3 max);
 
 };
 

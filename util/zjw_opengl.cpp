@@ -42,7 +42,7 @@ void ZjwOpenGL::initializeGL()
 	//为了使移动有效果
 	setFocusPolicy(Qt::StrongFocus);
 
-	qglClearColor(Qt::black);
+	//qglClearColor(Qt::black);
 	glShadeModel(GL_FLAT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -122,9 +122,9 @@ void ZjwOpenGL::render()
 	{
 		drawPointCloud(objMesh);
 	}
-	else
+	else if(renderState==2)
 	{
-
+		drawPointCloudOctree(objMesh, pcsOct);
 	}
 	
 	glPopMatrix();
@@ -145,6 +145,67 @@ void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)
 				glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].y,
 					objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].z);
 		}
+	glEnd();
+}
+
+void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
+{
+	drawPointCloud(objMesh);
+	//draw octree
+	
+	//线框的形式
+	glPolygonMode(GL_FRONT, GL_LINE);
+	//glDisable(GL_CULL_FACE);
+	//glPolygonMode(GL_BACK, GL_LINE);
+	//glPolygonMode(GL_BACK, GL_FILL);
+
+	for (int i = 0; i < pcsOct.ct->minVList.size(); i++)
+	{
+		drawWireCube(pcsOct.ct->minVList[i], pcsOct.ct->maxVList[i]);
+	}
+#ifdef ZJW_DEUG
+	/*Vec3 min(0, 0, 0);
+	Vec3 max(1, 1, 1);
+	drawWireCube(min,max);*/
+#endif
+}
+
+void ZjwOpenGL::drawWireCube(Vec3 min, Vec3 max)
+{
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+
+	glBegin(GL_QUAD_STRIP);
+	glVertex3f(min.x,min.y, min.z);
+	glVertex3f(min.x, max.y, min.z);
+	
+	glVertex3f(max.x, min.y, min.z);
+	glVertex3f(max.x, max.y, min.z);
+
+	glVertex3f(max.x, min.y, max.z);
+	glVertex3f(max.x, max.y, max.z);
+
+	glVertex3f(min.x, min.y, max.z);
+	glVertex3f(min.x, max.y, max.z);
+
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(min.x, max.y, min.z);
+	//结束绘GL_QUAD_STRIP  
+	glEnd();
+
+	glBegin(GL_QUADS);
+	//顶面
+	glVertex3f(min.x, max.y, min.z);
+	glVertex3f(min.x, max.y, max.z);
+	glVertex3f(max.x, max.y, max.z);
+	glVertex3f(max.x, max.y, min.z);
+
+	//底面
+	glVertex3f(min.x, min.y, min.z);
+	glVertex3f(max.x, min.y, min.z);
+	glVertex3f(max.x, min.y, max.z);
+	glVertex3f(min.x, min.y, max.z);
+
 	glEnd();
 }
 

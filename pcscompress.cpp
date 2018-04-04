@@ -16,9 +16,20 @@ void pcsCompress::clickedOpenFileAction()
 	std::cout << "you choose the file: " << std::endl << stt << endl;
 	//std::cout << "you can choose more rubost load obj code by yourself!!" << endl;
 	cout << "==================" << endl;
-
+	
+	//TIME_START
 	ui.openGLWidget->objMesh.loadObjMesh(stt);
-	ui.openGLWidget->renderState = 1;
+	//TIME_END("load mesh time : ")
+
+	Vec3 min(ui.openGLWidget->objMesh.rangeMin);
+	Vec3 max((ui.openGLWidget->objMesh.rangeMax+Epsilon));
+	Vec3 cellSize(0.1);
+	ui.openGLWidget->pcsOct.setParam(min,max,cellSize);
+	//TIME_START
+	ui.openGLWidget->pcsOct.buildPcsOctFrmPC(& ui.openGLWidget->objMesh);
+	//TIME_END("build octree time : ")
+	ui.openGLWidget->pcsOct.getLeafboundary();
+	ui.openGLWidget->renderState = 2;
 	ui.openGLWidget->updateGL();
 }
 

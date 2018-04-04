@@ -711,7 +711,7 @@ ObjMesh::ObjMesh()
 
 bool ObjMesh::loadObjMesh(string & path)
 {
-
+	
 	// --------------------check--------------------------
 	if (path.substr(path.size() - 4, 4) != ".obj")
 		return false;
@@ -952,7 +952,7 @@ bool ObjMesh::loadObjMesh(string & path)
 	}
 	
 
-
+	
 #ifdef ZJW_DEUG
 	cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
@@ -962,7 +962,7 @@ bool ObjMesh::loadObjMesh(string & path)
 	//获取其他信息
 	getVertexPosMaxMin();
 	printMaxMin();
-	verPosNormalize();
+	verPosNormalize(rangeMin,rangeMax);
 	verNormalNormalize();
 	printMaxMin();
 
@@ -1083,7 +1083,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 	//获取其他信息
 	getVertexPosMaxMin();
 	printMaxMin();
-	verPosNormalize();
+	verPosNormalize(rangeMin,rangeMax);
 	verNormalNormalize();
 	printMaxMin();
 #ifdef ZJW_DEUG
