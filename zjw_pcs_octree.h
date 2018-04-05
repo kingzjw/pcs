@@ -1,6 +1,7 @@
 #include "zjw_octree.h"
 #include "util\zjw_math.h"
 #include "util\zjw_obj.h"
+#include "zjwtimer.h"
 
 //------------- Class that holds your data.--------------------
 #include <vector>
@@ -8,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <Eigen/Dense>
+
 
 using namespace Eigen;
 using namespace std;
@@ -84,6 +86,9 @@ public:
 	int nodeNum;
 	MatrixXd  dMat;
 	MatrixXd  weightAMat;
+	MatrixXd  LaplacianMat;
+	MatrixXd  eigenVecMat;
+	MatrixXd  eigenValMat;
 
 public:
 	PcsOctree();
@@ -96,10 +101,13 @@ public:
 	void getLeafboundary();
 	//拿到graph的两个矩阵
 
-	//初始化矩阵等信息
-	void initParam();
+	//初始化矩阵等信息，在getGraphMat之前调用
+	void initMat();
 	//得到矩阵
 	void getGraphMat();
+	//得到矩阵的特征向量和特征值
+	void getMatEigenVerValue();
+
 
 	void getGraph();
 	//清空八叉树

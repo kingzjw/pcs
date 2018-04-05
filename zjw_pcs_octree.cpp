@@ -78,7 +78,7 @@ void PcsOctree::getLeafboundary()
 
 }
 
-void PcsOctree::initParam()
+void PcsOctree::initMat()
 {
 #ifdef ZJW_DEUG
 	cout << "init the matriex !" << endl;
@@ -92,14 +92,21 @@ void PcsOctree::initParam()
 
 	dMat = MatrixXd::Zero(nodeNum, nodeNum);
 	weightAMat = MatrixXd::Zero(nodeNum, nodeNum);
+	LaplacianMat = MatrixXd::Zero(nodeNum, nodeNum);
+	eigenVecMat = MatrixXd::Zero(nodeNum, nodeNum);
+	eigenValMat = MatrixXd::Zero(nodeNum, nodeNum);
+
 }
 
 void PcsOctree::getGraphMat()
 {
-	initParam();
+	
+	initMat();
 
 #ifdef ZJW_DEUG
-	cout << "get the D & weight matriex !" << endl;
+	ZjwTimer timer;
+	timer.Start();
+	cout << "start get the D & weight matriex...." << endl;
 #endif 
 
 	//遍历所有的叶子节点，找到每个叶子节点的相连的节点,并得到权重
@@ -111,10 +118,53 @@ void PcsOctree::getGraphMat()
  		pcsOct->traverse(ctGraph);
 	}
 
+	LaplacianMat = dMat - weightAMat;
+
 #ifdef ZJW_DEUG
-	printMat();
+	//printMat();
+	timer.Stop();
+	cout << "getGraphMat time: " << timer.GetInMs() << " ms " << endl;
+	
+	cout << "finish get the D & weight matriex !" << endl;
 #endif 
 
+}
+
+void PcsOctree::getMatEigenVerValue()
+{
+
+#ifdef ZJW_DEUG
+	ZjwTimer timer;
+	timer.Start();
+	cout << "start get Mat Eigen Vertor and Value...." << endl;
+#endif 
+
+	EigenSolver<MatrixXd> es(LaplacianMat);
+
+	//way1
+	//Matrix whose columns are the (possibly complex) eigenvectors.
+	//es.eigenvectors().col(0)
+
+
+	//way2
+	//Const reference to matrix whose columns are the pseudo-eigenvectors.
+	eigenValMat = es.pseudoEigenvalueMatrix();
+	eigenVecMat = es.pseudoEigenvectors();
+
+#ifdef ZJW_DEUG
+	//cout << "L :" << endl<<LaplacianMat <<endl;
+
+	/*cout << "The eigenvalues of A are:" << endl << es.eigenvalues() << endl;
+	cout << "The matrix of eigenvectors, V, is:" << endl << es.eigenvectors() << endl << endl;*/
+
+	/*cout << "The pseudo-eigenvalue matrix D is:" << endl << eigenValMat << endl;
+	cout << "The pseudo-eigenvector matrix V is:" << endl << eigenVecMat << endl;
+	cout << "Finally, V * D * V^(-1) = " << endl << eigenVecMat * eigenValMat * eigenVecMat.inverse() << endl;*/
+	
+	timer.Stop();
+	cout << "getMatEigenVerValue time: " << timer.GetInMs() << " ms " << endl;
+	cout << "end get Mat Eigen Vertor and Value !" << endl;
+#endif
 }
 
 void PcsOctree::getGraph()

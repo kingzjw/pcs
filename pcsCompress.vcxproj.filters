@@ -71,6 +71,7 @@
     <ClCompile Include="GeneratedFiles\Release\moc_zjw_opengl.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="zjwtimer.cc" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.h">
@@ -100,6 +101,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_pcs_octree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zjwtimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
