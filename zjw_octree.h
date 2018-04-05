@@ -26,6 +26,8 @@ public:
 	public:
 		//这个节点的数据，以及指向八个孩子的结点指针
 		N nodeData;
+		//非叶子节点是-1，其他的从0,1,2,3一次编号，
+		int leafFlag;
 		//min的顶点和Max的顶点确定 节点的空间范围
 		Vec3 min;
 		Vec3 max;
@@ -34,6 +36,7 @@ public:
 	public:
 		OctreeNode()
 		{
+			leafFlag = -1;
 			//初始化八个孩子的结点
 			for (int i = 0; i < 8; i++)
 				children[i] = 0;

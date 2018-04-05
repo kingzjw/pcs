@@ -159,9 +159,9 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 	//glPolygonMode(GL_BACK, GL_LINE);
 	//glPolygonMode(GL_BACK, GL_FILL);
 
-	for (int i = 0; i < pcsOct.ct->minVList.size(); i++)
+	for (int i = 0; i < pcsOct.ctLeaf->minVList.size(); i++)
 	{
-		drawWireCube(pcsOct.ct->minVList[i], pcsOct.ct->maxVList[i]);
+		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
 #ifdef ZJW_DEUG
 	/*Vec3 min(0, 0, 0);
