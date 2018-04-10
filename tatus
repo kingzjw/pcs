@@ -1,0 +1,29 @@
+[33mcommit 29fd93252b90415e322c6bfa0eb0808482c21e6b[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 5 22:25:48 2018 +0800
+
+    v0.031 compute the eigen vector and value
+
+[33mcommit 6b5a8c878d6521e7abf547139d393e5003fbf5d2[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 5 20:15:22 2018 +0800
+
+    v0.03 change the point clounr to graph
+
+[33mcommit bf0e6e9c26a29d22210281c5a045c65a948457c0[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 4 19:50:05 2018 +0800
+
+    v0.003 fix not find opneg.h filed
+
+[33mcommit d3c14f6faf0d4fa9c73fa9530aaff2d074413e89[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 4 16:43:50 2018 +0800
+
+    v0.02 octree for point clound success
+
+[33mcommit c1e44319b5675c5d85ca6c633fab4a871d4a97c0[m
+Author: king <zjwking258@163.com>
+Date:   Tue Apr 3 20:09:56 2018 +0800
+
+    v0.01 load the obj and show point clound

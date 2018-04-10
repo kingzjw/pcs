@@ -1,0 +1,12 @@
+﻿  moc_pcscompress.cpp
+  moc_zjw_opengl.cpp
+  main.cpp
+  pcscompress.cpp
+  zjw_opengl.cpp
+  zjw_pcs_octree.cpp
+zjw_pcs_octree.cpp(8): warning C4002: “min”宏的实参太多
+zjw_pcs_octree.cpp(9): warning C4002: “max”宏的实参太多
+  正在生成代码...
+  qrc_pcscompress.cpp
+  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
+  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

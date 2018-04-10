@@ -108,7 +108,6 @@ public:
 	//得到矩阵的特征向量和特征值
 	void getMatEigenVerValue();
 
-
 	void getGraph();
 	//清空八叉树
 	void clearOct();
