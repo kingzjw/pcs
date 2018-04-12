@@ -45,7 +45,14 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 	ctLeaf = new CallTraverseGetInfoSetLeaf;
 	pcsOct = new Octree<Node>(min, max, cellSize);
 
+#ifdef USE_EIGEN
 	ctGraph = new CallTGetGraph(&dMat, &weightAMat);
+#endif //USE_EIGEN
+
+#ifdef USE_ARPACK
+	ctGraph = new CallTGetGraph(&laplacianMat);
+#endif //USE_ARPACK
+
 	ctGraph->initParam(cellSize);
 }
 
@@ -89,12 +96,16 @@ void PcsOctree::initMat()
 		cout << " CallTGetGraph::initParam error" << endl;
 		return;
 	}
-
+#ifdef USE_EIGEN
 	dMat = MatrixXd::Zero(nodeNum, nodeNum);
 	weightAMat = MatrixXd::Zero(nodeNum, nodeNum);
 	LaplacianMat = MatrixXd::Zero(nodeNum, nodeNum);
 	eigenVecMat = MatrixXd::Zero(nodeNum, nodeNum);
 	eigenValMat = MatrixXd::Zero(nodeNum, nodeNum);
+#endif //USE_EIGEN
+#ifdef USE_ARPACK
+	laplacianMat.initParam(nodeNum);
+#endif // USE_ARPACK
 
 }
 
@@ -103,7 +114,7 @@ void PcsOctree::getGraphMat()
 	
 	initMat();
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_TIMER
 	ZjwTimer timer;
 	timer.Start();
 	cout << "start get the D & weight matriex...." << endl;
@@ -117,15 +128,15 @@ void PcsOctree::getGraphMat()
 		ctGraph->leafMidPoint = (ctLeaf->nodeList[i]->max + ctLeaf->nodeList[i]->min) / 2;
  		pcsOct->traverse(ctGraph);
 	}
-
+#ifdef USE_EIGEN
 	LaplacianMat = dMat - weightAMat;
+#endif //use eigen
 
-#ifdef ZJW_DEUG
-	//printMat();
+#ifdef ZJW_TIMER
 	timer.Stop();
 	cout << "getGraphMat time: " << timer.GetInMs() << " ms " << endl;
-	
 	cout << "finish get the D & weight matriex !" << endl;
+	//printMat();
 #endif 
 
 }
@@ -133,37 +144,55 @@ void PcsOctree::getGraphMat()
 void PcsOctree::getMatEigenVerValue()
 {
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_TIMER
 	ZjwTimer timer;
 	timer.Start();
 	cout << "start get Mat Eigen Vertor and Value...." << endl;
 #endif 
 
+#ifdef USE_EIGEN
 	EigenSolver<MatrixXd> es(LaplacianMat);
 
 	//way1
 	//Matrix whose columns are the (possibly complex) eigenvectors.
 	//es.eigenvectors().col(0)
 
-
 	//way2
 	//Const reference to matrix whose columns are the pseudo-eigenvectors.
 	eigenValMat = es.pseudoEigenvalueMatrix();
 	eigenVecMat = es.pseudoEigenvectors();
 
-#ifdef ZJW_DEUG
-	//cout << "L :" << endl<<LaplacianMat <<endl;
+#ifdef ZJW_PRINT_INFO
 
 	/*cout << "The eigenvalues of A are:" << endl << es.eigenvalues() << endl;
 	cout << "The matrix of eigenvectors, V, is:" << endl << es.eigenvectors() << endl << endl;*/
 
-	/*cout << "The pseudo-eigenvalue matrix D is:" << endl << eigenValMat << endl;
+	cout << "88888888888888888888888888888888888888888888888888888888888" << endl;
+	cout << "L :" << endl << LaplacianMat << endl;
+	cout << "The pseudo-eigenvalue matrix D is:" << endl << eigenValMat << endl;
 	cout << "The pseudo-eigenvector matrix V is:" << endl << eigenVecMat << endl;
-	cout << "Finally, V * D * V^(-1) = " << endl << eigenVecMat * eigenValMat * eigenVecMat.inverse() << endl;*/
-	
-	timer.Stop();
+	cout << "Finally, V * D * V^(-1) = " << endl << eigenVecMat * eigenValMat * eigenVecMat.inverse() << endl;
+	cout << "88888888888888888888888888888888888888888888888888888888888" << endl;
+#endif //ZJW_PRINT_INFO
+
+#endif // USE_EIGEN
+
+#ifdef USE_ARPACK
+	laplacianMat.dsaupdEvalsEvecs();
+
+#ifdef  ZJW_PRINT_INFO
+	laplacianMat.printMat();
+	laplacianMat.printValueVector();
+#endif //  ZJW_PRINT_INFO
+
+#endif //use_arpack
+
+#ifdef ZJW_TIMER
+
 	cout << "getMatEigenVerValue time: " << timer.GetInMs() << " ms " << endl;
 	cout << "end get Mat Eigen Vertor and Value !" << endl;
+	timer.Stop();
+	
 #endif
 }
 
@@ -184,11 +213,15 @@ void PcsOctree::printMat()
 	cout << "****************************" << endl;
 	cout << "node num : " << nodeNum << endl;
 	cout << "****************************" << endl;
+
+#ifdef USE_EIGEN
 	cout << "D mat : " << endl;
 	cout << dMat << endl;
 	cout << "****************************" << endl;
 	cout << "weight mat: " << endl;
 	cout << weightAMat << endl;
+#endif // USE_EIGEN
+
 }
 
 //------------------------------------------------------------------
@@ -232,12 +265,6 @@ bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octr
 //	this->octCellSize = octreeCellSize;
 //}
 
-CallTGetGraph::CallTGetGraph(MatrixXd * dMatPtr, MatrixXd * weightAMatPtr)
-{
-	
-	this->dMatPtr = dMatPtr;
-	this->weightAMatPtr = weightAMatPtr;
-}
 
 CallTGetGraph::~CallTGetGraph()
 {	
@@ -274,10 +301,27 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 		return false;
 	
 	//得到矩阵
+#ifdef  USE_EIGEN
 	(*weightAMatPtr)(idx, leafIdx) = 1 / Length(delta);
 	(*weightAMatPtr)(leafIdx, idx) = 1 / Length(delta);
 	(*dMatPtr)(leafIdx, leafIdx) += 1 / Length(delta);
 	(*dMatPtr)(idx, idx) += 1 / Length(delta);
+#endif //  USE_EIGEN
+
+
+#ifdef USE_ARPACK
+	//L  = D-W 下面直接保存为L了
+
+	//-W
+	laplacianMat->setMat(idx, leafIdx, -1 / Length(delta));
+	laplacianMat->setMat(leafIdx, idx, -1 / Length(delta));
+
+	//D
+	laplacianMat->setAddMat(leafIdx, 1 / Length(delta));
+	laplacianMat->setAddMat(idx, 1 / Length(delta));
+#endif // USE_ARPACK
+
+
 
 	return true;
 

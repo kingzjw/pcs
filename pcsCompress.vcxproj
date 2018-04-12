@@ -90,7 +90,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>arpack_win32.lib;qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5OpenGLd.lib;opengl32.lib;glu32.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -175,6 +175,7 @@
     <ClCompile Include="util\zjw_math.cpp" />
     <ClCompile Include="util\zjw_obj.cpp" />
     <ClCompile Include="zjwtimer.cc" />
+    <ClCompile Include="zjw_dsaupd.cpp" />
     <ClCompile Include="zjw_opengl.cpp" />
     <ClCompile Include="zjw_pcs_octree.cpp" />
   </ItemGroup>
@@ -223,6 +224,7 @@
     <ClInclude Include="util\zjw_math.h" />
     <ClInclude Include="util\zjw_obj.h" />
     <ClInclude Include="zjwtimer.h" />
+    <ClInclude Include="zjw_dsaupd.h" />
     <ClInclude Include="zjw_octree.h" />
     <CustomBuild Include="zjw_opengl.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

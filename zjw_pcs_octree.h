@@ -2,6 +2,7 @@
 #include "util\zjw_math.h"
 #include "util\zjw_obj.h"
 #include "zjwtimer.h"
+#include "zjw_dsaupd.h"
 
 //------------- Class that holds your data.--------------------
 #include <vector>
@@ -10,6 +11,7 @@
 #include <stdlib.h>
 #include <Eigen/Dense>
 
+//判断采用的求解特征值的方式
 
 using namespace Eigen;
 using namespace std;
@@ -53,11 +55,32 @@ public:
 	int leafIdx;
 	Vec3 leafMidPoint;
 	Vec3 octCellSize;
+#ifdef USE_EIGEN
 	MatrixXd  * dMatPtr;
 	MatrixXd  * weightAMatPtr;
+#endif // USE_EIGEN
+
+#ifdef  USE_ARPACK
+	Dsaupd *laplacianMat;
+#endif //  use_arpack
+
 
 public:
-	CallTGetGraph(MatrixXd  * dMatPtr,MatrixXd  * weightAMatPtr);
+#ifdef USE_EIGEN
+	CallTGetGraph(MatrixXd  * dMatPtr,MatrixXd  * weightAMatPtr) 
+	{
+		this->dMatPtr = dMatPtr;
+		this->weightAMatPtr = weightAMatPtr;
+	}
+#endif // USE_EIGEN
+
+#ifdef  USE_ARPACK
+	CallTGetGraph(Dsaupd *laplacianMat)
+	{
+		this->laplacianMat = laplacianMat;
+	}
+#endif //  use_arpack
+
 	~CallTGetGraph();
 
 	void initParam(Vec3 & octreeCellSize);
@@ -84,11 +107,19 @@ public:
 
 	//邻接权重矩阵，以及D矩阵，求解特征值和特征向量的存储矩阵。
 	int nodeNum;
+#ifdef USE_EIGEN
 	MatrixXd  dMat;
 	MatrixXd  weightAMat;
 	MatrixXd  LaplacianMat;
 	MatrixXd  eigenVecMat;
 	MatrixXd  eigenValMat;
+#endif // use_ei
+
+#ifdef USE_ARPACK
+	Dsaupd laplacianMat;
+#endif // use_arpa
+
+	
 
 public:
 	PcsOctree();

@@ -1,8 +1,14 @@
 #pragma once
 //setteing the macro for zjw use
 
-//debug 的时候 打印注释
+//debug 时候的专用
 #define ZJW_DEUG
+
+//打印信息专用
+//#define ZJW_PRINT_INFO
+
+//是否打开计时器
+#define ZJW_TIMER
 
 //计时器
 /*
@@ -14,3 +20,10 @@
 //#define TIME_START timer_zjw.TimeRestart();timer_zjw.TimeStart();
 //#define TIME_END(str) 		 timer_zjw.TimeEnd();timer_zjw.TimeGap_in_ms();\
 //		std::printf("%s: %f ms\n", str,timer_zjw.Time_in_ms());
+
+
+//------------------针对这个应用--------------------------
+
+//两者只能用其一
+//#define USE_EIGEN
+#define USE_ARPACK
