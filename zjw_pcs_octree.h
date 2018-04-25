@@ -10,15 +10,14 @@
 #include <math.h>
 #include <stdlib.h>
 #include <Eigen/Dense>
-#include <eigen/Sparse>
-
 using namespace Eigen;
 using namespace std;
 
-typedef Eigen::SparseMatrix<double> SpMat;
-typedef Eigen::Triplet<double> T;
-
-//判断采用的求解特征值的方式
+#ifdef USE_SPARSE
+	#include <eigen/Sparse>
+	typedef Eigen::SparseMatrix<double> SpMat;
+	typedef Eigen::Triplet<double> T;
+#endif // USE_SPARSE
 
 
 //------------------------------ Class that holds your data.-----------------------
@@ -70,17 +69,17 @@ public:
 #ifdef USE_EIGEN
 	MatrixXd  * dMatPtr;
 	MatrixXd  * weightAMatPtr;
-
 #endif // USE_EIGEN
-
-#ifdef  USE_ARPACK
-	Dsaupd *laplacianMat;
-#endif //  use_arpack
 
 #ifdef USE_SPARSE
 	SpMat * spLap;
 	std::vector<T> coeff;
 #endif // USE_SPARSE
+
+#ifdef  USE_ARPACK
+	Dsaupd * laplacianMat;
+#endif //  use_arpack
+
 
 public:
 #ifdef USE_EIGEN
@@ -92,10 +91,10 @@ public:
 #endif // USE_EIGEN
 
 #ifdef USE_SPARSE
-	CallTGetGraph(SpMat * sp, std::vector<T> & coefficent)
+	CallTGetGraph(std::vector<T> & coefficent,SpMat * sp = nullptr)
 	{
-		this->spLap = sp;
 		this->coeff = coefficent;
+		this->spLap = sp;
 	}
 #endif // USE_SPARSE
 
@@ -137,7 +136,6 @@ public:
 	MatrixXd  LaplacianMat;
 	MatrixXd  eigenVecMat;
 	MatrixXd  eigenValMat;
-
 #endif // use_ei
 
 #ifdef USE_SPARSE

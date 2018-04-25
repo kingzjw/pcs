@@ -52,10 +52,6 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 	if (pcsOct)
 		delete pcsOct;
 
-#ifdef USE_SPARSE
-	if (spLaplacian)
-		delete	spLaplacian;
-#endif // USE_SPARSE
 
 	ctLeaf = new CallTraverseGetInfoSetLeaf;
 	pcsOct = new Octree<Node>(min, max, cellSize);
@@ -63,6 +59,12 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 #ifdef USE_EIGEN
 	ctGraph = new CallTGetGraph(&dMat, &weightAMat);
 #endif //USE_EIGEN
+
+#ifdef USE_SPARSE
+	if (spLaplacian)
+		delete	spLaplacian;
+	ctGraph = new CallTGetGraph(coefficients);
+#endif // USE_SPARSE
 
 #ifdef USE_ARPACK
 	ctGraph = new CallTGetGraph(&laplacianMat);
@@ -401,6 +403,20 @@ bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octr
 
 CallTGetGraph::~CallTGetGraph()
 {
+
+#ifdef USE_EIGEN
+	delete dMatPtr;
+	delete weightAMatPtr;
+#endif // USE_EIGEN
+
+#ifdef USE_SPARSE
+	delete spLap;
+#endif // USE_SPARSE
+
+#ifdef  USE_ARPACK
+	delete laplacianMat;
+#endif //  use_arpack
+
 }
 void CallTGetGraph::initParam(Vec3 & octreeCellSize)
 {

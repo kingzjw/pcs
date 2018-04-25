@@ -23,9 +23,9 @@
 
 //------------------针对这个应用--------------------------
 
-//两者只能用其一
+//求解出拉普拉斯矩阵的特征值，两者只能用其一
 //#define USE_EIGEN
-#define USE_ARPACK
+//#define USE_ARPACK
 
 //原来用稠密存储拉普拉斯矩阵，现在用稀疏的。
-//#define USE_SPARSE
+#define USE_SPARSE
