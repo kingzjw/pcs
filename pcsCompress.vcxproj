@@ -62,7 +62,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>./eigen;./util;$(IncludePath)</IncludePath>
+    <IncludePath>./eigen;./util;./sgwt_util;./spectra/include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -172,6 +172,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pcscompress.cpp" />
+    <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp" />
     <ClCompile Include="util\zjw_material.cpp" />
     <ClCompile Include="util\zjw_math.cpp" />
     <ClCompile Include="util\zjw_obj.cpp" />
@@ -219,7 +220,10 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="sgwt_util\pcg.h" />
     <ClInclude Include="sgwt_util\zjw_fminbnd.h" />
+    <ClInclude Include="sgwt_util\zjw_sgwt_utils.h" />
+    <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h" />
     <ClInclude Include="util\zjw_material.h" />
     <ClInclude Include="util\zjw_math.h" />
     <ClInclude Include="util\zjw_obj.h" />

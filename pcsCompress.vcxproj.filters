@@ -33,6 +33,12 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
+    <Filter Include="Header Files\sgwt">
+      <UniqueIdentifier>{9e688571-c954-4f20-9c94-a10b98398ff1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\sgwt">
+      <UniqueIdentifier>{1e6e296c-ee5b-4215-8202-922a30eba716}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,6 +83,9 @@
     <ClCompile Include="pcscompress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp">
+      <Filter>Source Files\sgwt</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -114,8 +123,17 @@
     <ClInclude Include="zjw_dsaupd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="sgwt_util\pcg.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_sgwt_utils.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
     <ClInclude Include="sgwt_util\zjw_fminbnd.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\sgwt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
