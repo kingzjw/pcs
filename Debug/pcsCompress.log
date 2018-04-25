@@ -1,9 +1,2 @@
-﻿  moc_zjw_opengl.cpp
-  main.cpp
-  zjw_obj.cpp
-  zjw_opengl.cpp
-  zjw_pcs_octree.cpp
-  正在生成代码...
-main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall pcsCompress::pcsCompress(class QWidget *)" (??0pcsCompress@@QAE@PAVQWidget@@@Z)，该符号在函数 _main 中被引用
-main.obj : error LNK2019: 无法解析的外部符号 "public: virtual __thiscall pcsCompress::~pcsCompress(void)" (??1pcsCompress@@UAE@XZ)，该符号在函数 _main 中被引用
-C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\\pcsCompress.exe : fatal error LNK1120: 2 个无法解析的外部命令
+﻿  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
+  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

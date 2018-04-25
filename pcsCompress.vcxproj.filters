@@ -68,6 +68,15 @@
     <ClCompile Include="zjwtimer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_pcscompress.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_pcscompress.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="pcscompress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -77,6 +86,9 @@
       <Filter>Resource Files</Filter>
     </CustomBuild>
     <CustomBuild Include="zjw_opengl.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pcscompress.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
