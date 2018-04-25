@@ -4,7 +4,7 @@
  * \author zhoujiawei
  * \date 三月 2018
  * create by myself for reuse
- * 
+ *
  */
 #pragma once
 
@@ -25,7 +25,6 @@ typedef Vec3 Vertex;
 typedef Vec3 Normal;
 typedef Vec2 Texture;
 typedef Vec3 Color;
-
 
 class Mesh
 {
@@ -49,7 +48,6 @@ public:
 	SubMesh();
 };
 
-
 class ObjMeshMtl
 {
 public:
@@ -71,7 +69,7 @@ public:
 	double minX, minY, minZ;
 	double rangeMin = 0;
 	double rangeMax = 1;
-	
+
 	float** RotateMat;
 
 public:
@@ -80,7 +78,7 @@ public:
 	//------------------------------support material --------------------
 	bool loadObjMeshAndMtl(string & path);
 	bool trianglation(int size, vector<Vec3> &trangleFaceIndx);
-	
+
 	//-------------------- end ------------------
 	//拿到vertex中最大值和最小值
 	void getVertexPosMaxMin();
@@ -90,7 +88,6 @@ public:
 
 	//顶点向量的归一化
 	void verNormalNormalize();
-		
 
 	//对顶点，顶点法向，顶点面进行旋转
 	void ratateNormal(double angleX = 0, double angleY = 0, double angleZ = 0);

@@ -34,7 +34,6 @@ ZjwOpenGL::ZjwOpenGL(QWidget * parent) : QGLWidget(parent) {
 }
 
 ZjwOpenGL::~ZjwOpenGL() {
-
 }
 
 void ZjwOpenGL::initializeGL()
@@ -116,35 +115,33 @@ void ZjwOpenGL::render()
 
 	if (renderState == 0)
 	{
-		
 	}
 	else if (renderState == 1)
 	{
 		drawPointCloud(objMesh);
 	}
-	else if(renderState==2)
+	else if (renderState == 2)
 	{
 		drawPointCloudOctree(objMesh, pcsOct);
 	}
-	
+
 	glPopMatrix();
 }
 
 void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)
 {
-	
 	glColor3f(1.0f, 0.0f, 0.0f);
 	glBegin(GL_POINTS);
 	glPointSize(3);
-		for (int v_it = 0; v_it < objMesh.mesh.facePoslist.size(); v_it++)
-		{
-				glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].y,
-					objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].z);
-				glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].y,
-					objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].z);
-				glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].y,
-					objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].z);
-		}
+	for (int v_it = 0; v_it < objMesh.mesh.facePoslist.size(); v_it++)
+	{
+		glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].y,
+			objMesh.vertexList[objMesh.mesh.facePoslist[v_it].x].z);
+		glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].y,
+			objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].z);
+		glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].y,
+			objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].z);
+	}
 	glEnd();
 }
 
@@ -152,7 +149,7 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 {
 	drawPointCloud(objMesh);
 	//draw octree
-	
+
 	//线框的形式
 	glPolygonMode(GL_FRONT, GL_LINE);
 	//glDisable(GL_CULL_FACE);
@@ -172,13 +169,12 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 
 void ZjwOpenGL::drawWireCube(Vec3 min, Vec3 max)
 {
-
 	glColor3f(0.0f, 0.0f, 1.0f);
 
 	glBegin(GL_QUAD_STRIP);
-	glVertex3f(min.x,min.y, min.z);
+	glVertex3f(min.x, min.y, min.z);
 	glVertex3f(min.x, max.y, min.z);
-	
+
 	glVertex3f(max.x, min.y, min.z);
 	glVertex3f(max.x, max.y, min.z);
 
@@ -190,7 +186,7 @@ void ZjwOpenGL::drawWireCube(Vec3 min, Vec3 max)
 
 	glVertex3f(min.x, min.y, min.z);
 	glVertex3f(min.x, max.y, min.z);
-	//结束绘GL_QUAD_STRIP  
+	//结束绘GL_QUAD_STRIP
 	glEnd();
 
 	glBegin(GL_QUADS);
@@ -238,7 +234,7 @@ void ZjwOpenGL::mouseMoveEvent(QMouseEvent * event)
 	GLfloat dx = GLfloat(event->x() - lastPoint.x()) / width();
 	GLfloat dy = GLfloat(event->y() - lastPoint.y()) / height();
 
-	if (event->buttons() & Qt::LeftButton) { //左键  
+	if (event->buttons() & Qt::LeftButton) { //左键
 		rotationX += 180 * dy;
 		rotationY += 180 * dx;
 		updateGL(); //Updates the widget by calling glDraw().

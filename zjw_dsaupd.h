@@ -4,7 +4,6 @@
 #include <iomanip>
 using namespace std;
 
-
 extern "C" void dsaupd_(int *ido, char *bmat, int *n, char *which,
 	int *nev, double *tol, double *resid, int *ncv,
 	double *v, int *ldv, int *iparam, int *ipntr,
@@ -58,7 +57,7 @@ public:
 	void dsaupdEvals()
 	{
 		/* Initialization of the reverse communication parameter. */
-		int ido = 0; 
+		int ido = 0;
 
 		/* Specifies that the right hand side matrix
 		should be the identity matrix; this makes
@@ -66,8 +65,8 @@ public:
 		Setting bmat = "G" would have us solve the
 		problem Av = lBv (this would involve using
 		some other programs from BLAS, however). */
-		char bmat[2] = "I"; 
-		
+		char bmat[2] = "I";
+
 		/* Ask for the nev eigenvalues of smallest
 		magnitude.  The possible options are
 		LM: largest magnitude
@@ -76,7 +75,7 @@ public:
 		SA: smallest real compoent
 		LI: largest imaginary component
 		SI: smallest imaginary component */
-		char which[3] = "SM"; 
+		char which[3] = "SM";
 
 		/* Sets the tolerance; tol<=0 specifies	machine precision */
 		double tol = 0.0;
@@ -85,11 +84,11 @@ public:
 		double *resid;
 		resid = new double[n];
 
-		/* The largest number of basis vectors that will be used in the Implicitly Restarted Arnoldi Process.  
+		/* The largest number of basis vectors that will be used in the Implicitly Restarted Arnoldi Process.
 		Work per major iteration is proportional to N*NCV*NCV. */
 		//Number of columns of the matrix V.  2 <= NCV-NEV and NCV <= N
 		int ncv = 4 * nev;
-		if (ncv>n) 
+		if (ncv > n)
 			ncv = n;
 
 		// final set of Arnoldi basis vectors
@@ -152,7 +151,7 @@ public:
 		/* From those results, the eigenvalues and vectors are
 		extracted. */
 
-		if (info<0) {
+		if (info < 0) {
 			cout << "Error with dsaupd, info = " << info << "\n";
 			cout << "Check documentation in dsaupd\n\n";
 		}
@@ -180,7 +179,7 @@ public:
 			the values. */
 
 			int i;
-			for (i = 0; i<nev; i++)
+			for (i = 0; i < nev; i++)
 				Evals[i] = d[nev - 1 - i];
 
 			delete resid;
@@ -203,7 +202,7 @@ public:
 		double *resid;
 		resid = new double[n];
 		int ncv = 4 * nev;
-		if (ncv>n) ncv = n;
+		if (ncv > n) ncv = n;
 		double *v;
 		int ldv = n;
 		v = new double[ldv*ncv];
@@ -233,11 +232,11 @@ public:
 				&ncv, v, &ldv, iparam, ipntr, workd, workl,
 				&lworkl, &info);
 
-			if ((ido == 1) || (ido == -1)) 
+			if ((ido == 1) || (ido == -1))
 				av(n, workd + ipntr[0] - 1, workd + ipntr[1] - 1);
 		} while ((ido == 1) || (ido == -1));
 
-		if (info<0) {
+		if (info < 0) {
 			cout << "Error with dsaupd, info = " << info << "\n";
 			cout << "Check documentation in dsaupd\n\n";
 		}
@@ -259,10 +258,10 @@ public:
 			}
 
 			int i, j;
-			for (i = 0; i<nev; i++) 
+			for (i = 0; i < nev; i++)
 				Evals[i] = d[i];
-			for (i = 0; i<nev; i++) 
-				for (j = 0; j<n; j++) 
+			for (i = 0; i < nev; i++)
+				for (j = 0; j < n; j++)
 					Evecs[j][i] = v[i*n + j];
 
 			delete resid;

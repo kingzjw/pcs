@@ -10,7 +10,7 @@ Material::Material()
 	Tr = 0.0f;
 	d = 0.0f;
 	illum = 0;
-	
+
 	//下面的针对单独的应用，可以删除
 	light = false;
 	ball = false;
@@ -36,13 +36,12 @@ bool MaterialFile::loadMaterial(std::string path)
 	// If the file is not found return false
 	if (!file.is_open())
 	{
-		std::cout << "open file failed! maybe there is no such file: "<<path << std::endl;
+		std::cout << "open file failed! maybe there is no such file: " << path << std::endl;
 		return false;
 	}
 #ifdef ZJW_DEUG
 	cout << "starting load the materail: " << path << endl;
 #endif // ZJW_DEUG
-
 
 	Material tempMaterial;
 

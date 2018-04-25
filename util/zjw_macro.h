@@ -21,9 +21,11 @@
 //#define TIME_END(str) 		 timer_zjw.TimeEnd();timer_zjw.TimeGap_in_ms();\
 //		std::printf("%s: %f ms\n", str,timer_zjw.Time_in_ms());
 
-
 //------------------针对这个应用--------------------------
 
 //两者只能用其一
 //#define USE_EIGEN
 #define USE_ARPACK
+
+//原来用稠密存储拉普拉斯矩阵，现在用稀疏的。
+//#define USE_SPARSE

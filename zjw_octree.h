@@ -1,4 +1,14 @@
 #pragma once
+
+/*!
+ * \file zjw_octree.h
+ *
+ * \author King
+ * \date 四月 2018
+ *  this head file and the implements c++ souce code has set the basis octree build and opration
+ *  interface. which implements in real application should look at zjw_pcs_octree.h
+ */
+
 #include <assert.h>
 #include "util/zjw_macro.h"
 #include <util/zjw_math.h>
@@ -14,8 +24,7 @@ else                  \
     newMax = mid;     \
 }
 
-
-//定义了节点数据类型为 N 的八叉树 
+ //定义了节点数据类型为 N 的八叉树
 template <class N>
 class Octree
 {
@@ -26,7 +35,7 @@ public:
 	public:
 		//这个节点的数据，以及指向八个孩子的结点指针
 		N nodeData;
-		//非叶子节点是-1，其他的从0,1,2,3一次编号，
+		//非叶子节点是-1，其他的从0,1,2,3一次编号
 		int leafFlag;
 		//min的顶点和Max的顶点确定 节点的空间范围
 		Vec3 min;
@@ -69,7 +78,7 @@ public:
 		virtual bool operator()(const Vec3 min, const Vec3 max, N& nodeData) { return true; }
 
 		// Return value: true = continue; false = abort.
-		virtual bool operator()(const Vec3 min , const Vec3 max, OctreeNode* currNode) { return true; }
+		virtual bool operator()(const Vec3 min, const Vec3 max, OctreeNode* currNode) { return true; }
 	};
 
 	//根据深度遍历的方法，把点pos插入到八叉树的叶子节点中，直到叶子节点的size小于 cellSize.
@@ -100,10 +109,10 @@ public:
 			Vec3 newMax(currMax);
 			int index = 0;
 			COMPUTE_SIDE(index, 1, ppos.x, mid.x, newMin.x, newMax.x)
-			COMPUTE_SIDE(index, 2, ppos.y, mid.y, newMin.y, newMax.y)
-			COMPUTE_SIDE(index, 4, ppos.z, mid.z, newMin.z, newMax.z)
-			if (!(currNode->children[index]))
-				currNode->children[index] = new OctreeNode();
+				COMPUTE_SIDE(index, 2, ppos.y, mid.y, newMin.y, newMax.y)
+				COMPUTE_SIDE(index, 4, ppos.z, mid.z, newMin.z, newMax.z)
+				if (!(currNode->children[index]))
+					currNode->children[index] = new OctreeNode();
 
 			currNode = currNode->children[index];
 			//每个节点保留自己的范围
@@ -160,7 +169,7 @@ public:
 
 protected:
 
-	//递归遍历整个树 
+	//递归遍历整个树
 	void traverseRecursive(Callback* callback, const Vec3& currMin, const Vec3& currMax, OctreeNode* currNode)
 	{
 		//为空返回
@@ -184,7 +193,4 @@ protected:
 		traverseRecursive(callback, Vec3(currMin.x, mid.y, mid.z), Vec3(mid.x, currMax.y, currMax.z), currNode->children[6]);
 		traverseRecursive(callback, mid, currMax, currNode->children[7]);
 	}
-
-	
 };
-

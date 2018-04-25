@@ -3,18 +3,17 @@
 
 #include <QGLWidget>
 #include <QKeyEvent>
-#include <iostream>   
+#include <iostream>
 #include "util\zjw_obj.h"
 #include "util\zjw_macro.h"
 #include "zjw_pcs_octree.h"
 
 //#include <GL\glut.h>
 //#include <gl/GLU.h>
-//#include <opencv2/core/core.hpp>   
-//#include<opencv2/highgui/highgui.hpp>   
+//#include <opencv2/core/core.hpp>
+//#include<opencv2/highgui/highgui.hpp>
 //using namespace cv;
 using namespace std;
-
 
 class ZjwOpenGL : public  QGLWidget {
 	Q_OBJECT
@@ -41,7 +40,7 @@ protected:
 
 public:
 	//use in paintGL function
-	void render();  
+	void render();
 
 public:
 	GLfloat	 *lightPos;
@@ -74,7 +73,6 @@ public:
 	void drawPointCloud(ObjMesh &objMesh);
 	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
 	void drawWireCube(Vec3 min, Vec3 max);
-
 };
 
 #endif

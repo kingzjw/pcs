@@ -4,11 +4,11 @@
  * \author zhoujiawei
  * \date 三月 2017
  * modify frmm other open source code.
- * 
+ *
  */
 #pragma once
 
-//#define _USE_MATH_DEFINES
+ //#define _USE_MATH_DEFINES
 #include <math.h>
 const double Epsilon = 1e-5;
 class  Vec3;
@@ -35,7 +35,7 @@ inline int DoubleCompare(double a, double b, double eps = Epsilon)
 }
 inline int Round(double x)
 {
-	return (int)(x+0.5);
+	return (int)(x + 0.5);
 }
 
 class Vec2
@@ -92,7 +92,7 @@ public:
 		struct { double r, g, b; };
 		double num[3];
 	};*/
-	static const Vec3 NONE,BLACK,WHITE;
+	static const Vec3 NONE, BLACK, WHITE;
 
 	Vec3() : x(0.0f), y(0.0f), z(0.0f) { }
 	~Vec3() { }
@@ -100,7 +100,7 @@ public:
 	Vec3(double x, double y, double z) : x(x), y(y), z(z) { }
 	Vec3(const Vec2 &u, double z) : x(u.x), y(u.y), z(z) { }
 	Vec3(const Vec3 &u) : x(u.x), y(u.y), z(u.z) { }
-	
+
 	inline Vec3& operator = (const Vec3 &u) { x = u.x; y = u.y; z = u.z; return *this; }
 	inline Vec3 operator - () { return Vec3(-x, -y, -z); }
 	inline double* operator & () { return (double*)this; }
@@ -150,14 +150,13 @@ public:
 	{
 		return x * v.x + y * v.y + z * v.z;
 	}
-	
+
 	//两点间的距离
 	inline double Distance(const Vec3 &u)
 	{
 		return sqrt(x * u.x + y * u.y + z * u.z);
 	}
 };
-
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -251,23 +250,29 @@ inline Vec3 Limit(const Vec3& src, double bottom, double top)
 	Vec3 result;
 	if (src.x < bottom) {
 		result.x = bottom;
-	} else if (src.x > top) {
+	}
+	else if (src.x > top) {
 		result.x = top;
-	} else {
+	}
+	else {
 		result.x = src.x;
 	}
 	if (src.y < bottom) {
 		result.y = bottom;
-	} else if (src.y > top) {
+	}
+	else if (src.y > top) {
 		result.y = top;
-	} else {
+	}
+	else {
 		result.y = src.y;
 	}
 	if (src.z < bottom) {
 		result.z = bottom;
-	} else if (src.z > top) {
+	}
+	else if (src.z > top) {
 		result.z = top;
-	} else {
+	}
+	else {
 		result.z = src.z;
 	}
 	return result;

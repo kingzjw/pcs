@@ -13,7 +13,6 @@ typedef LARGE_INTEGER darco_timeval;
 #include <cinttypes>
 #include <cstddef>
 
-
 class ZjwTimer {
 public:
 	ZjwTimer() {}
@@ -26,5 +25,3 @@ private:
 	darco_timeval tv_start;
 	darco_timeval tv_end;
 };
-
-

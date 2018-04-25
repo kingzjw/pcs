@@ -4,7 +4,7 @@
  * \author King
  * \date 三月 2018
  *  dependies: must include the zjw_math.h
- * 
+ *
  */
 
 #pragma once
@@ -30,7 +30,7 @@ public:
 	Vec3 Kd;
 	// Specular Color
 	Vec3 Ks;
-	//滤光透射率 Tf  
+	//滤光透射率 Tf
 	Vec3 Tf;
 	// 高光系数 Specular Exponent
 	//反射指数描述Ns exponent 指定材质的反射指数，定义了反射高光度。exponent是反射指数值，该值越高则高光越密集，一般取值范围在0~1000。
@@ -62,12 +62,11 @@ public:
 	// Bump Map
 	std::string map_bump;
 
-	
 public:
 	Material();
-	
+
 	//---------------针对个别应用可以删除----------------
-	
+
 	//标记是否是光源的材质
 	bool light;
 	//标光线和球求交

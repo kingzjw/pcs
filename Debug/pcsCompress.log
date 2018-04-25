@@ -1,12 +1,1684 @@
-﻿  moc_pcscompress.cpp
-  moc_zjw_opengl.cpp
-  main.cpp
-  pcscompress.cpp
-  zjw_obj.cpp
-  zjw_opengl.cpp
-  zjw_pcs_octree.cpp
-zjw_pcs_octree.cpp(8): warning C4002: “min”宏的实参太多
-zjw_pcs_octree.cpp(9): warning C4002: “max”宏的实参太多
-  正在生成代码...
-  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
-  pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)
+﻿  
+  正在启动传递 1
+  已处理 /DEFAULTLIB: msvcprtd
+  已处理 /DEFAULTLIB: uuid.lib
+  已处理 /DEFAULTLIB: MSVCRTD
+  已处理 /DEFAULTLIB: OLDNAMES
+  
+  正在搜索库
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+        已找到 "__declspec(dllimport) public: struct QMetaObject * __thiscall QObjectData::dynamicMetaObject(void)const " (__imp_?dynamicMetaObject@QObjectData@@QBEPAUQMetaObject@@XZ)
+          已在 moc_zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "__declspec(dllimport) public: __thiscall QPoint::QPoint(void)" (__imp_??0QPoint@@QAE@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QPoint::x(void)const " (__imp_?x@QPoint@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QPoint::y(void)const " (__imp_?y@QPoint@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "protected: virtual void __thiscall QObject::childEvent(class QChildEvent *)" (?childEvent@QObject@@MAEXPAVQChildEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "protected: virtual void __thiscall QObject::connectNotify(class QMetaMethod const &)" (?connectNotify@QObject@@MAEXABVQMetaMethod@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "protected: virtual void __thiscall QObject::customEvent(class QEvent *)" (?customEvent@QObject@@MAEXPAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "protected: virtual void __thiscall QObject::disconnectNotify(class QMetaMethod const &)" (?disconnectNotify@QObject@@MAEXABVQMetaMethod@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 "public: virtual bool __thiscall QObject::eventFilter(class QObject *,class QEvent *)" (?eventFilter@QObject@@UAE_NPAV1@PAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 __IMPORT_DESCRIPTOR_Qt5Cored
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 __NULL_IMPORT_DESCRIPTOR
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+        已找到 Qt5Cored_NULL_THUNK_DATA
+          已在 Qt5Cored.lib(Qt5Cored.dll) 中引用
+          已加载 Qt5Cored.lib(Qt5Cored.dll)
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+        已找到 "__declspec(dllimport) public: class QPoint __thiscall QMouseEvent::pos(void)const " (__imp_?pos@QMouseEvent@@QBE?AVQPoint@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QMouseEvent::x(void)const " (__imp_?x@QMouseEvent@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QMouseEvent::y(void)const " (__imp_?y@QMouseEvent@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 "__declspec(dllimport) public: class QFlags<enum Qt::MouseButton> __thiscall QMouseEvent::buttons(void)const " (__imp_?buttons@QMouseEvent@@QBE?AV?$QFlags@W4MouseButton@Qt@@@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QWheelEvent::delta(void)const " (__imp_?delta@QWheelEvent@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QKeyEvent::key(void)const " (__imp_?key@QKeyEvent@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 __IMPORT_DESCRIPTOR_Qt5Guid
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+        已找到 Qt5Guid_NULL_THUNK_DATA
+          已在 Qt5Guid.lib(Qt5Guid.dll) 中引用
+          已加载 Qt5Guid.lib(Qt5Guid.dll)
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+        已找到 "__declspec(dllimport) public: virtual void * __thiscall QGLWidget::qt_metacast(char const *)" (__imp_?qt_metacast@QGLWidget@@UAEPAXPBD@Z)
+          已在 moc_zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "__declspec(dllimport) public: virtual int __thiscall QGLWidget::qt_metacall(enum QMetaObject::Call,int,void * *)" (__imp_?qt_metacall@QGLWidget@@UAEHW4Call@QMetaObject@@HPAPAX@Z)
+          已在 moc_zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "__declspec(dllimport) public: static struct QMetaObject const QGLWidget::staticMetaObject" (__imp_?staticMetaObject@QGLWidget@@2UQMetaObject@@B)
+          已在 moc_zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "__declspec(dllimport) public: __thiscall QGLWidget::QGLWidget(class QWidget *,class QGLWidget const *,class QFlags<enum Qt::WindowType>)" (__imp_??0QGLWidget@@QAE@PAVQWidget@@PBV0@V?$QFlags@W4WindowType@Qt@@@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall QGLWidget::~QGLWidget(void)" (__imp_??1QGLWidget@@UAE@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual bool __thiscall QGLWidget::event(class QEvent *)" (?event@QGLWidget@@MAE_NPAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::glDraw(void)" (?glDraw@QGLWidget@@MAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::glInit(void)" (?glInit@QGLWidget@@MAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::initializeOverlayGL(void)" (?initializeOverlayGL@QGLWidget@@MAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "public: virtual class QPaintEngine * __thiscall QGLWidget::paintEngine(void)const " (?paintEngine@QGLWidget@@UBEPAVQPaintEngine@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::paintEvent(class QPaintEvent *)" (?paintEvent@QGLWidget@@MAEXPAVQPaintEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::paintOverlayGL(void)" (?paintOverlayGL@QGLWidget@@MAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::resizeEvent(class QResizeEvent *)" (?resizeEvent@QGLWidget@@MAEXPAVQResizeEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "protected: virtual void __thiscall QGLWidget::resizeOverlayGL(int,int)" (?resizeOverlayGL@QGLWidget@@MAEXHH@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "public: virtual void __thiscall QGLWidget::updateGL(void)" (?updateGL@QGLWidget@@UAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 "public: virtual void __thiscall QGLWidget::updateOverlayGL(void)" (?updateOverlayGL@QGLWidget@@UAEXXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 __IMPORT_DESCRIPTOR_Qt5OpenGLd
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+        已找到 Qt5OpenGLd_NULL_THUNK_DATA
+          已在 Qt5OpenGLd.lib(Qt5OpenGLd.dll) 中引用
+          已加载 Qt5OpenGLd.lib(Qt5OpenGLd.dll)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+        已找到 __imp__glBegin@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glClear@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glClearColor@16
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glColor3f@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glColorMaterial@8
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glEnable@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glEnd@0
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glLightfv@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glLoadIdentity@0
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glMaterialfv@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glMateriali@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glMatrixMode@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glOrtho@48
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glPointSize@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glPolygonMode@8
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glPopMatrix@0
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glPushMatrix@0
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glRotatef@16
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glScalef@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glShadeModel@4
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glTranslated@24
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glVertex3f@12
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __imp__glViewport@16
+          已在 zjw_opengl.obj 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 __IMPORT_DESCRIPTOR_OPENGL32
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+        已找到 OPENGL32_NULL_THUNK_DATA
+          已在 opengl32.lib(OPENGL32.dll) 中引用
+          已加载 opengl32.lib(OPENGL32.dll)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+        已找到 "__declspec(dllimport) public: void __thiscall QWidget::show(void)" (__imp_?show@QWidget@@QAEXXZ)
+          已在 main.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: __thiscall QApplication::QApplication(int &,char * *,int)" (__imp_??0QApplication@@QAE@AAHPAPADH@Z)
+          已在 main.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall QApplication::~QApplication(void)" (__imp_??1QApplication@@UAE@XZ)
+          已在 main.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: static int __cdecl QApplication::exec(void)" (__imp_?exec@QApplication@@SAHXZ)
+          已在 main.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QWidget::width(void)const " (__imp_?width@QWidget@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall QWidget::height(void)const " (__imp_?height@QWidget@@QBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "__declspec(dllimport) public: void __thiscall QWidget::setFocusPolicy(enum Qt::FocusPolicy)" (__imp_?setFocusPolicy@QWidget@@QAEXW4FocusPolicy@Qt@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::actionEvent(class QActionEvent *)" (?actionEvent@QWidget@@MAEXPAVQActionEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::changeEvent(class QEvent *)" (?changeEvent@QWidget@@MAEXPAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::closeEvent(class QCloseEvent *)" (?closeEvent@QWidget@@MAEXPAVQCloseEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::contextMenuEvent(class QContextMenuEvent *)" (?contextMenuEvent@QWidget@@MAEXPAVQContextMenuEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual int __thiscall QWidget::devType(void)const " (?devType@QWidget@@UBEHXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::dragEnterEvent(class QDragEnterEvent *)" (?dragEnterEvent@QWidget@@MAEXPAVQDragEnterEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::dragLeaveEvent(class QDragLeaveEvent *)" (?dragLeaveEvent@QWidget@@MAEXPAVQDragLeaveEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::dragMoveEvent(class QDragMoveEvent *)" (?dragMoveEvent@QWidget@@MAEXPAVQDragMoveEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::dropEvent(class QDropEvent *)" (?dropEvent@QWidget@@MAEXPAVQDropEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::enterEvent(class QEvent *)" (?enterEvent@QWidget@@MAEXPAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::focusInEvent(class QFocusEvent *)" (?focusInEvent@QWidget@@MAEXPAVQFocusEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual bool __thiscall QWidget::focusNextPrevChild(bool)" (?focusNextPrevChild@QWidget@@MAE_N_N@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::focusOutEvent(class QFocusEvent *)" (?focusOutEvent@QWidget@@MAEXPAVQFocusEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual bool __thiscall QWidget::hasHeightForWidth(void)const " (?hasHeightForWidth@QWidget@@UBE_NXZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual int __thiscall QWidget::heightForWidth(int)const " (?heightForWidth@QWidget@@UBEHH@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::hideEvent(class QHideEvent *)" (?hideEvent@QWidget@@MAEXPAVQHideEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::initPainter(class QPainter *)const " (?initPainter@QWidget@@MBEXPAVQPainter@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::inputMethodEvent(class QInputMethodEvent *)" (?inputMethodEvent@QWidget@@MAEXPAVQInputMethodEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual class QVariant __thiscall QWidget::inputMethodQuery(enum Qt::InputMethodQuery)const " (?inputMethodQuery@QWidget@@UBE?AVQVariant@@W4InputMethodQuery@Qt@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::keyReleaseEvent(class QKeyEvent *)" (?keyReleaseEvent@QWidget@@MAEXPAVQKeyEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::leaveEvent(class QEvent *)" (?leaveEvent@QWidget@@MAEXPAVQEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual int __thiscall QWidget::metric(enum QPaintDevice::PaintDeviceMetric)const " (?metric@QWidget@@MBEHW4PaintDeviceMetric@QPaintDevice@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual class QSize __thiscall QWidget::minimumSizeHint(void)const " (?minimumSizeHint@QWidget@@UBE?AVQSize@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::mouseDoubleClickEvent(class QMouseEvent *)" (?mouseDoubleClickEvent@QWidget@@MAEXPAVQMouseEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::mouseReleaseEvent(class QMouseEvent *)" (?mouseReleaseEvent@QWidget@@MAEXPAVQMouseEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::moveEvent(class QMoveEvent *)" (?moveEvent@QWidget@@MAEXPAVQMoveEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual bool __thiscall QWidget::nativeEvent(class QByteArray const &,void *,long *)" (?nativeEvent@QWidget@@MAE_NABVQByteArray@@PAXPAJ@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual class QPaintDevice * __thiscall QWidget::redirected(class QPoint *)const " (?redirected@QWidget@@MBEPAVQPaintDevice@@PAVQPoint@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual void __thiscall QWidget::setVisible(bool)" (?setVisible@QWidget@@UAEX_N@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual class QPainter * __thiscall QWidget::sharedPainter(void)const " (?sharedPainter@QWidget@@MBEPAVQPainter@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::showEvent(class QShowEvent *)" (?showEvent@QWidget@@MAEXPAVQShowEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "public: virtual class QSize __thiscall QWidget::sizeHint(void)const " (?sizeHint@QWidget@@UBE?AVQSize@@XZ)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 "protected: virtual void __thiscall QWidget::tabletEvent(class QTabletEvent *)" (?tabletEvent@QWidget@@MAEXPAVQTabletEvent@@@Z)
+          已在 zjw_opengl.obj 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 __IMPORT_DESCRIPTOR_Qt5Widgetsd
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+        已找到 Qt5Widgetsd_NULL_THUNK_DATA
+          已在 Qt5Widgetsd.lib(Qt5Widgetsd.dll) 中引用
+          已加载 Qt5Widgetsd.lib(Qt5Widgetsd.dll)
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+        已找到 __imp__AllocConsole@0
+          已在 main.obj 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__QueryPerformanceCounter@4
+          已在 zjwtimer.obj 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__QueryPerformanceFrequency@4
+          已在 zjwtimer.obj 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __IMPORT_DESCRIPTOR_KERNEL32
+          已在 kernel32.lib(KERNEL32.dll) 中引用
+          已在 kernel32.lib(KERNEL32.dll) 中引用
+          已在 kernel32.lib(KERNEL32.dll) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 KERNEL32_NULL_THUNK_DATA
+          已在 kernel32.lib(KERNEL32.dll) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\shell32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\msvcprtd.lib:
+        已找到 "__declspec(dllimport) public: __thiscall std::_Lockit::_Lockit(int)" (__imp_??0_Lockit@std@@QAE@H@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __thiscall std::_Lockit::~_Lockit(void)" (__imp_??1_Lockit@std@@QAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) bool __cdecl std::uncaught_exception(void)" (__imp_?uncaught_exception@std@@YA_NXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) void __cdecl std::_Debug_message(wchar_t const *,wchar_t const *,unsigned int)" (__imp_?_Debug_message@std@@YAXPB_W0I@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) void __cdecl std::_Xbad_alloc(void)" (__imp_?_Xbad_alloc@std@@YAXXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) void __cdecl std::_Xinvalid_argument(char const *)" (__imp_?_Xinvalid_argument@std@@YAXPBD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) void __cdecl std::_Xlength_error(char const *)" (__imp_?_Xlength_error@std@@YAXPBD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) void __cdecl std::_Xout_of_range(char const *)" (__imp_?_Xout_of_range@std@@YAXPBD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "void __cdecl std::_Facet_Register(class std::_Facet_base *)" (?_Facet_Register@std@@YAXPAV_Facet_base@1@@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(locale0_implib.obj)
+        已找到 "__declspec(dllimport) public: __thiscall std::locale::id::operator unsigned int(void)" (__imp_??Bid@locale@std@@QAEIXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) private: static class std::locale::_Locimp * __cdecl std::locale::_Getgloballocale(void)" (__imp_?_Getgloballocale@locale@std@@CAPAV_Locimp@12@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: bool __thiscall std::codecvt_base::always_noconv(void)const " (__imp_?always_noconv@codecvt_base@std@@QBE_NXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::codecvt<char,char,struct _Mbstatet>::in(struct _Mbstatet &,char const *,char const *,char const * &,char *,char *,char * &)const " (__imp_?in@?$codecvt@DDU_Mbstatet@@@std@@QBEHAAU_Mbstatet@@PBD1AAPBDPAD3AAPAD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::codecvt<char,char,struct _Mbstatet>::out(struct _Mbstatet &,char const *,char const *,char const * &,char *,char *,char * &)const " (__imp_?out@?$codecvt@DDU_Mbstatet@@@std@@QBEHAAU_Mbstatet@@PBD1AAPBDPAD3AAPAD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::codecvt<char,char,struct _Mbstatet>::unshift(struct _Mbstatet &,char *,char *,char * &)const " (__imp_?unshift@?$codecvt@DDU_Mbstatet@@@std@@QBEHAAU_Mbstatet@@PAD1AAPAD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: static unsigned int __cdecl std::codecvt<char,char,struct _Mbstatet>::_Getcat(class std::locale::facet const * *,class std::locale const *)" (__imp_?_Getcat@?$codecvt@DDU_Mbstatet@@@std@@SAIPAPBVfacet@locale@2@PBV42@@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __thiscall std::ios_base::operator bool(void)const " (__imp_??Bios_base@std@@QBE_NXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: bool __thiscall std::ios_base::good(void)const " (__imp_?good@ios_base@std@@QBE_NXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::ios_base::flags(void)const " (__imp_?flags@ios_base@std@@QBEHXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __int64 __thiscall std::ios_base::width(void)const " (__imp_?width@ios_base@std@@QBE_JXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __int64 __thiscall std::ios_base::width(__int64)" (__imp_?width@ios_base@std@@QAE_J_J@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::basic_streambuf<char,struct std::char_traits<char> >(void)" (__imp_??0?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::~basic_streambuf<char,struct std::char_traits<char> >(void)" (__imp_??1?$basic_streambuf@DU?$char_traits@D@std@@@std@@UAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::locale __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::getloc(void)const " (__imp_?getloc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QBE?AVlocale@2@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sbumpc(void)" (__imp_?sbumpc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sgetc(void)" (__imp_?sgetc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::snextc(void)" (__imp_?snextc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sputc(char)" (__imp_?sputc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAEHD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sputn(char const *,__int64)" (__imp_?sputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@QAE_JPBD_J@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::eback(void)const " (__imp_?eback@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::gptr(void)const " (__imp_?gptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::pptr(void)const " (__imp_?pptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::egptr(void)const " (__imp_?egptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setg(char *,char *,char *)" (__imp_?setg@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAD00@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::epptr(void)const " (__imp_?epptr@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Gndec(void)" (__imp_?_Gndec@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Gninc(void)" (__imp_?_Gninc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Pninc(void)" (__imp_?_Pninc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEPADXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Init(void)" (__imp_?_Init@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Init(char * *,char * *,int *,char * *,char * *,int *)" (__imp_?_Init@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAPAD0PAH001@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall std::basic_ios<char,struct std::char_traits<char> >::~basic_ios<char,struct std::char_traits<char> >(void)" (__imp_??1?$basic_ios@DU?$char_traits@D@std@@@std@@UAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: void __thiscall std::basic_ios<char,struct std::char_traits<char> >::setstate(int,bool)" (__imp_?setstate@?$basic_ios@DU?$char_traits@D@std@@@std@@QAEXH_N@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > * __thiscall std::basic_ios<char,struct std::char_traits<char> >::tie(void)const " (__imp_?tie@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEPAV?$basic_ostream@DU?$char_traits@D@std@@@2@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_streambuf<char,struct std::char_traits<char> > * __thiscall std::basic_ios<char,struct std::char_traits<char> >::rdbuf(void)const " (__imp_?rdbuf@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEPAV?$basic_streambuf@DU?$char_traits@D@std@@@2@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: char __thiscall std::basic_ios<char,struct std::char_traits<char> >::fill(void)const " (__imp_?fill@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEDXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: char __thiscall std::basic_ios<char,struct std::char_traits<char> >::widen(char)const " (__imp_?widen@?$basic_ios@DU?$char_traits@D@std@@@std@@QBEDD@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: __thiscall std::basic_ios<char,struct std::char_traits<char> >::basic_ios<char,struct std::char_traits<char> >(void)" (__imp_??0?$basic_ios@DU?$char_traits@D@std@@@std@@IAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: void __thiscall std::basic_ostream<char,struct std::char_traits<char> >::_Osfx(void)" (__imp_?_Osfx@?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEXXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(class std::basic_ostream<char,struct std::char_traits<char> > & (__cdecl*)(class std::basic_ostream<char,struct std::char_traits<char> > &))" (__imp_??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@P6AAAV01@AAV01@@Z@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::put(char)" (__imp_?put@?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV12@D@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::flush(void)" (__imp_?flush@?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV12@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __thiscall std::basic_istream<char,struct std::char_traits<char> >::basic_istream<char,struct std::char_traits<char> >(class std::basic_streambuf<char,struct std::char_traits<char> > *,bool)" (__imp_??0?$basic_istream@DU?$char_traits@D@std@@@std@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@1@_N@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall std::basic_istream<char,struct std::char_traits<char> >::~basic_istream<char,struct std::char_traits<char> >(void)" (__imp_??1?$basic_istream@DU?$char_traits@D@std@@@std@@UAE@XZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: bool __thiscall std::basic_istream<char,struct std::char_traits<char> >::_Ipfx(bool)" (__imp_?_Ipfx@?$basic_istream@DU?$char_traits@D@std@@@std@@QAE_N_N@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) struct _iobuf * __cdecl std::_Fiopen(char const *,int,int)" (__imp_?_Fiopen@std@@YAPAU_iobuf@@PBDHH@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::showmanyc(void)" (?showmanyc@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JXZ)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::xsgetn(char *,__int64)" (?xsgetn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JPAD_J@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual __int64 __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::xsputn(char const *,__int64)" (?xsputn@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAE_JPBD_J@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) __int64 const std::_BADOFF" (__imp_?_BADOFF@std@@3_JB)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: static class std::locale::id std::codecvt<char,char,struct _Mbstatet>::id" (__imp_?id@?$codecvt@DDU_Mbstatet@@@std@@2V0locale@2@A)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) class std::basic_ostream<char,struct std::char_traits<char> > std::cout" (__imp_?cout@std@@3V?$basic_ostream@DU?$char_traits@D@std@@@1@A)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(double)" (__imp_??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@N@Z)
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(int)" (__imp_??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@H@Z)
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) struct std::_Smanip<__int64> __cdecl std::setw(__int64)" (__imp_?setw@std@@YA?AU?$_Smanip@_J@1@_J@Z)
+          已在 zjw_dsaupd.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 __imp___Dtest
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __int64 __thiscall std::ios_base::precision(__int64)" (__imp_?precision@ios_base@std@@QAE_J_J@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: char * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::pbase(void)const " (__imp_?pbase@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IBEPADXZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::gbump(int)" (__imp_?gbump@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXH@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::pbump(int)" (__imp_?pbump@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXH@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setp(char *,char *)" (__imp_?setp@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAD0@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) protected: void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setp(char *,char *,char *)" (__imp_?setp@?$basic_streambuf@DU?$char_traits@D@std@@@std@@IAEXPAD00@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ios<char,struct std::char_traits<char> > & __thiscall std::basic_ios<char,struct std::char_traits<char> >::copyfmt(class std::basic_ios<char,struct std::char_traits<char> > const &)" (__imp_?copyfmt@?$basic_ios@DU?$char_traits@D@std@@@std@@QAEAAV12@ABV12@@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: class std::basic_ostream<char,struct std::char_traits<char> > & __thiscall std::basic_ostream<char,struct std::char_traits<char> >::operator<<(__int64)" (__imp_??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@_J@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: __thiscall std::basic_iostream<char,struct std::char_traits<char> >::basic_iostream<char,struct std::char_traits<char> >(class std::basic_streambuf<char,struct std::char_traits<char> > *)" (__imp_??0?$basic_iostream@DU?$char_traits@D@std@@@std@@QAE@PAV?$basic_streambuf@DU?$char_traits@D@std@@@1@@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "__declspec(dllimport) public: virtual __thiscall std::basic_iostream<char,struct std::char_traits<char> >::~basic_iostream<char,struct std::char_traits<char> >(void)" (__imp_??1?$basic_iostream@DU?$char_traits@D@std@@@std@@UAE@XZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "public: virtual void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Lock(void)" (?_Lock@?$basic_streambuf@DU?$char_traits@D@std@@@std@@UAEXXZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "public: virtual void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::_Unlock(void)" (?_Unlock@?$basic_streambuf@DU?$char_traits@D@std@@@std@@UAEXXZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual void __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::imbue(class std::locale const &)" (?imbue@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAEXABVlocale@2@@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual class std::basic_streambuf<char,struct std::char_traits<char> > * __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::setbuf(char *,__int64)" (?setbuf@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAEPAV12@PAD_J@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::sync(void)" (?sync@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAEHXZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 "protected: virtual int __thiscall std::basic_streambuf<char,struct std::char_traits<char> >::uflow(void)" (?uflow@?$basic_streambuf@DU?$char_traits@D@std@@@std@@MAEHXZ)
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 __IMPORT_DESCRIPTOR_MSVCP140D
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+        已找到 MSVCP140D_NULL_THUNK_DATA
+          已在 msvcprtd.lib(MSVCP140D.dll) 中引用
+          已加载 msvcprtd.lib(MSVCP140D.dll)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\MSVCRTD.lib:
+        已找到 __fltused
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 moc_zjw_opengl.obj 中引用
+          已在 main.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_math.obj 中引用
+          已加载 MSVCRTD.lib(fltused.obj)
+        已找到 _atexit
+          已在 qrc_pcscompress.obj 中引用
+          已在 zjw_math.obj 中引用
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已加载 MSVCRTD.lib(utility.obj)
+        已找到 @__security_check_cookie@4
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已在 qrc_pcscompress.obj 中引用
+          已在 main.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 MSVCRTD.lib(_secchk_.obj)
+        已找到 ___security_cookie
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(_secchk_.obj) 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已在 qrc_pcscompress.obj 中引用
+          已在 main.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 MSVCRTD.lib(gs_cookie.obj)
+        已找到 "void * __cdecl operator new(unsigned int)" (??2@YAPAXI@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 MSVCRTD.lib(new_scalar.obj)
+        已找到 "void __cdecl operator delete(void *)" (??3@YAXPAX@Z)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 MSVCRTD.lib(delete_scalar.obj)
+        已找到 "void __cdecl operator delete(void *,unsigned int)" (??3@YAXPAXI@Z)
+          已在 zjw_pcs_octree.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已加载 MSVCRTD.lib(delete_scalar_size.obj)
+        已找到 "const type_info::`vftable'" (??_7type_info@@6B@)
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 MSVCRTD.lib(std_type_info_static.obj)
+        已找到 "void * __cdecl operator new[](unsigned int)" (??_U@YAPAXI@Z)
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已加载 MSVCRTD.lib(new_array.obj)
+        已找到 __dtoui3
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已加载 MSVCRTD.lib(_ftol3_.obj)
+        已找到 __alldiv
+          已在 zjwtimer.obj 中引用
+          已加载 MSVCRTD.lib(lldiv.obj)
+        已找到 __allmul
+          已在 zjwtimer.obj 中引用
+          已加载 MSVCRTD.lib(llmul.obj)
+        已找到 "void __cdecl operator delete[](void *)" (??_V@YAXPAX@Z)
+          已在 zjw_dsaupd.obj 中引用
+          已加载 MSVCRTD.lib(delete_array.obj)
+        已找到 __alloca_probe_16
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 MSVCRTD.lib(alloca16.obj)
+        已找到 _WinMainCRTStartup
+          已加载 MSVCRTD.lib(exe_winmain.obj)
+        已找到 @_guard_check_icall@4
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(checkcfg.obj)
+        已找到 ___isa_available_init
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 MSVCRTD.lib(_cpu_disp_.obj)
+        已找到 __get_startup_argv_mode
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(argv_mode.obj)
+        已找到 ___scrt_is_ucrt_dll_in_use
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 MSVCRTD.lib(ucrt_detection.obj)
+        已找到 ___scrt_fastfail
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(utility_desktop.obj)
+        已找到 __except_handler4
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(_chandler4gs_.obj)
+        已找到 ___report_gsfailure
+          已在 MSVCRTD.lib(_secchk_.obj) 中引用
+          已加载 MSVCRTD.lib(gs_report.obj)
+        已找到 "void __cdecl __scrt_throw_std_bad_alloc(void)" (?__scrt_throw_std_bad_alloc@@YAXXZ)
+          已在 MSVCRTD.lib(new_scalar.obj) 中引用
+          已加载 MSVCRTD.lib(throw_bad_alloc.obj)
+        已找到 __chkstk
+          已在 MSVCRTD.lib(alloca16.obj) 中引用
+          已加载 MSVCRTD.lib(chkstk.obj)
+        已找到 ___security_init_cookie
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(gs_support.obj)
+        已找到 __matherr
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(matherr.obj)
+        已找到 __get_startup_commit_mode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(commit_mode.obj)
+        已找到 __get_startup_file_mode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(file_mode.obj)
+        已找到 __get_startup_new_mode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(new_mode.obj)
+        已找到 __get_startup_thread_locale_mode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(thread_locale.obj)
+        已找到 "void __cdecl __scrt_initialize_type_info(void)" (?__scrt_initialize_type_info@@YAXXZ)
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(tncleanup.obj)
+        已找到 __should_initialize_environment
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(env_mode.obj)
+        已找到 __initialize_default_precision
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(default_precision.obj)
+        已找到 __initialize_invalid_parameter_handler
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(invalid_parameter_handler.obj)
+        已找到 __initialize_denormal_control
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(denormal_control.obj)
+        已找到 ___scrt_initialize_default_local_stdio_options
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(default_local_stdio_options.obj)
+        已找到 ___scrt_is_user_matherr_present
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(matherr_detection.obj)
+        已找到 ___scrt_get_dyn_tls_init_callback
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(dyn_tls_init.obj)
+        已找到 ___scrt_get_dyn_tls_dtor_callback
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(dyn_tls_dtor.obj)
+        已找到 __RTC_Initialize
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(_initsect_.obj)
+        已找到 ___xi_a
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 MSVCRTD.lib(initializers.obj)
+  已处理 /DEFAULTLIB: kernel32.lib
+   已处理 /DISALLOWLIB: msvcrt.lib
+   已处理 /DISALLOWLIB: libcmt.lib
+   已处理 /DISALLOWLIB: libcmtd.lib
+   已处理 /DISALLOWLIB: vcruntime.lib
+  已处理 /DEFAULTLIB: vcruntimed.lib
+   已处理 /DISALLOWLIB: libvcruntime.lib
+   已处理 /DISALLOWLIB: libvcruntimed.lib
+   已处理 /DISALLOWLIB: ucrt.lib
+  已处理 /DEFAULTLIB: ucrtd.lib
+   已处理 /DISALLOWLIB: libucrt.lib
+   已处理 /DISALLOWLIB: libucrtd.lib
+        已找到 ___guard_check_icall_fptr
+          已在 MSVCRTD.lib(checkcfg.obj) 中引用
+          已加载 MSVCRTD.lib(guard_support.obj)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\OLDNAMES.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\vcruntimed.lib:
+        已找到 ___CxxFrameHandler3
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已在 qrc_pcscompress.obj 中引用
+          已在 main.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __imp__memchr
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 _memcmp
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 _memcpy
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __imp__memmove
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 _memset
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __imp____std_exception_copy
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __imp____std_exception_destroy
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __CxxThrowException@8
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 MSVCRTD.lib(throw_bad_alloc.obj) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __except_handler4_common
+          已在 MSVCRTD.lib(_chandler4gs_.obj) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 ___std_type_info_destroy_list
+          已在 MSVCRTD.lib(tncleanup.obj) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 __IMPORT_DESCRIPTOR_VCRUNTIME140D
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+        已找到 VCRUNTIME140D_NULL_THUNK_DATA
+          已在 vcruntimed.lib(VCRUNTIME140D.dll) 中引用
+          已加载 vcruntimed.lib(VCRUNTIME140D.dll)
+      正在搜索 C:\Program Files (x86)\Windows Kits\10\lib\10.0.10240.0\ucrt\x86\ucrtd.lib:
+        已找到 _strcmp
+          已在 moc_zjw_opengl.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _acos
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已在 moc_zjw_opengl.obj 中引用
+          已在 main.obj 中引用
+          已在 zjw_material.obj 中引用
+          已在 zjw_math.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp____acrt_iob_func
+          已在 main.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__freopen
+          已在 main.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___invalid_parameter
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___invalid_parameter_noinfo
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___errno
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__strtof
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__strtol
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___get_stream_buffer_pointers
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fclose
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fflush
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fgetc
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fgetpos
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fputc
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fsetpos
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___fseeki64
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__fwrite
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__setvbuf
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__ungetc
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___lock_file
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___unlock_file
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _strlen
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_dsaupd.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___CrtDbgReportW
+          已在 zjw_material.obj 中引用
+          已在 zjw_obj.obj 中引用
+          已在 zjw_opengl.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _cos
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _sin
+          已在 zjw_obj.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _sqrt
+          已在 zjw_obj.obj 中引用
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _pow
+          已在 zjw_opengl.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___wassert
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___dtest
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _fabs
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__free
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp__malloc
+          已在 zjw_pcs_octree.obj 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___free_dbg
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __imp___malloc_dbg
+          已在 msvcprtd.lib(locale0_implib.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __seh_filter_dll
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __configure_narrow_argv
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __initialize_narrow_environment
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __initialize_onexit_table
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __register_onexit_function
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __execute_onexit_table
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __crt_atexit
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __crt_at_quick_exit
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __cexit
+          已在 MSVCRTD.lib(utility.obj) 中引用
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __callnewh
+          已在 MSVCRTD.lib(new_scalar.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __except1
+          已在 MSVCRTD.lib(_ftol3_.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __seh_filter_exe
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __set_app_type
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 ___setusermatherr
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __get_narrow_winmain_command_line
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __initterm
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __initterm_e
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _exit
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __exit
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __set_fmode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __c_exit
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __register_thread_local_exe_atexit_callback
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __configthreadlocale
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __set_new_mode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 ___p__commode
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 _terminate
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __controlfp_s
+          已在 MSVCRTD.lib(default_precision.obj) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 __IMPORT_DESCRIPTOR_ucrtbased
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+        已找到 ucrtbased_NULL_THUNK_DATA
+          已在 ucrtd.lib(ucrtbased.dll) 中引用
+          已加载 ucrtd.lib(ucrtbased.dll)
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+        已找到 _WinMain@16
+          已在 MSVCRTD.lib(exe_winmain.obj) 中引用
+          已加载 qtmaind.lib(qtmain_win.obj)
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+        已找到 _IsProcessorFeaturePresent@4
+          已在 MSVCRTD.lib(_cpu_disp_.obj) 中引用
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已在 MSVCRTD.lib(gs_report.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__IsDebuggerPresent@0
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__UnhandledExceptionFilter@4
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已在 MSVCRTD.lib(gs_report.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__SetUnhandledExceptionFilter@4
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已在 MSVCRTD.lib(gs_report.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetStartupInfoW@4
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetModuleHandleW@4
+          已在 MSVCRTD.lib(utility_desktop.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetCurrentProcess@0
+          已在 MSVCRTD.lib(gs_report.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__TerminateProcess@8
+          已在 MSVCRTD.lib(gs_report.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetCurrentProcessId@0
+          已在 MSVCRTD.lib(gs_support.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetCurrentThreadId@0
+          已在 MSVCRTD.lib(gs_support.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetSystemTimeAsFileTime@4
+          已在 MSVCRTD.lib(gs_support.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__InitializeSListHead@4
+          已在 MSVCRTD.lib(tncleanup.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__GetCommandLineW@0
+          已在 qtmaind.lib(qtmain_win.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__LocalFree@4
+          已在 qtmaind.lib(qtmain_win.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+        已找到 __imp__WideCharToMultiByte@32
+          已在 qtmaind.lib(qtmain_win.obj) 中引用
+          已加载 kernel32.lib(KERNEL32.dll)
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\shell32.lib:
+        已找到 __imp__CommandLineToArgvW@8
+          已在 qtmaind.lib(qtmain_win.obj) 中引用
+          已加载 shell32.lib(SHELL32.dll)
+        已找到 __IMPORT_DESCRIPTOR_SHELL32
+          已在 shell32.lib(SHELL32.dll) 中引用
+          已加载 shell32.lib(SHELL32.dll)
+        已找到 SHELL32_NULL_THUNK_DATA
+          已在 shell32.lib(SHELL32.dll) 中引用
+          已加载 shell32.lib(SHELL32.dll)
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\msvcprtd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\MSVCRTD.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\OLDNAMES.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\vcruntimed.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\10\lib\10.0.10240.0\ucrt\x86\ucrtd.lib:
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+  
+  已完成库搜索
+  
+  已完成传递 1
+  
+  
+  正在搜索库
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\shell32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\msvcprtd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\MSVCRTD.lib:
+        已找到 ___scrt_stub_for_acrt_initialize
+          已加载 MSVCRTD.lib(ucrt_stubs.obj)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\OLDNAMES.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\vcruntimed.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\10\lib\10.0.10240.0\ucrt\x86\ucrtd.lib:
+  
+  已完成库搜索
+  
+  正在搜索库
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\shell32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\msvcprtd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\MSVCRTD.lib:
+        已找到 __load_config_used
+          已加载 MSVCRTD.lib(loadcfg.obj)
+      正在搜索 E:\software\VisualStudio2015\VC\lib\OLDNAMES.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\vcruntimed.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\10\lib\10.0.10240.0\ucrt\x86\ucrtd.lib:
+      正在搜索 arpack_win32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\qtmaind.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Cored.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Guid.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5OpenGLd.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\opengl32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\glu32.lib:
+      正在搜索 E:\software\Qt\Qt5.8.0_32\5.8\msvc2015\lib\Qt5Widgetsd.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\kernel32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\shell32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib:
+      正在搜索 C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib:
+      正在搜索 E:\software\VisualStudio2015\VC\lib\msvcprtd.lib:
+  
+  已完成库搜索
+  
+  正在调用 rc.exe:
+   /v
+   /x
+   /fo
+   "C:\Users\King\AppData\Local\Temp\lnk{7EE20ECB-0C34-4750-91EF-6775A542236B}.tmp"
+   "C:\Users\King\AppData\Local\Temp\lnk{8D5AA4E9-1F46-4148-A961-D044B04118B2}.tmp"
+  Microsoft (R) Windows (R) Resource Compiler Version 6.3.9600.17336
+  
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  
+  
+  Creating C:\Users\King\AppData\Local\Temp\lnk{7EE20ECB-0C34-4750-91EF-6775A542236B}.tmp
+  
+  Using codepage 936 as default
+  
+  C:\Users\King\AppData\Local\Temp\lnk{8D5AA4E9-1F46-4148-A961-D044B04118B2}.tmp.
+  Writing 24:1,	lang:0x409,	size 381
+  
+  正在调用 cvtres.exe:
+   /machine:x86
+   /verbose
+   /out:"C:\Users\King\AppData\Local\Temp\lnk{FFB31B63-6EEC-4DA6-B7CE-333002BED356}.tmp"
+   /readonly
+   "C:\Users\King\AppData\Local\Temp\lnk{7EE20ECB-0C34-4750-91EF-6775A542236B}.tmp"
+  Microsoft(R) Windows Resource To Object Converter 版本 14.00.24210.0
+  版权所有 (C) Microsoft Corporation。保留所有权利。
+  
+  正在添加资源。类型: MANIFEST，名称: 1，语言: 0x0409，标记: 0x30，大小: 381
+main.obj : error LNK2019: 无法解析的外部符号 "public: __thiscall pcsCompress::pcsCompress(class QWidget *)" (??0pcsCompress@@QAE@PAVQWidget@@@Z)，该符号在函数 _main 中被引用
+main.obj : error LNK2019: 无法解析的外部符号 "public: virtual __thiscall pcsCompress::~pcsCompress(void)" (??1pcsCompress@@UAE@XZ)，该符号在函数 _main 中被引用
+  
+  未使用的库:
+    arpack_win32.lib
+    E:\software\VisualStudio2015\VC\lib\glu32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\user32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\gdi32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\winspool.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\comdlg32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\advapi32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\ole32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\oleaut32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\uuid.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbc32.lib
+    C:\Program Files (x86)\Windows Kits\8.1\lib\winv6.3\um\x86\odbccp32.lib
+    E:\software\VisualStudio2015\VC\lib\OLDNAMES.lib
+  
+C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\\pcsCompress.exe : fatal error LNK1120: 2 个无法解析的外部命令

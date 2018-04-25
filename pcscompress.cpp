@@ -23,10 +23,12 @@ void pcsCompress::clickedOpenFileAction()
 
 	Vec3 min(ui.openGLWidget->objMesh.rangeMin);
 	Vec3 max((ui.openGLWidget->objMesh.rangeMax+Epsilon));
-	Vec3 cellSize(0.1);
+	Vec3 cellSize(0.42);
 	ui.openGLWidget->pcsOct.setParam(min,max,cellSize);
 	ui.openGLWidget->pcsOct.buildPcsOctFrmPC(& ui.openGLWidget->objMesh);
 	ui.openGLWidget->pcsOct.getLeafboundary();
+
+	ui.openGLWidget->pcsOct.setPointTo8Areas();
 
 	ui.openGLWidget->pcsOct.getGraphMat();
 	ui.openGLWidget->pcsOct.getMatEigenVerValue();

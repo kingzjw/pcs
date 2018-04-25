@@ -10,11 +10,16 @@
 #include <math.h>
 #include <stdlib.h>
 #include <Eigen/Dense>
-
-//判断采用的求解特征值的方式
+#include <eigen/Sparse>
 
 using namespace Eigen;
 using namespace std;
+
+typedef Eigen::SparseMatrix<double> SpMat;
+typedef Eigen::Triplet<double> T;
+
+//判断采用的求解特征值的方式
+
 
 //------------------------------ Class that holds your data.-----------------------
 
@@ -22,9 +27,16 @@ using namespace std;
 class Node
 {
 public:
-	vector<Vec3> pointList; //每个在空间有一堆的 particle
-};
+	//每个在空间有一堆的 particle
+	vector<Vec3> pointList;
 
+	//保存每个叶子节点下面8个象限的叶子节点
+	vector<vector<Vec3*>> leafNode8Areas;
+
+	//保存该叶子节点的在每个象限中的信号,如果没有信号，那么都是-1,-1,-1
+	//vector <bool> posFlag;
+	vector<Vec3> pos8Areas;
+};
 
 //-----------------遍历整个八叉树，把叶子节点的边界值保存到list中，并给叶子节点编号-----------------
 class CallTraverseGetInfoSetLeaf : public Octree<Node>::Callback
@@ -58,21 +70,34 @@ public:
 #ifdef USE_EIGEN
 	MatrixXd  * dMatPtr;
 	MatrixXd  * weightAMatPtr;
+
 #endif // USE_EIGEN
 
 #ifdef  USE_ARPACK
 	Dsaupd *laplacianMat;
 #endif //  use_arpack
 
+#ifdef USE_SPARSE
+	SpMat * spLap;
+	std::vector<T> coeff;
+#endif // USE_SPARSE
 
 public:
 #ifdef USE_EIGEN
-	CallTGetGraph(MatrixXd  * dMatPtr,MatrixXd  * weightAMatPtr) 
+	CallTGetGraph(MatrixXd  * dMatPtr, MatrixXd  * weightAMatPtr)
 	{
 		this->dMatPtr = dMatPtr;
 		this->weightAMatPtr = weightAMatPtr;
 	}
 #endif // USE_EIGEN
+
+#ifdef USE_SPARSE
+	CallTGetGraph(SpMat * sp, std::vector<T> & coefficent)
+	{
+		this->spLap = sp;
+		this->coeff = coefficent;
+	}
+#endif // USE_SPARSE
 
 #ifdef  USE_ARPACK
 	CallTGetGraph(Dsaupd *laplacianMat)
@@ -92,13 +117,12 @@ public:
 	virtual bool operator()(const Vec3 min, const Vec3 max, Octree<Node>::OctreeNode* currNode);
 };
 
-
 //-----------------------------------------------------
 class PcsOctree
 {
 public:
-	Vec3 min;
-	Vec3 max;
+	Vec3 minPos;
+	Vec3 maxPos;
 	Vec3 cellSize;
 
 	Octree<Node> *pcsOct;
@@ -113,13 +137,17 @@ public:
 	MatrixXd  LaplacianMat;
 	MatrixXd  eigenVecMat;
 	MatrixXd  eigenValMat;
+
 #endif // use_ei
+
+#ifdef USE_SPARSE
+	SpMat * spLaplacian;
+	std::vector<T> coefficients;
+#endif // USE_SPARSE
 
 #ifdef USE_ARPACK
 	Dsaupd laplacianMat;
 #endif // use_arpa
-
-	
 
 public:
 	PcsOctree();
@@ -136,12 +164,22 @@ public:
 	void initMat();
 	//得到矩阵
 	void getGraphMat();
+
 	//得到矩阵的特征向量和特征值
 	void getMatEigenVerValue();
 
-	void getGraph();
 	//清空八叉树
 	void clearOct();
+
+	//判断顶点point 在包围盒中的8个象限中的哪一个
+	int judege8Aeros(Vec3 &min, Vec3 &max, Vec3 &point);
+	int judege8Aeros(Vec3& mid, Vec3 &point);
+
+	//把每个叶子节点中的点划分到8个子象限中
+	void setPointTo8Areas();
+
+	//计算叶子节点在每个象限上的信号
+	void getLeafSignal();
 
 	//=============== test ====================
 	void printMat();

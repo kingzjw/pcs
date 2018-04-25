@@ -24,7 +24,7 @@ void Dsaupd::initParam(int matSize)
 	totalNum = n * n;
 
 	//init 需要得到的特征向量的个数
-	nev = n-1;
+	nev = n - 1;
 
 	//init  mat
 	initMat();
@@ -36,8 +36,6 @@ void Dsaupd::initParam(int matSize)
 	{
 		Evecs[i] = new double[nev];
 	}
-
-
 }
 
 void Dsaupd::initMat()
@@ -57,9 +55,7 @@ void Dsaupd::initMat()
 			totalNum++;
 		}
 	}
-
 }
-
 
 void Dsaupd::setMat(int row, int col, double  matEle)
 {
@@ -75,14 +71,14 @@ void Dsaupd::printMat()
 {
 	cout << "------------------------------" << endl;
 	cout << "materix : " << endl;
-	
+
 	if (mat)
 	{
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 0; j < n; j++)
 			{
-				cout << setw(10)<<mat[i * n + j][2];
+				cout << setw(10) << mat[i * n + j][2];
 			}
 			cout << endl;
 		}
@@ -103,7 +99,7 @@ void Dsaupd::printValueVector()
 			cout << Evecs[j][i] << ", ";
 		}
 		cout << '\b';
-		cout <<")\n";
+		cout << ")\n";
 		cout << "--------------" << endl;
 	}
 	cout << "------------------------------" << endl;

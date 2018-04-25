@@ -31,7 +31,6 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 	if (path.substr(path.size() - 4, 4) != ".obj")
 		return false;
 
-
 	std::ifstream file(path);
 
 	if (!file.is_open())
@@ -63,7 +62,6 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 	SubMesh tempMesh;
 	bool subMeshFlag = false;
 
-
 	std::string curline;
 	while (std::getline(file, curline))
 	{
@@ -85,9 +83,7 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 				}
 			}
 
-
 			pathMaterial += algorithm::tail(curline);
-
 
 			// Load Materials
 			materialFile.loadMaterial(pathMaterial);
@@ -99,7 +95,6 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 			{
 				nowMtlName = algorithm::tail(curline);
 				preMtlName = nowMtlName;
-				
 			}
 			else
 			{
@@ -131,9 +126,9 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 				}
 				else
 				{
-	#ifdef ZJW_DEUG
+#ifdef ZJW_DEUG
 					cout << preMtlName << "  : this matiral do not has any face!!" << endl;
-	#endif // ZJW_DEUG
+#endif // ZJW_DEUG
 				}
 			}
 		}
@@ -187,7 +182,7 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 			std::vector<int> verIndexList;
 			std::vector<int> texIndexList;
 			std::vector<int> normalIndexList;
-						
+
 			std::vector<std::string> sface, svert;
 			algorithm::split(algorithm::tail(curline), sface, " ");
 
@@ -261,13 +256,12 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 					normalIndexList.push_back(std::stoi(svert[2]) - 1);
 					break;
 				}
-					default:
-					{
-						break;
-					}
+				default:
+				{
+					break;
+				}
 				}
 			}
-
 
 			//如果不是三角面片，那么采用三角化的方法
 			Point3 tempPIndx;
@@ -301,9 +295,6 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 					tempNIndx.z = normalIndexList[2];
 					tempMesh.faceNormallist.push_back(tempNIndx);
 				}
-
-
-
 			}
 			else if (verIndexList.size() < 3)
 			{
@@ -337,7 +328,6 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 
 					if (!normalIndexList.empty())
 					{
-
 						tempNIndx.x = normalIndexList[indexList[i].x];
 						tempNIndx.y = normalIndexList[indexList[i].y];
 						tempNIndx.z = normalIndexList[indexList[i].z];
@@ -382,9 +372,8 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 	else
 	{
 #ifdef ZJW_DEUG
-		cout << "finish load the obj!"<< endl;
+		cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
-
 
 		//==================================
 		/*getVertexPosMaxMin();
@@ -404,7 +393,7 @@ bool ObjMeshMtl::trianglation(int size, vector<Vec3> &triangleFaceList)
 	{
 		for (int i = 1; i < size - 1; i++)
 		{
-			triangleFaceList.push_back(Vec3(0,i,i+1));
+			triangleFaceList.push_back(Vec3(0, i, i + 1));
 		}
 		return true;
 	}
@@ -454,7 +443,6 @@ void ObjMeshMtl::verNormalNormalize()
 		normalList[n_it].normalize();
 	}
 }
-
 
 void ObjMeshMtl::getVertexPosMaxMin()
 {
@@ -647,43 +635,42 @@ void ObjMeshMtl::getRotateMatZ(double angleZ)
 	RotateMat[2][2] = 1;
 }
 
-
 void ObjMeshMtl::rotate(float ** RotateMat)
 {
-//	int vertex_num = vertexList.size();
-//#pragma omp parallel for
-//	for (int i = 0; i < vertex_num; ++i)
-//	{
-//		//Point3f* point = &vertexes[i].point;
-//		Point3 point;
-//		Point3 tmp_point = vertexList[i];
-//		//Point tmp_point = vertexList[i] - center_point;
-//		vertexList[i].x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
-//		vertexList[i].y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
-//		vertexList[i].z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
-//		//vertexList[i] += center_point;
-//	}
-//
-//	int normal_num = normalList.size();
-//#pragma omp parallel for
-//	for (int i = 0; i < normal_num; ++i)
-//	{
-//		Point3 tmp_point = normalList[i];
-//		normalList[i].x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
-//		normalList[i].y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
-//		normalList[i].z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
-//
-//	}
-//
-//	int face_num = faceList.size();
-//#pragma omp parallel for
-//	for (int i = 0; i < face_num; ++i)
-//	{
-//		Point3 tmp_point = faceList[i].normalForFace;
-//		faceList[i].normalForFace.x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
-//		faceList[i].normalForFace.y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
-//		faceList[i].normalForFace.z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
-//	}
+	//	int vertex_num = vertexList.size();
+	//#pragma omp parallel for
+	//	for (int i = 0; i < vertex_num; ++i)
+	//	{
+	//		//Point3f* point = &vertexes[i].point;
+	//		Point3 point;
+	//		Point3 tmp_point = vertexList[i];
+	//		//Point tmp_point = vertexList[i] - center_point;
+	//		vertexList[i].x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
+	//		vertexList[i].y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
+	//		vertexList[i].z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
+	//		//vertexList[i] += center_point;
+	//	}
+	//
+	//	int normal_num = normalList.size();
+	//#pragma omp parallel for
+	//	for (int i = 0; i < normal_num; ++i)
+	//	{
+	//		Point3 tmp_point = normalList[i];
+	//		normalList[i].x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
+	//		normalList[i].y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
+	//		normalList[i].z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
+	//
+	//	}
+	//
+	//	int face_num = faceList.size();
+	//#pragma omp parallel for
+	//	for (int i = 0; i < face_num; ++i)
+	//	{
+	//		Point3 tmp_point = faceList[i].normalForFace;
+	//		faceList[i].normalForFace.x = RotateMat[0][0] * tmp_point.x + RotateMat[0][1] * tmp_point.y + RotateMat[0][2] * tmp_point.z;
+	//		faceList[i].normalForFace.y = RotateMat[1][0] * tmp_point.x + RotateMat[1][1] * tmp_point.y + RotateMat[1][2] * tmp_point.z;
+	//		faceList[i].normalForFace.z = RotateMat[2][0] * tmp_point.x + RotateMat[2][1] * tmp_point.y + RotateMat[2][2] * tmp_point.z;
+	//	}
 }
 
 void ObjMeshMtl::printMaxMin()
@@ -701,21 +688,17 @@ SubMesh::SubMesh()
 	material = nullptr;
 }
 
-
 //==================================================================
 
 ObjMesh::ObjMesh()
 {
 }
 
-
 bool ObjMesh::loadObjMesh(string & path)
 {
-	
 	// --------------------check--------------------------
 	if (path.substr(path.size() - 4, 4) != ".obj")
 		return false;
-
 
 	std::ifstream file(path);
 
@@ -869,7 +852,6 @@ bool ObjMesh::loadObjMesh(string & path)
 				}
 			}
 
-
 			//如果不是三角面片，那么采用三角化的方法
 			Point3 tempPIndx;
 			Point3 tempTextureIndx;
@@ -883,7 +865,7 @@ bool ObjMesh::loadObjMesh(string & path)
 					tempPIndx.x = verIndexList[0];
 					tempPIndx.y = verIndexList[1];
 					tempPIndx.z = verIndexList[2];
-					
+
 					mesh.facePoslist.push_back(tempPIndx);
 				}
 
@@ -902,9 +884,6 @@ bool ObjMesh::loadObjMesh(string & path)
 					tempNIndx.z = normalIndexList[2];
 					mesh.faceNormallist.push_back(tempNIndx);
 				}
-				
-
-
 			}
 			else if (verIndexList.size() < 3)
 			{
@@ -939,7 +918,6 @@ bool ObjMesh::loadObjMesh(string & path)
 
 					if (!normalIndexList.empty())
 					{
-
 						tempNIndx.x = normalIndexList[indexList[i].x];
 						tempNIndx.y = normalIndexList[indexList[i].y];
 						tempNIndx.z = normalIndexList[indexList[i].z];
@@ -950,33 +928,27 @@ bool ObjMesh::loadObjMesh(string & path)
 			}
 		}
 	}
-	
 
-	
 #ifdef ZJW_DEUG
 	cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
-
 
 	//==================================
 	//获取其他信息
 	getVertexPosMaxMin();
 	printMaxMin();
-	verPosNormalize(rangeMin,rangeMax);
+	verPosNormalize(rangeMin, rangeMax);
 	verNormalNormalize();
 	printMaxMin();
 
 	return true;
-
 }
 //针对特殊格式的objmesh   f: v//vn
 bool ObjMesh::loadObjMeshSpeedUp(string & path)
 {
-
 	// --------------------check--------------------------
 	if (path.substr(path.size() - 4, 4) != ".obj")
 		return false;
-
 
 	std::ifstream file(path);
 
@@ -998,8 +970,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 	vertexList.clear();
 	normalList.clear();
 	texList.clear();
-	
-	
+
 	Point3 tempPIndx;
 	Point3 tempTextureIndx;
 	Normal tempNIndx;
@@ -1068,12 +1039,8 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 			tempNIndx.y = normalIndexList[1];
 			tempNIndx.z = normalIndexList[2];
 			mesh.faceNormallist.push_back(tempNIndx);
-
-			
 		}
 	}
-
-
 
 #ifdef ZJW_DEUG
 	cout << "finish load the obj!" << endl;
@@ -1083,7 +1050,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 	//获取其他信息
 	getVertexPosMaxMin();
 	printMaxMin();
-	verPosNormalize(rangeMin,rangeMax);
+	verPosNormalize(rangeMin, rangeMax);
 	verNormalNormalize();
 	printMaxMin();
 #ifdef ZJW_DEUG
@@ -1093,7 +1060,6 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 
 	return true;
 }
-	
 
 bool ObjMesh::trianglation(int size, vector<Vec3> &triangleFaceList)
 {

@@ -38,15 +38,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="pcscompress.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_pcscompress.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_pcscompress.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_pcscompress.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
@@ -71,15 +62,14 @@
     <ClCompile Include="GeneratedFiles\Release\moc_zjw_opengl.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="zjwtimer.cc" />
     <ClCompile Include="zjw_dsaupd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zjwtimer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="pcscompress.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="pcscompress.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
@@ -110,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_dsaupd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_fminbnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
