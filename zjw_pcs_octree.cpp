@@ -63,7 +63,7 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
-	ctGraph = new CallTGetGraph(coefficients);
+	ctGraph = new CallTGetGraph(&coefficients);
 #endif // USE_SPARSE
 
 #ifdef USE_ARPACK
@@ -119,12 +119,12 @@ void PcsOctree::initMat()
 	LaplacianMat = MatrixXd::Zero(nodeNum, nodeNum);
 	eigenVecMat = MatrixXd::Zero(nodeNum, nodeNum);
 	eigenValMat = MatrixXd::Zero(nodeNum, nodeNum);
+#endif //USE_EIGEN
 
 #ifdef USE_SPARSE
 	spLaplacian = new SpMat(nodeNum, nodeNum);
 #endif // USE_SPARSE
 
-#endif //USE_EIGEN
 #ifdef USE_ARPACK
 	laplacianMat.initParam(nodeNum);
 #endif // USE_ARPACK
@@ -156,14 +156,18 @@ void PcsOctree::getGraphMat()
 	//生成稀疏的LaplacianMat
 	spLaplacian->setFromTriplets(coefficients.begin(), coefficients.end());
 	
-	for (int k = 0; k<spLaplacian->outerSize(); ++k)
-		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, k); it; ++it)
+#ifdef ZJW_PRINT_INFO
+
+	cout << "****************************" << endl;
+	cout << "sparse mat lap: " << endl;
+	for (int k = 0; k < spLaplacian->outerSize(); ++k)
+	{
+		for (SpMat::InnerIterator it(*spLaplacian, k); it; ++it)
 		{
-			it.value();
-			it.row();   // row index
-			it.col();   // col index (here it is equal to k)
-			it.index(); // inner index, here it is equal to it.row()
+			cout << it.value() << " " << it.row() << " " << it.col() << " " << it.index() << endl;   // row index
 		}
+	}
+#endif //ZJW_PRINT_INFO
 #endif //  USE_SPARSE
 
 #ifdef ZJW_TIMER
@@ -359,6 +363,7 @@ void PcsOctree::printMat()
 	cout << "weight mat: " << endl;
 	cout << weightAMat << endl;
 #endif // USE_EIGEN
+	
 }
 
 //------------------------------------------------------------------
@@ -411,6 +416,7 @@ CallTGetGraph::~CallTGetGraph()
 
 #ifdef USE_SPARSE
 	delete spLap;
+	delete coeff;
 #endif // USE_SPARSE
 
 #ifdef  USE_ARPACK
@@ -456,10 +462,12 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 #endif //  USE_EIGEN
 
 #ifdef USE_SPARSE
-	coeff.push_back(T(idx, leafIdx, 1 / Length(delta)));
-	coeff.push_back(T(leafIdx, idx, 1 / Length(delta)));
-	coeff.push_back(T(leafIdx, leafIdx, 1 / Length(delta)));
-	coeff.push_back(T(idx, idx, 1 / Length(delta)));
+	//L  = D-W 下面直接保存为L了
+
+	coeff->push_back(T(idx, leafIdx, -1 / Length(delta)));
+	coeff->push_back(T(leafIdx, idx, -1 / Length(delta)));
+	coeff->push_back(T(leafIdx, leafIdx, 1 / Length(delta)));
+	coeff->push_back(T(idx, idx, 1 / Length(delta)));
 #endif // USE_SPARSE
 
 #ifdef USE_ARPACK

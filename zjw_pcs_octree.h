@@ -73,7 +73,7 @@ public:
 
 #ifdef USE_SPARSE
 	SpMat * spLap;
-	std::vector<T> coeff;
+	std::vector<T> * coeff;
 #endif // USE_SPARSE
 
 #ifdef  USE_ARPACK
@@ -91,7 +91,7 @@ public:
 #endif // USE_EIGEN
 
 #ifdef USE_SPARSE
-	CallTGetGraph(std::vector<T> & coefficent,SpMat * sp = nullptr)
+	CallTGetGraph(std::vector<T> * coefficent, SpMat * sp = nullptr)
 	{
 		this->coeff = coefficent;
 		this->spLap = sp;
