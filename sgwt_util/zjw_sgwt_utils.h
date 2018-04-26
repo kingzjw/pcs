@@ -18,7 +18,6 @@
 #include "zjw_fminbnd.h"
 #include "pcg.h"
 
-
 using namespace std;
 using namespace Eigen;
 using namespace Spectra;
@@ -86,33 +85,41 @@ public:
 	}
 };
 
+/*
+  封装了利用切比雪夫展开式快速求解sgwt的工具接口
+*/
 class Sgwt {
-	vector<VectorXd> c;		//模拟cell
+public:
+	//模拟cell  大小  (Nscales+1) * (Nscales+1)
+	//c(n,k) 所有的系数
+	vector<VectorXd> coeff;
 
 	//Chebyshev的系数，近似的M阶的相数
 	const int m;
 
-	//一个表示的是：0表示lmin 和 1表示lmax
-	double arange[2];
+	//提供默认的g和h的参数设置
+	Varargin va;
+	//类型为GN的的数组的指针，每个里面藏着scale
+	//保存的是scales 列表（t1.t2.t3.,,,,.tl）
+	VectorXd t;
+	//g函数总共从t1一直到  tn (Nscales),在加上前面还有个h
+	//g0 表示的是 scale t1的g函数 ，g1表示 scale t2函数
+	GN *g;
+	const int Nscales;
+
+	//kernel  h(x)
+	HX *h0;
 
 	//稀疏矩阵 拉普拉斯
 	SpMat lap;
 
-	//提供默认的g和h的参数设置
-	Varargin va;
-	//类型为GN的的数组的指针，每个里面藏着scale
-	GN *g;
-	//num =	Nscales
-	const int Nscales;
-
-	//保存的是scales 列表（t1.t2.t3.,,,,.tl）
-	VectorXd t;
-
-	//kernel  h(x)
-	HX *g0;
+	//一个表示的是：0表示lmin 和 1表示lmax
+	double arange[2];
 
 public:
-	Sgwt(int _m, int _Nscales, SpMat _L);
+	//_m 切比雪夫的高阶项模拟  _Nscales
+	Sgwt(int _m, int _Nscales, SpMat _lap);
+
 	int getNscales()
 	{
 		return Nscales;
@@ -123,18 +130,18 @@ public:
 	}
 	HX* getG0()
 	{
-		return g0;
+		return h0;
 	}
-	vector<VectorXd>& getc()
+	vector<VectorXd>& getCoeff()
 	{
-		return c;
+		return coeff;
 	}
+
+	//利用spectra, 计算得到Laplacian 中最大的特征值 lmax
+	double sgwt_rough_lmax();
 
 	//把 Laplace 的最大特征值设置好  Lamda
 	void setArange(double lmin, double lmax);
-
-	//利用spectra, 计算得到Laplacian 中最大的特征值
-	double sgwt_rough_lmax();
 
 	//设置kernel g 的scales
 	VectorXd sgwt_setscales(const double lmin, const double lmax);
@@ -142,12 +149,14 @@ public:
 	//设置h(x)，并设置好相关的参数
 	void sgwt_filter_design(double lmax, Varargin varargin);
 
-	//计算Chebyshev的系数  g函数的近视系数C(k,g)  g 函数
+	//计算Chebyshev的系数  g函数的近视系数C(k,g)  g 函数(g函数里面包含了尺度信息)
+	//参数说明： j表示的第几个尺度，范围从(0 - nscale-1),g表示第j的尺度下的g函数，内含尺度信息。
+	//函数作用： 计算在tj尺度下面，从0-m阶的系数  c(j,0), c(j,1), c(j,2)的系数
 	template<class T>
 	void sgwt_cheby_coeff(int k, T g);		//n = m+1
-	
 
 	//chebushev的不等式求解信号
+	//传入的信号 f ,以及计算好的多项式的近似系数
 	vector<VectorXd> sgwt_cheby_op(VectorXd f, vector<VectorXd> c);
 
 	//给定参数x,返回的是g(x)的值
@@ -161,15 +170,19 @@ public:
 	//VectorXd sgwt_inverse(vector<VectorXd> y);
 };
 
-typedef Eigen::SparseMatrix<double> SpMat;
-class Sgwt;
-
-class Handle_sgwt_cheby_op {
+/*
+	利用Sqwt封装好的工具，提供便捷的使用的接口
+*/
+class SgwtCheby {
 private:
-	Sgwt *tmp_sgwt;
-	vector<VectorXd> d;
+	Sgwt *sgwt;
+	vector<VectorXd> chebyCoeff;
 public:
-	Handle_sgwt_cheby_op(int m, int Nscales, SpMat L, vector<VectorXd> c, double *arange);
+	SgwtCheby(int m, int Nscales, SpMat L, vector<VectorXd> c, double *arange);
 
+	SgwtCheby(int m, int Nscales, SpMat L);
+	//sgwt 切比雪夫的准备工作，准备计算
+	void sgwtDoChebyPrepare();
+	//重载操作符"()"，没传入一个信号，俺么返回这个信号对应的系数
 	vector<VectorXd> operator()(VectorXd x);
 };

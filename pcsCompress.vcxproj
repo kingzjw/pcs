@@ -173,10 +173,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pcscompress.cpp" />
     <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp" />
+    <ClCompile Include="util\zjwtimer.cc" />
     <ClCompile Include="util\zjw_material.cpp" />
     <ClCompile Include="util\zjw_math.cpp" />
     <ClCompile Include="util\zjw_obj.cpp" />
-    <ClCompile Include="zjwtimer.cc" />
     <ClCompile Include="zjw_dsaupd.cpp" />
     <ClCompile Include="zjw_opengl.cpp" />
     <ClCompile Include="zjw_pcs_octree.cpp" />
@@ -224,10 +224,10 @@
     <ClInclude Include="sgwt_util\zjw_fminbnd.h" />
     <ClInclude Include="sgwt_util\zjw_sgwt_utils.h" />
     <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h" />
+    <ClInclude Include="util\zjwtimer.h" />
     <ClInclude Include="util\zjw_material.h" />
     <ClInclude Include="util\zjw_math.h" />
     <ClInclude Include="util\zjw_obj.h" />
-    <ClInclude Include="zjwtimer.h" />
     <ClInclude Include="zjw_dsaupd.h" />
     <ClInclude Include="zjw_octree.h" />
     <CustomBuild Include="zjw_opengl.h">

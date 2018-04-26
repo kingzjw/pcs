@@ -33,11 +33,17 @@
       <Extensions>cpp;moc</Extensions>
       <SourceControlFiles>False</SourceControlFiles>
     </Filter>
-    <Filter Include="Header Files\sgwt">
-      <UniqueIdentifier>{9e688571-c954-4f20-9c94-a10b98398ff1}</UniqueIdentifier>
+    <Filter Include="Source Files\util">
+      <UniqueIdentifier>{4742ba41-3acd-450c-a579-7f4bff46b54f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\util">
+      <UniqueIdentifier>{8fb75952-baa2-4cc9-b978-2589206983a9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\sgwt">
       <UniqueIdentifier>{1e6e296c-ee5b-4215-8202-922a30eba716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\sgwt">
+      <UniqueIdentifier>{9e688571-c954-4f20-9c94-a10b98398ff1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -47,19 +53,7 @@
     <ClCompile Include="GeneratedFiles\qrc_pcscompress.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\zjw_material.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="util\zjw_math.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="util\zjw_obj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="zjw_pcs_octree.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zjw_opengl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_zjw_opengl.cpp">
@@ -69,9 +63,6 @@
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
     <ClCompile Include="zjw_dsaupd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zjwtimer.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_pcscompress.cpp">
@@ -86,6 +77,21 @@
     <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp">
       <Filter>Source Files\sgwt</Filter>
     </ClCompile>
+    <ClCompile Include="util\zjw_math.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\zjw_obj.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="zjw_opengl.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\zjw_material.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="util\zjwtimer.cc">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -94,30 +100,18 @@
     <CustomBuild Include="pcscompress.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="zjw_opengl.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="pcscompress.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="zjw_opengl.h">
+      <Filter>Header Files\util</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="util\zjw_material.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\zjw_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util\zjw_obj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="zjw_octree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_pcs_octree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zjwtimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_dsaupd.h">
@@ -134,6 +128,18 @@
     </ClInclude>
     <ClInclude Include="sgwt_util\zjw_fminbnd.h">
       <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="util\zjw_math.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\zjw_obj.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\zjw_material.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\zjwtimer.h">
+      <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

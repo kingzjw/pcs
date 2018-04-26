@@ -33,12 +33,38 @@ Sgwt::Sgwt(const int _m, const int _Nscales, SpMat _L) :m(_m), Nscales(_Nscales)
 	arange[0] = -1;
 	arange[1] = 1;
 
+	//g,不包括h
 	g = new GN[_Nscales];
+
+	//coeff,包括h
 	VectorXd init_c(m + 1);
 	init_c.setZero();
 	for (int i = 0; i < _Nscales + 1; i++)
-		c.push_back(init_c);
+		coeff.push_back(init_c);
 };
+
+double Sgwt::sgwt_rough_lmax()
+{
+	//change the matrix to操作矩阵的函数
+	SparseGenMatProd<double> op(lap);
+
+	// Construct eigen solver object, requesting the largest three eigenvalues
+	GenEigsSolver< double, LARGEST_MAGN, SparseGenMatProd<double> > eigs(&op, 1, 10);
+
+	// Initialize and compute
+	eigs.init();
+	int nconv = eigs.compute();
+
+	// Retrieve results
+	Eigen::VectorXcd evalues;
+	if (eigs.info() == SUCCESSFUL)
+	{
+		evalues = eigs.eigenvalues();
+	}
+
+	std::cout << "Eigenvalues found:\n" << evalues(0).real()*1.01 << std::endl;
+	return evalues(0).real()*1.01;
+}
 
 void Sgwt::setArange(const double lmin, const double lmax)
 {
@@ -71,87 +97,6 @@ double Sgwt::_sgwt_kernel_abspline3(double x)
 	return -sgwt_kernel_abspline3(x);
 }
 
-template<class T>
-void Sgwt::sgwt_cheby_coeff(int k, T g)
-{
-	//N 表示积分用多少次迭代代替
-	int N = m + 1;
-
-	double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;
-	//cout << c[k] << endl;
-	//cout << c[k].size() << endl;
-
-	//从低阶项0,遍历到高阶项m
-	for (int k_it = 0; k_it <= m; k_it++)
-	{
-		//用数量叠加取代积分
-		//(M_PI*(i - 0.5)) / N的取值范围: 近视0 - Pi
-		for (int i = 1; i <= N; i++)
-		{
-			//计算当前的theta
-			double theta = M_PI*(i - 0.5) / N;
-			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
-			c[k](k_it) += 2 / N * cos(k_it*theta) * g(a1 * cos((theta)+a2));
-		}
-	}
-}
-vector<VectorXd> Sgwt::sgwt_cheby_op(VectorXd f, vector<VectorXd> c)
-{
-	clock_t start, finish;
-	double duration;
-	start = clock();
-	int cur_nscales = c.size();
-
-	VectorXd M(cur_nscales);
-	vector<VectorXd> r;
-	VectorXd init_r(f.size());
-	init_r.setZero();
-
-	for (int i = 0; i < cur_nscales; i++)
-		r.push_back(init_r);
-	int maxM = 0;
-	for (int i = 0; i < cur_nscales; i++)
-	{
-		M[i] = c[i].size();
-		if (M[i] > maxM)
-			maxM = M[i];
-	}
-
-	double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;
-
-	VectorXd Twf_old(f);
-	VectorXd Twf_cur(f.size());
-	Twf_cur = (lap*f - a2*f) / a1;
-
-	for (int i = 0; i < cur_nscales; i++)
-		r[i] = 0.5*c[i](0)*Twf_old + c[i](1)*Twf_cur;
-
-	VectorXd Twf_new;
-	for (int k = 1; k < maxM; k++)
-	{
-		/*VectorXd tmp = L*Twf_cur;		//< 3ms
-		Twf_new = (tmp - a2*Twf_cur);		// <2ms
-		Twf_new *= 2 / a1;					// <1ms
-		Twf_new-= Twf_old;				// <1ms*/
-
-		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;			// 6~7ms
-		for (int j = 0; j < cur_nscales; j++)
-		{
-			if (1 + k < M(j))
-			{
-				r[j] = r[j] + c[j](k + 1)*Twf_new;
-			}
-		}
-		Twf_old = Twf_cur;
-		Twf_cur = Twf_new;
-	}
-	finish = clock();
-	duration = (double)(finish - start) / CLOCKS_PER_SEC;
-	return r;
-}
-
 //设置kernel g 的scales，并返回vector
 VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 {
@@ -162,12 +107,19 @@ VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 	double smax = t2 / lmin;
 
 	//scales should be decreasing ... higher j should give larger s
+
+	//总共生成 Nscales个点，j越大，维度越高
 	VectorXd s = VectorXd::LinSpaced(Nscales, log(smax), log(smin));
 	//VectorXd::LinSpaced(size,low,high)
 
-	for (int i = 0; i < Nscales; i++)
-		s[i] = exp(s[i]);
+	//zjw
 	return s;
+
+	//for (int i = 0; i < Nscales; i++)
+	//{
+	//	s[i] = exp(s[i]);
+	//}
+	//return s;
 }
 
 //拿到h(x)，并设置好相关的参数。在调用这个接口之前必须拿到lamda max 的特征值
@@ -201,7 +153,7 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		double gamma_l = -(f(xstar));
 		//表示: λmin * 0.6
 		double lminfac = 0.6*lmin;
-		g0 = new HX(hx, lminfac, gamma_l);
+		h0 = new HX(hx, lminfac, gamma_l);
 		//cout << xstar << endl;   !!!
 		//cout << gamma_l << endl; !!!
 	}
@@ -211,15 +163,126 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 	}
 }
 
+template<class T>
+void Sgwt::sgwt_cheby_coeff(int j, T g)
+{
+	//N 表示积分用多少次迭代代替
+	int N = m + 1;
+
+	/*double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;*/
+
+	//zjw  根据论文上来的
+	double a1 = (arange[1]) / 2;
+	double a2 = a1;
+
+	//cout << c[k] << endl;
+	//cout << c[k].size() << endl;
+
+	//从低阶项0,遍历到高阶项m
+	for (int m_it = 0; m_it <= m; m_it++)
+	{
+		//用数量叠加取代积分
+		//(M_PI*(i - 0.5)) / N的取值范围: 近视0 - Pi
+		for (int i = 1; i <= N; i++)
+		{
+			//计算当前的theta
+			double theta = M_PI*(i - 0.5) / N;
+			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
+			//  tn的尺度信息，在g函数内部了
+			coeff[j](m_it) += 2 / N * cos(m_it*theta) * g(a1 * cos((theta)+a2));
+		}
+	}
+}
+
+vector<VectorXd> Sgwt::sgwt_cheby_op(VectorXd f, vector<VectorXd> coeff)
+{
+	//timer
+	clock_t start, finish;
+	double duration;
+	start = clock();
+
+	//保存每个尺度下的，最高阶的系数。
+	//cur nsacles 包括h 和g
+	int cur_nscales = coeff.size();
+	VectorXd M(cur_nscales);
+
+	//存储每个尺度下的系数
+	vector<VectorXd> sgwtCoeff_WS;
+	VectorXd init_r(f.size());
+	init_r.setZero();
+
+	for (int i = 0; i < cur_nscales; i++)
+		sgwtCoeff_WS.push_back(init_r);
+
+	//记录不同尺度下，最大的那个Mj (多项式最大阶)
+	int maxM = 0;
+	for (int i = 0; i < cur_nscales; i++)
+	{
+		M[i] = coeff[i].size();
+		if (M[i] > maxM)
+			maxM = M[i];
+	}
+
+	/*double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;*/
+	//zjw
+	double a1 = (arange[1]) / 2;
+	double a2 = a1;
+
+	//Twf_old：保存原有的信号 f
+	VectorXd Twf_old(f);
+	//利用矩阵相乘的递归，解决多项式的项
+	VectorXd Twf_cur(f.size());
+	//保存展开式中 T1的项的结果  (L-a)/a * f
+	Twf_cur = (lap*f - a2*f) / a1;
+
+	//-----计算每个尺度下面的，计算Wf函数展开式中的第0项，和第一项 的和,把计算出来的系数保存到sgwtCoeff_W 中-------
+	for (int j = 0; j < cur_nscales; j++)
+	{
+		// t[i]  n * 1
+		sgwtCoeff_WS[j] = 0.5*coeff[j](0)*Twf_old + coeff[j](1)*Twf_cur;
+	}
+
+	//----------------------计算展开中的每一项，累加到系数sgwtCoeff_W上-------------------------
+	VectorXd Twf_new;
+	for (int k = 1; k < maxM; k++)
+	{
+		/*VectorXd tmp = L*Twf_cur;		//< 3ms
+		Twf_new = (tmp - a2*Twf_cur);		// <2ms
+		Twf_new *= 2 / a1;					// <1ms
+		Twf_new-= Twf_old;				// <1ms*/
+
+		//计算第 k+1 的那个Tk的。当k = 1 ,计算第 T2的值
+		// T2 = T1和T0的组合
+		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;			// 6~7ms
+		//------用自底向上方法的方法，解决递归，同时计算多个尺度----
+		for (int j = 0; j < cur_nscales; j++)
+		{
+			if (1 + k < M(j))
+			{
+				//累加到sgwt的系数上  r[j]表示尺度第j项的系数
+				sgwtCoeff_WS[j] = sgwtCoeff_WS[j] + coeff[j](k + 1)*Twf_new;
+			}
+		}
+		Twf_old = Twf_cur;
+		Twf_cur = Twf_new;
+	}
+	// time
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+	return sgwtCoeff_WS;
+}
+
 VectorXd Sgwt::sgwt_adjoint(vector<VectorXd> y)
 {
 	VectorXd adj(lap.rows());
 	adj.setZero();
 
-	for (int j = 0; j < c.size(); j++)
+	for (int j = 0; j < coeff.size(); j++)
 	{
 		vector<VectorXd> _c;
-		_c.push_back(c[j]);
+		_c.push_back(coeff[j]);
 		VectorXd tmp = sgwt_cheby_op(y[j], _c)[0];
 		adj = adj + tmp;
 	}
@@ -317,38 +380,39 @@ VectorXd Sgwt::sgwt_cheby_square(VectorXd c)
 //	return r;
 //}
 
-double Sgwt::sgwt_rough_lmax()
+SgwtCheby::SgwtCheby(int m, int Nscales, SpMat L, vector<VectorXd> coeff, double *arange)
 {
-	//change the matrix to操作矩阵的函数
-	SparseGenMatProd<double> op(lap);
+	sgwt = new Sgwt(m, Nscales, L);
+	sgwt->setArange(arange[0], arange[1]);
+	chebyCoeff = coeff;
+}
 
-	// Construct eigen solver object, requesting the largest three eigenvalues
-	GenEigsSolver< double, LARGEST_MAGN, SparseGenMatProd<double> > eigs(&op, 1, 10);
+SgwtCheby::SgwtCheby(int m, int Nscales, SpMat L)
+{
+	sgwt = new Sgwt(m, Nscales, L);
 
-	// Initialize and compute
-	eigs.init();
-	int nconv = eigs.compute();
+	sgwtDoChebyPrepare();
+}
 
-	// Retrieve results
-	Eigen::VectorXcd evalues;
-	if (eigs.info() == SUCCESSFUL)
-	{
-		evalues = eigs.eigenvalues();
+void SgwtCheby::sgwtDoChebyPrepare()
+{
+	//得到特征值，并设置相关参数
+	double lamdaMax = sgwt->sgwt_rough_lmax();
+	double lamdaMin = lamdaMax / sgwt->va.K;
+	sgwt->setArange(lamdaMin, lamdaMax);
+
+	//设置尺度信息，并设置好 g h函数的相关信息
+	sgwt->sgwt_filter_design(lamdaMax, sgwt->va);
+
+	//为所有的尺度 g和h 都计算响应的系数
+	for (int j = 0; j < sgwt->Nscales; j++) {
+		sgwt->sgwt_cheby_coeff(j, sgwt->g[j]);
 	}
-
-	std::cout << "Eigenvalues found:\n" << evalues(0).real()*1.01 << std::endl;
-	return evalues(0).real()*1.01;
+	sgwt->sgwt_cheby_coeff(sgwt->Nscales, sgwt->h0);
 }
 
-
-Handle_sgwt_cheby_op::Handle_sgwt_cheby_op(int m, int Nscales, SpMat L, vector<VectorXd> c, double *arange)
+//传输一个信号
+vector<VectorXd> SgwtCheby::operator()(VectorXd f)
 {
-	tmp_sgwt = new Sgwt(m, Nscales, L);
-	tmp_sgwt->setArange(arange[0], arange[1]);
-	d = c;
-}
-
-vector<VectorXd> Handle_sgwt_cheby_op::operator()(VectorXd x)
-{
-	return tmp_sgwt->sgwt_cheby_op(x, d);
+	return sgwt->sgwt_cheby_op(f, chebyCoeff);
 }
