@@ -1,23 +1,9 @@
-﻿  zjw_sgwt_utils.cpp
-E:\software\VisualStudio2015\VC\include\xutility(2372): warning C4996: 'std::copy::_Unchecked_iterators::_Deprecate': Call to 'std::copy' with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-  E:\software\VisualStudio2015\VC\include\xutility(2372): note: 参见“std::copy::_Unchecked_iterators::_Deprecate”的声明
-  C:\Users\King\Desktop\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(538): note: 参见对正在编译的函数 模板 实例化“_OutIt *std::copy<const Scalar*,double*>(_InIt,_InIt,_OutIt)”的引用
-          with
-          [
-              _OutIt=double *,
-              Scalar=double,
-              _InIt=const double *
-          ]
-  C:\Users\King\Desktop\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(518): note: 编译类 模板 成员函数“void Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>::init(const Scalar *)”时
-          with
-          [
-              Scalar=double
-          ]
-  C:\Users\King\Desktop\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(564): note: 参见对正在编译的函数 模板 实例化“void Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>::init(const Scalar *)”的引用
-          with
-          [
-              Scalar=double
-          ]
-  sgwt_util\zjw_sgwt_utils.cpp(326): note: 参见对正在编译的类 模板 实例化“Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>”的引用
+﻿  moc_pcscompress.cpp
+  moc_zjw_opengl.cpp
+  main.cpp
+  pcscompress.cpp
+  zjw_opengl.cpp
+  zjw_pcs_octree.cpp
+  正在生成代码...
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

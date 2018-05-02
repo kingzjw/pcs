@@ -3,8 +3,8 @@
 
 PcsOctree::PcsOctree()
 {
-	minPos =Vec3(0.0f, 0.0f, 0.0f);
-	maxPos=Vec3(1.0f + Epsilon, 1.0f + Epsilon, 1.0f + Epsilon);
+	minPos = Vec3(0.0f, 0.0f, 0.0f);
+	maxPos = Vec3(1.0f + Epsilon, 1.0f + Epsilon, 1.0f + Epsilon);
 	cellSize = Vec3(0.1, 0.1, 0.1);
 
 	ctLeaf = nullptr;
@@ -28,7 +28,14 @@ PcsOctree::~PcsOctree()
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
+	
+#ifdef SGWT_DEBUG
+	if(fastSgwt)
+		delete fastSgwt;
+#endif //SGWT_DEBUG
+
 #endif // USE_SPARSE
+
 }
 
 void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
@@ -51,7 +58,6 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 		delete ctGraph;
 	if (pcsOct)
 		delete pcsOct;
-
 
 	ctLeaf = new CallTraverseGetInfoSetLeaf;
 	pcsOct = new Octree<Node>(min, max, cellSize);
@@ -155,7 +161,7 @@ void PcsOctree::getGraphMat()
 #ifdef  USE_SPARSE
 	//生成稀疏的LaplacianMat
 	spLaplacian->setFromTriplets(coefficients.begin(), coefficients.end());
-	
+
 #ifdef ZJW_PRINT_INFO
 
 	cout << "****************************" << endl;
@@ -231,7 +237,6 @@ void PcsOctree::getMatEigenVerValue()
 
 #endif
 }
-
 
 void PcsOctree::clearOct()
 {
@@ -312,6 +317,92 @@ void PcsOctree::setPointTo8Areas()
 #endif
 }
 
+vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
+{
+	//初始化信息
+	vector<VectorXd> posSignal;
+	VectorXd initF(nodeNum);
+	initF.setZero();
+	for (int i = 0; i < 8; i++)
+	{
+		posSignal.push_back(initF);
+	}
+
+	switch (sType)
+	{
+	case SignalX:
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].x;
+			}
+		}
+		break;
+	case SignalY:
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].y;
+			}
+		}
+		break;
+	case SignalZ:
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].z;
+			}
+		}
+		break;
+	case SignalR:
+		//need to add
+		break;
+	case SignalG:
+		//need to add
+		break;
+	case SignalB:
+		//need to add
+		break;
+	default:
+		break;
+	}
+
+	return posSignal;
+}
+
+void PcsOctree::getSgwtCoeffWS()
+{
+	posSignalX =getSignalF(SignalType::SignalX);
+	posSignalY = getSignalF(SignalType::SignalY);
+	posSignalZ = getSignalF(SignalType::SignalZ);
+
+#ifdef SGWT_DEBUG
+	if (!fastSgwt)
+		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	fastSgwt->sgwtDoChebyPrepare();
+#endif //SGWT_DEBUG
+
+#ifdef ZJW_DEUG
+
+#endif //ZJW_DEUG
+	for (int i = 0; i < 8; i++)
+	{
+		//单个象限，单个信号下的，wf
+#ifdef SGWT_DEBUG
+		vector<VectorXd> wf_s = (*fastSgwt)(posSignalX[i]);
+#endif //SGWT_DEBUG
+	}
+}
+
 void PcsOctree::getLeafSignal()
 {
 #ifdef ZJW_DEUG
@@ -329,21 +420,24 @@ void PcsOctree::getLeafSignal()
 			//这个象限没有point
 			if (octNode->nodeData.leafNode8Areas[i].size() == 0)
 			{
-				octNode->nodeData.pos8Areas.push_back(Vec3(-1, -1, -1));
+				octNode->nodeData.pos8Flag.push_back(false);
+				octNode->nodeData.pos8AreasSignal.push_back(Vec3(0, 0, 0));
 				break;
 			}
+
+			octNode->nodeData.pos8Flag.push_back(true);
 
 			//遍历这个象限的所有point,来计算信号。下面用的是求评价的方法，来计算每个象限的所有点的平均信号
 			Vec3 posSignal(0, 0, 0);
 			for (int p_it = 0; p_it < octNode->nodeData.leafNode8Areas[i].size(); p_it++)
 			{
 				posSignal += *(octNode->nodeData.leafNode8Areas[i][p_it]);
-			}
+		}
 			posSignal /= octNode->nodeData.leafNode8Areas[i].size();
 
-			octNode->nodeData.pos8Areas.push_back(posSignal);
-		}
+			octNode->nodeData.pos8AreasSignal.push_back(posSignal);
 	}
+}
 
 #ifdef ZJW_DEUG
 	cout << "end get Leaf Signal!!!!" << endl;
@@ -363,7 +457,6 @@ void PcsOctree::printMat()
 	cout << "weight mat: " << endl;
 	cout << weightAMat << endl;
 #endif // USE_EIGEN
-	
 }
 
 //------------------------------------------------------------------
@@ -408,7 +501,6 @@ bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octr
 
 CallTGetGraph::~CallTGetGraph()
 {
-
 #ifdef USE_EIGEN
 	delete dMatPtr;
 	delete weightAMatPtr;
@@ -422,7 +514,6 @@ CallTGetGraph::~CallTGetGraph()
 #ifdef  USE_ARPACK
 	delete laplacianMat;
 #endif //  use_arpack
-
 }
 void CallTGetGraph::initParam(Vec3 & octreeCellSize)
 {

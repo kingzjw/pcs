@@ -1,24 +1,41 @@
+#include <vector>
+#include <iomanip>
+#include <math.h>
+#include <stdlib.h>
+#include <Eigen/Dense>
+
+#include "zjw_macro.h"
+
+#ifdef SGWT_DEBUG
+#include "zjw_sgwt_utils.h"
+#endif //SGWT_DEBUG
+
 #include "zjw_octree.h"
 #include "util\zjw_math.h"
 #include "util\zjw_obj.h"
 #include "zjwtimer.h"
 #include "zjw_dsaupd.h"
 
-//------------- Class that holds your data.--------------------
-#include <vector>
-#include <iomanip>
-#include <math.h>
-#include <stdlib.h>
-#include <Eigen/Dense>
+
 using namespace Eigen;
 using namespace std;
 
 #ifdef USE_SPARSE
-	#include <eigen/Sparse>
-	typedef Eigen::SparseMatrix<double> SpMat;
-	typedef Eigen::Triplet<double> T;
+#include <eigen/Sparse>
+typedef Eigen::SparseMatrix<double> SpMat;
+typedef Eigen::Triplet<double> T;
 #endif // USE_SPARSE
 
+//信号的类型，要在这里注册
+enum SignalType
+{
+	SignalX,
+	SignalY,
+	SignalZ,
+	SignalR,
+	SignalG,
+	SignalB
+};
 
 //------------------------------ Class that holds your data.-----------------------
 
@@ -32,9 +49,11 @@ public:
 	//保存每个叶子节点下面8个象限的叶子节点
 	vector<vector<Vec3*>> leafNode8Areas;
 
-	//保存该叶子节点的在每个象限中的信号,如果没有信号，那么都是-1,-1,-1
-	//vector <bool> posFlag;
-	vector<Vec3> pos8Areas;
+	//保存该叶子节点的在每个象限中的信号(true),如果没有信号，false signal (0,0,0)
+	vector <bool> pos8Flag;
+
+	//8个信号，每个象限一个
+	vector<Vec3> pos8AreasSignal;
 };
 
 //-----------------遍历整个八叉树，把叶子节点的边界值保存到list中，并给叶子节点编号-----------------
@@ -79,7 +98,6 @@ public:
 #ifdef  USE_ARPACK
 	Dsaupd * laplacianMat;
 #endif //  use_arpack
-
 
 public:
 #ifdef USE_EIGEN
@@ -130,6 +148,12 @@ public:
 
 	//邻接权重矩阵，以及D矩阵，求解特征值和特征向量的存储矩阵。
 	int nodeNum;
+
+	//8个象限中的信号
+	vector<VectorXd> posSignalX;
+	vector<VectorXd> posSignalY;
+	vector<VectorXd> posSignalZ;
+	
 #ifdef USE_EIGEN
 	MatrixXd  dMat;
 	MatrixXd  weightAMat;
@@ -141,6 +165,10 @@ public:
 #ifdef USE_SPARSE
 	SpMat * spLaplacian;
 	std::vector<T> coefficients;
+	//sgwt 的对象
+#ifdef SGWT_DEBUG
+	SgwtCheby *fastSgwt;
+#endif //SGWT_DEBUG
 #endif // USE_SPARSE
 
 #ifdef USE_ARPACK
@@ -173,12 +201,15 @@ public:
 	int judege8Aeros(Vec3 &min, Vec3 &max, Vec3 &point);
 	int judege8Aeros(Vec3& mid, Vec3 &point);
 
-	//把每个叶子节点中的点划分到8个子象限中
+	//把每个叶子节点中的点划分到8个子象限中，并计算每个叶子节点的信号，保存在nodeData中
 	void setPointTo8Areas();
-
 	//计算叶子节点在每个象限上的信号
 	void getLeafSignal();
-
+	//把信号放到向量中:x,y,z,r,g,b
+	vector<VectorXd> getSignalF(SignalType sType);
+	void getSgwtCoeffWS();
+	
 	//=============== test ====================
 	void printMat();
 };
+

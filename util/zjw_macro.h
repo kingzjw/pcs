@@ -31,3 +31,5 @@
 
 //原来用稠密存储拉普拉斯矩阵，现在用稀疏的。
 #define USE_SPARSE
+
+#define SGWT_DEBUG

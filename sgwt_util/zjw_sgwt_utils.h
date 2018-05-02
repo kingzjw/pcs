@@ -12,6 +12,7 @@
 #include <Eigen/Core>
 #include <Eigen/SparseCore>
 //spect
+//#include "zjw_math.h"
 #include <GenEigsSolver.h>
 #include <MatOp/SparseGenMatProd.h>
 
@@ -178,9 +179,9 @@ private:
 	Sgwt *sgwt;
 	vector<VectorXd> chebyCoeff;
 public:
-	SgwtCheby(int m, int Nscales, SpMat L, vector<VectorXd> c, double *arange);
+	SgwtCheby(int m, int Nscales, SpMat& L, vector<VectorXd>& c, double *arange);
 
-	SgwtCheby(int m, int Nscales, SpMat L);
+	SgwtCheby(int m, int Nscales, SpMat& L);
 	//sgwt 切比雪夫的准备工作，准备计算
 	void sgwtDoChebyPrepare();
 	//重载操作符"()"，没传入一个信号，俺么返回这个信号对应的系数

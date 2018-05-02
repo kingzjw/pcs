@@ -34,7 +34,7 @@ struct TypeTraits
     static inline Scalar min()
     {
         return Eigen::numext::pow(Eigen::NumTraits<Scalar>::epsilon(), Scalar(3));
-    }
+	}
 };
 
 // Full specialization

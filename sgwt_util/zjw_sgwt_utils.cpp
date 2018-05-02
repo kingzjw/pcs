@@ -187,10 +187,10 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 		for (int i = 1; i <= N; i++)
 		{
 			//计算当前的theta
-			double theta = M_PI*(i - 0.5) / N;
+			double theta = 3.1415926*(i - 0.5) / N;
 			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
 			//  tn的尺度信息，在g函数内部了
-			coeff[j](m_it) += 2 / N * cos(m_it*theta) * g(a1 * cos((theta)+a2));
+			coeff[j](m_it) += 2 / N * cos(m_it*theta) * g(a1 * cos((theta) + a2));
 		}
 	}
 }
@@ -380,14 +380,14 @@ VectorXd Sgwt::sgwt_cheby_square(VectorXd c)
 //	return r;
 //}
 
-SgwtCheby::SgwtCheby(int m, int Nscales, SpMat L, vector<VectorXd> coeff, double *arange)
+SgwtCheby::SgwtCheby(int m, int Nscales, SpMat& L, vector<VectorXd> &coeff, double *arange)
 {
 	sgwt = new Sgwt(m, Nscales, L);
 	sgwt->setArange(arange[0], arange[1]);
 	chebyCoeff = coeff;
 }
 
-SgwtCheby::SgwtCheby(int m, int Nscales, SpMat L)
+SgwtCheby::SgwtCheby(int m, int Nscales, SpMat &L)
 {
 	sgwt = new Sgwt(m, Nscales, L);
 
@@ -408,7 +408,7 @@ void SgwtCheby::sgwtDoChebyPrepare()
 	for (int j = 0; j < sgwt->Nscales; j++) {
 		sgwt->sgwt_cheby_coeff(j, sgwt->g[j]);
 	}
-	sgwt->sgwt_cheby_coeff(sgwt->Nscales, sgwt->h0);
+	sgwt->sgwt_cheby_coeff(sgwt->Nscales, *(sgwt->h0));
 }
 
 //传输一个信号

@@ -74,9 +74,6 @@
     <ClCompile Include="pcscompress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp">
-      <Filter>Source Files\sgwt</Filter>
-    </ClCompile>
     <ClCompile Include="util\zjw_math.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
@@ -91,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="util\zjwtimer.cc">
       <Filter>Source Files\util</Filter>
+    </ClCompile>
+    <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp">
+      <Filter>Source Files\sgwt</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -117,18 +117,6 @@
     <ClInclude Include="zjw_dsaupd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sgwt_util\pcg.h">
-      <Filter>Header Files\sgwt</Filter>
-    </ClInclude>
-    <ClInclude Include="sgwt_util\zjw_sgwt_utils.h">
-      <Filter>Header Files\sgwt</Filter>
-    </ClInclude>
-    <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h">
-      <Filter>Header Files\sgwt</Filter>
-    </ClInclude>
-    <ClInclude Include="sgwt_util\zjw_fminbnd.h">
-      <Filter>Header Files\sgwt</Filter>
-    </ClInclude>
     <ClInclude Include="util\zjw_math.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
@@ -140,6 +128,18 @@
     </ClInclude>
     <ClInclude Include="util\zjwtimer.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\pcg.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_sgwt_utils.h">
+      <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="sgwt_util\zjw_fminbnd.h">
+      <Filter>Header Files\sgwt</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
