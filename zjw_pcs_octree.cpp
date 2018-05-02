@@ -14,6 +14,10 @@ PcsOctree::PcsOctree()
 #ifdef USE_SPARSE
 	spLaplacian = nullptr;
 #endif // USE_SPARSE
+
+#ifdef SGWT_DEBUG
+	fastSgwt = nullptr;
+#endif //SGWT_DEBUG
 }
 
 PcsOctree::~PcsOctree()
@@ -28,14 +32,13 @@ PcsOctree::~PcsOctree()
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
-	
+
 #ifdef SGWT_DEBUG
-	if(fastSgwt)
+	if (fastSgwt)
 		delete fastSgwt;
 #endif //SGWT_DEBUG
 
 #endif // USE_SPARSE
-
 }
 
 void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
@@ -186,13 +189,11 @@ void PcsOctree::getGraphMat()
 
 void PcsOctree::getMatEigenVerValue()
 {
-#ifdef ZJW_TIMER
+#ifdef USE_EIGEN
 	ZjwTimer timer;
 	timer.Start();
 	cout << "start get Mat Eigen Vertor and Value...." << endl;
-#endif
 
-#ifdef USE_EIGEN
 	EigenSolver<MatrixXd> es(LaplacianMat);
 
 	//way1
@@ -215,11 +216,19 @@ void PcsOctree::getMatEigenVerValue()
 	cout << "The pseudo-eigenvector matrix V is:" << endl << eigenVecMat << endl;
 	cout << "Finally, V * D * V^(-1) = " << endl << eigenVecMat * eigenValMat * eigenVecMat.inverse() << endl;
 	cout << "88888888888888888888888888888888888888888888888888888888888" << endl;
+
 #endif //ZJW_PRINT_INFO
+	cout << "getMatEigenVerValue time: " << timer.GetInMs() << " ms " << endl;
+	cout << "end get Mat Eigen Vertor and Value !" << endl;
+	timer.Stop();
 
 #endif // USE_EIGEN
 
 #ifdef USE_ARPACK
+	ZjwTimer timer;
+	timer.Start();
+	cout << "start get Mat Eigen Vertor and Value...." << endl;
+
 	laplacianMat.dsaupdEvalsEvecs();
 
 #ifdef  ZJW_PRINT_INFO
@@ -227,15 +236,11 @@ void PcsOctree::getMatEigenVerValue()
 	laplacianMat.printValueVector();
 #endif //  ZJW_PRINT_INFO
 
-#endif //use_arpack
-
-#ifdef ZJW_TIMER
-
 	cout << "getMatEigenVerValue time: " << timer.GetInMs() << " ms " << endl;
 	cout << "end get Mat Eigen Vertor and Value !" << endl;
 	timer.Stop();
 
-#endif
+#endif //use_arpack
 }
 
 void PcsOctree::clearOct()
@@ -334,10 +339,14 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 		//遍历所有的叶子节点
 		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
 		{
-			//遍历八个象限
+			//遍历八个象限, 用对应象限的信号的值
 			for (int j = 0; j < 8; j++)
 			{
-				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].x;
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[j].x;
+				}
 			}
 		}
 		break;
@@ -348,7 +357,11 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 			//遍历八个象限
 			for (int j = 0; j < 8; j++)
 			{
-				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].y;
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[j].y;
+				}
 			}
 		}
 		break;
@@ -359,7 +372,11 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 			//遍历八个象限
 			for (int j = 0; j < 8; j++)
 			{
-				posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[i].z;
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.pos8AreasSignal[j].z;
+				}
 			}
 		}
 		break;
@@ -381,14 +398,13 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 
 void PcsOctree::getSgwtCoeffWS()
 {
-	posSignalX =getSignalF(SignalType::SignalX);
+	posSignalX = getSignalF(SignalType::SignalX);
 	posSignalY = getSignalF(SignalType::SignalY);
 	posSignalZ = getSignalF(SignalType::SignalZ);
 
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
-	fastSgwt->sgwtDoChebyPrepare();
 #endif //SGWT_DEBUG
 
 #ifdef ZJW_DEUG
@@ -417,12 +433,16 @@ void PcsOctree::getLeafSignal()
 		//遍历当前叶子节点的八个象限
 		for (int i = 0; i < octNode->nodeData.leafNode8Areas.size(); i++)
 		{
+			////test
+			//cout << octNode->nodeData.leafNode8Areas.size() << endl;
+			////end
+
 			//这个象限没有point
 			if (octNode->nodeData.leafNode8Areas[i].size() == 0)
 			{
 				octNode->nodeData.pos8Flag.push_back(false);
 				octNode->nodeData.pos8AreasSignal.push_back(Vec3(0, 0, 0));
-				break;
+				continue;
 			}
 
 			octNode->nodeData.pos8Flag.push_back(true);
@@ -432,12 +452,12 @@ void PcsOctree::getLeafSignal()
 			for (int p_it = 0; p_it < octNode->nodeData.leafNode8Areas[i].size(); p_it++)
 			{
 				posSignal += *(octNode->nodeData.leafNode8Areas[i][p_it]);
-		}
+			}
 			posSignal /= octNode->nodeData.leafNode8Areas[i].size();
 
 			octNode->nodeData.pos8AreasSignal.push_back(posSignal);
+		}
 	}
-}
 
 #ifdef ZJW_DEUG
 	cout << "end get Leaf Signal!!!!" << endl;

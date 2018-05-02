@@ -62,8 +62,10 @@ double Sgwt::sgwt_rough_lmax()
 		evalues = eigs.eigenvalues();
 	}
 
-	std::cout << "Eigenvalues found:\n" << evalues(0).real()*1.01 << std::endl;
-	return evalues(0).real()*1.01;
+	double size = 1.01;
+	std::cout << "max Eigenvalues found:\n" << evalues(0).real() <<
+		"  ( but we magnify 1.01 , use "<< evalues(0).real() * size<<" instead !!!!!!!!!) "<< std::endl;
+	return evalues(0).real() * size;
 }
 
 void Sgwt::setArange(const double lmin, const double lmax)

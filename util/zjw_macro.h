@@ -26,10 +26,13 @@
 //下面三个只能选一个，因为CallTGetGraph 的构造函数问题
 
 //求解出拉普拉斯矩阵的特征值，
+//1
 //#define USE_EIGEN
+
+//2
 //#define USE_ARPACK
 
+//3
 //原来用稠密存储拉普拉斯矩阵，现在用稀疏的。
 #define USE_SPARSE
-
 #define SGWT_DEBUG
