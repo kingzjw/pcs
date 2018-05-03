@@ -36,8 +36,9 @@ void pcsCompress::clickedOpenFileAction()
 	//得到八叉树上顶点的信号
 	ui.openGLWidget->pcsOct.setPointTo8Areas();
 	ui.openGLWidget->pcsOct.getLeafSignal();
-	ui.openGLWidget->pcsOct.getSgwtCoeffWS();
-
+	//ui.openGLWidget->pcsOct.getSgwtCoeffWS();
+	//拿到信号x在第一个象限0中的值
+	ui.openGLWidget->pcsOct.getSgwtCoeffWS(SignalType::SignalX, 0);
 
 	ui.openGLWidget->renderState = 2;
 	ui.openGLWidget->updateGL();

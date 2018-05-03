@@ -397,6 +397,27 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 	return posSignal;
 }
 
+vector<VectorXd> PcsOctree::getSgwtCoeffWS(SignalType type, int quadrant)
+{
+	vector<VectorXd> fSignal = getSignalF(type);
+
+#ifdef SGWT_DEBUG
+	if (!fastSgwt)
+		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	//得到这个象限的，这个信号的 sgwt的系数
+	vector<VectorXd> wf_s = (*fastSgwt)(fSignal[quadrant]);
+
+#ifdef ZJW_DEDUG
+	cout << "*********getSgwtCoeffWS*********" << endl;
+	cout << "sgwt for signal "<< type <<" in quadrant "<<quadrant<< endl;
+	fastSgwt->sgwt->getVectorVectorXd(wf_s);
+	cout << "********************************" << endl;
+#endif //ZJW_DEUG
+
+#endif //SGWT_DEBUG
+	return wf_s;
+}
+
 void PcsOctree::getSgwtCoeffWS()
 {
 	posSignalX = getSignalF(SignalType::SignalX);
@@ -408,6 +429,7 @@ void PcsOctree::getSgwtCoeffWS()
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
 #endif //SGWT_DEBUG
 
+	//得到信号X 在8个象限中的信号
 	for (int i = 0; i < 8; i++)
 	{
 		//单个象限，单个信号下的，wf

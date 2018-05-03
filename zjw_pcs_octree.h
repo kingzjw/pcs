@@ -207,7 +207,10 @@ public:
 	void getLeafSignal();
 	//把信号放到向量中:x,y,z,r,g,b
 	vector<VectorXd> getSignalF(SignalType sType);
+	//输入信号的值和象限的类型(0-7)
+	vector<VectorXd> getSgwtCoeffWS(SignalType type, int quadrant);
 	void getSgwtCoeffWS();
+
 	
 	//=============== test ====================
 	void printMat();
