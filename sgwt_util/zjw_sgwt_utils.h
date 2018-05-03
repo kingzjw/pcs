@@ -16,6 +16,7 @@
 #include <GenEigsSolver.h>
 #include <MatOp/SparseGenMatProd.h>
 
+#include "zjw_macro.h"
 #include "zjw_fminbnd.h"
 #include "pcg.h"
 
@@ -169,14 +170,22 @@ public:
 	VectorXd sgwt_cheby_square(VectorXd c);
 	//Known L, c, arange
 	//VectorXd sgwt_inverse(vector<VectorXd> y);
+
+#ifdef ZJW_DEDUG
+	void printVectorVectorXd(vector<VectorXd>& vv);
+	void getVectorVectorXd(vector<VectorXd>& vv);
+#endif //zjw_debug
+
 };
 
 /*
 	利用Sqwt封装好的工具，提供便捷的使用的接口
 */
 class SgwtCheby {
-private:
+public:
 	Sgwt *sgwt;
+
+	//尺度的数量+1 就是vector的维数
 	vector<VectorXd> chebyCoeff;
 public:
 	SgwtCheby(int m, int Nscales, SpMat& L, vector<VectorXd>& c, double *arange);

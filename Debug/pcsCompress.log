@@ -18,6 +18,6 @@ E:\software\VisualStudio2015\VC\include\xutility(2372): warning C4996: 'std::cop
           [
               Scalar=double
           ]
-  sgwt_util\zjw_sgwt_utils.cpp(52): note: 参见对正在编译的类 模板 实例化“Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>”的引用
+  sgwt_util\zjw_sgwt_utils.cpp(56): note: 参见对正在编译的类 模板 实例化“Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>”的引用
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> C:\Users\King\Desktop\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

@@ -39,7 +39,7 @@ bool MaterialFile::loadMaterial(std::string path)
 		std::cout << "open file failed! maybe there is no such file: " << path << std::endl;
 		return false;
 	}
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "starting load the materail: " << path << endl;
 #endif // ZJW_DEUG
 
@@ -211,7 +211,7 @@ bool MaterialFile::loadMaterial(std::string path)
 	// If so return true
 	else {
 		materialNum = materialList.size();
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 		cout << "finish load the materail ! " << endl;
 #endif // ZJW_DEUG
 		return true;

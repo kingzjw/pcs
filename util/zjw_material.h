@@ -13,7 +13,7 @@
 #include<vector>
 #include <iostream>
 #include <fstream>
-#define ZJW_DEUG
+#define ZJW_DEDUG
 
 using std::cout;
 using std::endl;

@@ -39,7 +39,7 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 		return false;
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "starting load the obj: " << path << endl;
 #endif // ZJW_DEUG
 
@@ -126,7 +126,7 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 				}
 				else
 				{
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 					cout << preMtlName << "  : this matiral do not has any face!!" << endl;
 #endif // ZJW_DEUG
 				}
@@ -371,7 +371,7 @@ bool ObjMeshMtl::loadObjMeshAndMtl(string & path)
 	}
 	else
 	{
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 		cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
 
@@ -708,7 +708,7 @@ bool ObjMesh::loadObjMesh(string & path)
 		return false;
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "starting load the obj: " << path << endl;
 #endif // ZJW_DEUG
 
@@ -929,7 +929,7 @@ bool ObjMesh::loadObjMesh(string & path)
 		}
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
 
@@ -958,7 +958,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 		return false;
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "starting load the obj: " << path << endl;
 #endif // ZJW_DEUG
 
@@ -1042,7 +1042,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 		}
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
 
@@ -1053,7 +1053,7 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 	verPosNormalize(rangeMin, rangeMax);
 	verNormalNormalize();
 	printMaxMin();
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "finish load the obj!" << endl;
 	cout << "==========================" << endl;
 #endif // ZJW_DEUG

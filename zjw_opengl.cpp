@@ -160,7 +160,7 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 	{
 		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	/*Vec3 min(0, 0, 0);
 	Vec3 max(1, 1, 1);
 	drawWireCube(min,max);*/

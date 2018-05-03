@@ -2,7 +2,7 @@
 //setteing the macro for zjw use
 
 //debug 时候的专用
-#define ZJW_DEUG
+#define ZJW_DEDUG
 
 //打印信息专用
 //#define ZJW_PRINT_INFO
@@ -36,3 +36,8 @@
 //原来用稠密存储拉普拉斯矩阵，现在用稀疏的。
 #define USE_SPARSE
 #define SGWT_DEBUG
+
+
+//打印信息
+
+//#define PRINT_CHEBY_COEFF

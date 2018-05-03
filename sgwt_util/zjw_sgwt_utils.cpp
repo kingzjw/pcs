@@ -30,6 +30,10 @@ double Hx(double x)
 
 Sgwt::Sgwt(const int _m, const int _Nscales, SpMat _L) :m(_m), Nscales(_Nscales), lap(_L)
 {
+#ifdef ZJW_DEDUG
+	cout << "num of scales : " << _Nscales << endl << "polygon max rank : " << _m << endl;
+#endif //zjw_debug
+
 	arange[0] = -1;
 	arange[1] = 1;
 
@@ -63,13 +67,16 @@ double Sgwt::sgwt_rough_lmax()
 	}
 
 	double size = 1.01;
-	std::cout << "max Eigenvalues found:\n" << evalues(0).real() <<
-		"  ( but we magnify 1.01 , use "<< evalues(0).real() * size<<" instead !!!!!!!!!) "<< std::endl;
+	std::cout << "max Eigenvalues found:  " << evalues(0).real() <<
+		"    ( but we magnify 1.01 , use "<< evalues(0).real() * size<<" instead !!!!!!!!!) "<< std::endl;
 	return evalues(0).real() * size;
 }
 
 void Sgwt::setArange(const double lmin, const double lmax)
 {
+#ifdef ZJW_DEDUG
+	cout << "lmin : " << lmin << "  lamx : "<<lmax << endl;
+#endif //zjw_debug
 	arange[0] = lmin;
 	arange[1] = lmax;
 }
@@ -115,13 +122,23 @@ VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 	//VectorXd::LinSpaced(size,low,high)
 
 	//zjw
-	return s;
-
-	//for (int i = 0; i < Nscales; i++)
-	//{
-	//	s[i] = exp(s[i]);
-	//}
 	//return s;
+
+	for (int i = 0; i < Nscales; i++)
+	{
+		s[i] = exp(s[i]);
+	}
+
+#ifdef ZJW_DEDUG
+	cout << "( sgwt_setscales ) g scales: ";
+	for (int i = 0; i < s.rows(); i++)
+	{
+		cout << s[i] << "  ";
+	}
+	cout << endl;
+#endif // ZJW_DEDUG
+
+	return s;
 }
 
 //拿到h(x)，并设置好相关的参数。在调用这个接口之前必须拿到lamda max 的特征值
@@ -133,7 +150,7 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		double lmin = lmax / varargin.K;
 
 		t = sgwt_setscales(lmin, lmax);
-
+		
 		//hx是指向h(x)的函数指针
 		G hx = Hx;
 		//G g1p = G1P;
@@ -158,6 +175,9 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		h0 = new HX(hx, lminfac, gamma_l);
 		//cout << xstar << endl;   !!!
 		//cout << gamma_l << endl; !!!
+#ifdef ZJW_DEDUG
+		cout << "( sgwt_filter_design ) we get hx function !! " << endl;
+#endif //ZJW_DEDUG
 	}
 	else
 	{
@@ -192,7 +212,15 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 			double theta = 3.1415926*(i - 0.5) / N;
 			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
 			//  tn的尺度信息，在g函数内部了
-			coeff[j](m_it) += 2 / N * cos(m_it*theta) * g(a1 * cos((theta) + a2));
+			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta) + a2));
+			
+			//test
+			/*cout << 2.0 / N << endl;
+			cout << cos(m_it*theta) << endl;
+			cout << 2.0 / N * cos(m_it*theta) << endl;
+			cout << g(a1 * cos((theta)+a2)) << endl;
+			cout << "coeff : " << coeff[j](m_it) << endl;*/
+			//end
 		}
 	}
 }
@@ -330,6 +358,26 @@ VectorXd Sgwt::sgwt_cheby_square(VectorXd c)
 	return d;
 }
 
+void Sgwt::printVectorVectorXd(vector<VectorXd>& vv)
+{
+	cout << "==============================" << endl;
+	for (int i = 0; i < vv.size(); i++)
+	{
+		cout << "vector( column ) " << i << endl << "rows " << vv[i].rows() << endl;
+		for (int j = 0; j < vv[i].rows(); j++)
+		{
+			cout << vv[i](j) << " ";
+		}
+		cout <<endl<< "--------------------------------" << endl;
+	}
+	cout << "==============================" << endl;
+}
+
+void Sgwt::getVectorVectorXd(vector<VectorXd>& vv)
+{
+	cout << "vector( column ) " << vv.size() << endl << "vectorXd rows " << vv[0].rows() << endl;
+}
+
 //VectorXd Sgwt::sgwt_inverse(vector<VectorXd> y)
 //{
 //	cout << "sgwt_inverse is not implement !!" << endl;
@@ -394,6 +442,13 @@ SgwtCheby::SgwtCheby(int m, int Nscales, SpMat &L)
 	sgwt = new Sgwt(m, Nscales, L);
 
 	sgwtDoChebyPrepare();
+	chebyCoeff = sgwt->coeff;
+
+#ifdef PRINT_CHEBY_COEFF
+	cout << "chebyCoeff: " << endl;
+	sgwt->printVectorVectorXd(chebyCoeff);
+	cout << "chebyCoeff!!!!!" << endl << endl<<endl;
+#endif //PRINT_CHEBY_COEFF
 }
 
 void SgwtCheby::sgwtDoChebyPrepare()
@@ -416,5 +471,10 @@ void SgwtCheby::sgwtDoChebyPrepare()
 //传输一个信号
 vector<VectorXd> SgwtCheby::operator()(VectorXd f)
 {
+	if (f.rows() <= 0)
+	{
+		cout << "f is not valid" << endl;
+	}
+
 	return sgwt->sgwt_cheby_op(f, chebyCoeff);
 }

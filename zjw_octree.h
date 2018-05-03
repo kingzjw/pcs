@@ -86,7 +86,7 @@ public:
 	N& getCell(const Vec3 ppos, Callback* callback = NULL)
 	{
 		//Point3f ppos(pos);
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 //		cout << (ppos >= min) << endl;
 	//	cout << (ppos < max) << endl;
 #endif

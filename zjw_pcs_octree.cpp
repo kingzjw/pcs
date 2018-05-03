@@ -106,14 +106,15 @@ void PcsOctree::getLeafboundary()
 	// Prepare the callback class.
 	pcsOct->traverse(ctLeaf);
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "Computing Leavf boundary done!" << endl;
 #endif // ZJW_DEUG
 }
 
 void PcsOctree::initMat()
 {
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
+	cout << "leaf node num :  " << ctLeaf->nodeList.size() << endl;
 	cout << "init the matriex !" << endl;
 #endif
 	nodeNum = ctLeaf->nodeList.size();
@@ -296,7 +297,7 @@ int PcsOctree::judege8Aeros(Vec3 & mid, Vec3 & point)
 
 void PcsOctree::setPointTo8Areas()
 {
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "start set leafnode points to 8 areas ...." << endl;
 #endif
 
@@ -317,7 +318,7 @@ void PcsOctree::setPointTo8Areas()
 		}
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "end set leafnode points to 8 areas!!!!" << endl;
 #endif
 }
@@ -407,21 +408,22 @@ void PcsOctree::getSgwtCoeffWS()
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
 #endif //SGWT_DEBUG
 
-#ifdef ZJW_DEUG
-
-#endif //ZJW_DEUG
 	for (int i = 0; i < 8; i++)
 	{
 		//单个象限，单个信号下的，wf
 #ifdef SGWT_DEBUG
 		vector<VectorXd> wf_s = (*fastSgwt)(posSignalX[i]);
+#ifdef ZJW_DEDUG
+		fastSgwt->sgwt->getVectorVectorXd(wf_s);
+		//fastSgwt->sgwt->printVectorVectorXd(wf_s);
+#endif //ZJW_DEUG
 #endif //SGWT_DEBUG
 	}
 }
 
 void PcsOctree::getLeafSignal()
 {
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "start get Leaf Signal ...." << endl;
 #endif
 
@@ -459,7 +461,7 @@ void PcsOctree::getLeafSignal()
 		}
 	}
 
-#ifdef ZJW_DEUG
+#ifdef ZJW_DEDUG
 	cout << "end get Leaf Signal!!!!" << endl;
 #endif
 }
