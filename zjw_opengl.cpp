@@ -118,10 +118,13 @@ void ZjwOpenGL::render()
 	}
 	else if (renderState == 1)
 	{
+		//drawPointCloud(*(fm.frameList[0].objMesh));
 		drawPointCloud(objMesh);
+
 	}
 	else if (renderState == 2)
 	{
+		//drawPointCloudOctree(*(fm.frameList[0].objMesh), *(fm.frameList[0].pcsOct));
 		drawPointCloudOctree(objMesh, pcsOct);
 	}
 
@@ -160,7 +163,7 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 	{
 		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	/*Vec3 min(0, 0, 0);
 	Vec3 max(1, 1, 1);
 	drawWireCube(min,max);*/

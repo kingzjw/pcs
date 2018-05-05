@@ -178,6 +178,7 @@
     <ClCompile Include="util\zjw_math.cpp" />
     <ClCompile Include="util\zjw_obj.cpp" />
     <ClCompile Include="zjw_dsaupd.cpp" />
+    <ClCompile Include="zjw_frame.cpp" />
     <ClCompile Include="zjw_opengl.cpp" />
     <ClCompile Include="zjw_pcs_octree.cpp" />
   </ItemGroup>
@@ -229,6 +230,7 @@
     <ClInclude Include="util\zjw_math.h" />
     <ClInclude Include="util\zjw_obj.h" />
     <ClInclude Include="zjw_dsaupd.h" />
+    <ClInclude Include="zjw_frame.h" />
     <ClInclude Include="zjw_octree.h" />
     <CustomBuild Include="zjw_opengl.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

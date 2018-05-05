@@ -171,7 +171,7 @@ public:
 	//Known L, c, arange
 	//VectorXd sgwt_inverse(vector<VectorXd> y);
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	void printVectorVectorXd(vector<VectorXd>& vv);
 	void getVectorVectorXd(vector<VectorXd>& vv);
 #endif //zjw_debug

@@ -92,6 +92,9 @@
     <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp">
       <Filter>Source Files\sgwt</Filter>
     </ClCompile>
+    <ClCompile Include="zjw_frame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -140,6 +143,9 @@
     </ClInclude>
     <ClInclude Include="sgwt_util\zjw_fminbnd.h">
       <Filter>Header Files\sgwt</Filter>
+    </ClInclude>
+    <ClInclude Include="zjw_frame.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

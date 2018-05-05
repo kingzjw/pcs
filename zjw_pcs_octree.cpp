@@ -106,14 +106,14 @@ void PcsOctree::getLeafboundary()
 	// Prepare the callback class.
 	pcsOct->traverse(ctLeaf);
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "Computing Leavf boundary done!" << endl;
 #endif // ZJW_DEUG
 }
 
 void PcsOctree::initMat()
 {
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "leaf node num :  " << ctLeaf->nodeList.size() << endl;
 	cout << "init the matriex !" << endl;
 #endif
@@ -297,7 +297,7 @@ int PcsOctree::judege8Aeros(Vec3 & mid, Vec3 & point)
 
 void PcsOctree::setPointTo8Areas()
 {
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "start set leafnode points to 8 areas ...." << endl;
 #endif
 
@@ -318,7 +318,7 @@ void PcsOctree::setPointTo8Areas()
 		}
 	}
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "end set leafnode points to 8 areas!!!!" << endl;
 #endif
 }
@@ -407,7 +407,7 @@ vector<VectorXd> PcsOctree::getSgwtCoeffWS(SignalType type, int quadrant)
 	//得到这个象限的，这个信号的 sgwt的系数
 	vector<VectorXd> wf_s = (*fastSgwt)(fSignal[quadrant]);
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "*********getSgwtCoeffWS*********" << endl;
 	cout << "sgwt for signal "<< type <<" in quadrant "<<quadrant<< endl;
 	fastSgwt->sgwt->getVectorVectorXd(wf_s);
@@ -435,7 +435,7 @@ void PcsOctree::getSgwtCoeffWS()
 		//单个象限，单个信号下的，wf
 #ifdef SGWT_DEBUG
 		vector<VectorXd> wf_s = (*fastSgwt)(posSignalX[i]);
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 		fastSgwt->sgwt->getVectorVectorXd(wf_s);
 		//fastSgwt->sgwt->printVectorVectorXd(wf_s);
 #endif //ZJW_DEUG
@@ -445,7 +445,7 @@ void PcsOctree::getSgwtCoeffWS()
 
 void PcsOctree::getLeafSignal()
 {
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "start get Leaf Signal ...." << endl;
 #endif
 
@@ -483,7 +483,7 @@ void PcsOctree::getLeafSignal()
 		}
 	}
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "end get Leaf Signal!!!!" << endl;
 #endif
 }

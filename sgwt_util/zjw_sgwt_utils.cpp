@@ -30,7 +30,7 @@ double Hx(double x)
 
 Sgwt::Sgwt(const int _m, const int _Nscales, SpMat _L) :m(_m), Nscales(_Nscales), lap(_L)
 {
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "num of scales : " << _Nscales << endl << "polygon max rank : " << _m << endl;
 #endif //zjw_debug
 
@@ -74,7 +74,7 @@ double Sgwt::sgwt_rough_lmax()
 
 void Sgwt::setArange(const double lmin, const double lmax)
 {
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "lmin : " << lmin << "  lamx : "<<lmax << endl;
 #endif //zjw_debug
 	arange[0] = lmin;
@@ -129,7 +129,7 @@ VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 		s[i] = exp(s[i]);
 	}
 
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 	cout << "( sgwt_setscales ) g scales: ";
 	for (int i = 0; i < s.rows(); i++)
 	{
@@ -175,7 +175,7 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		h0 = new HX(hx, lminfac, gamma_l);
 		//cout << xstar << endl;   !!!
 		//cout << gamma_l << endl; !!!
-#ifdef ZJW_DEDUG
+#ifdef ZJW_DEBUG
 		cout << "( sgwt_filter_design ) we get hx function !! " << endl;
 #endif //ZJW_DEDUG
 	}

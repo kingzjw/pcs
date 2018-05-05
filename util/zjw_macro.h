@@ -2,7 +2,7 @@
 //setteing the macro for zjw use
 
 //debug 时候的专用
-#define ZJW_DEDUG
+#define ZJW_DEBUG
 
 //打印信息专用
 //#define ZJW_PRINT_INFO

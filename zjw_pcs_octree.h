@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <iomanip>
 #include <math.h>
@@ -211,7 +213,8 @@ public:
 	vector<VectorXd> getSgwtCoeffWS(SignalType type, int quadrant);
 	void getSgwtCoeffWS();
 
-	
+	//对外的接口
+	//void 
 	//=============== test ====================
 	void printMat();
 };
