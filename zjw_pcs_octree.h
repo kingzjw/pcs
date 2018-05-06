@@ -15,7 +15,7 @@
 #include "zjw_octree.h"
 #include "util\zjw_math.h"
 #include "util\zjw_obj.h"
-#include "zjwtimer.h"
+#include "zjw_timer.h"
 #include "zjw_dsaupd.h"
 
 

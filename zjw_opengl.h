@@ -67,9 +67,9 @@ private:
 
 public:
 	//-----------------------------针对应用进行扩展--------------
-	ObjMesh objMesh;
-	PcsOctree pcsOct;
-	//FrameManage fm;
+	//ObjMesh objMesh;
+	//PcsOctree pcsOct;
+	FrameManage fm;
 
 	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树
 	int renderState;

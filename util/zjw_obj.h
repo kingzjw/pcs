@@ -48,6 +48,7 @@ public:
 	SubMesh();
 };
 
+//支持mtl
 class ObjMeshMtl
 {
 public:
@@ -107,7 +108,7 @@ public:
 	void printMaxMin();
 };
 
-//普通的Mesh，不支持材质
+//普通的Mesh，不支持Obj中的g参数等，可能还不支持材质
 class ObjMesh
 {
 public:
@@ -129,10 +130,12 @@ public:
 
 public:
 	ObjMesh();
-	//读入obj
+	//读入obj，这个接口比较全面，适应面比较广。支持各种f类型的参数
 	bool loadObjMesh(string & path);
-	//针对特殊格式的objmesh   f: v//vn
+	//loadObjMesh，上简化出来的，针对特殊格式的objmesh   f: v//vn
 	bool loadObjMeshSpeedUp(string & path);
+	//非常快速的针对,只有v  简单的三种f的情况
+	bool loadObjMeshSimply(string & path);
 
 	bool trianglation(int size, vector<Vec3> &trangleFaceIndx);
 	//拿到vertex中最大值和最小值

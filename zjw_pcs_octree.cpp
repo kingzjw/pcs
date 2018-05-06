@@ -551,8 +551,12 @@ CallTGetGraph::~CallTGetGraph()
 #endif // USE_EIGEN
 
 #ifdef USE_SPARSE
-	delete spLap;
-	delete coeff;
+	if(spLap)
+		spLap = nullptr;
+	//因为coeff指向的是其他有用的地址，不能直接delete,而是赋值为空，因为delete会把指针指向的内存块也删除掉
+	if (coeff)
+		coeff = nullptr;
+
 #endif // USE_SPARSE
 
 #ifdef  USE_ARPACK

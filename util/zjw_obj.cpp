@@ -713,13 +713,19 @@ bool ObjMesh::loadObjMesh(string & path)
 #endif // ZJW_DEUG
 
 	//-----------------------init --------------------
-	mesh.facePoslist.clear();
-	mesh.faceNormallist.clear();
-	mesh.faceTexturelist.clear();
+	if (mesh.facePoslist.size())
+		mesh.facePoslist.clear();
+	if (mesh.faceNormallist.size())
+		mesh.faceNormallist.clear();
+	if (mesh.faceTexturelist.size())
+		mesh.faceTexturelist.clear();
 
-	vertexList.clear();
-	normalList.clear();
-	texList.clear();
+	if (vertexList.size())
+		vertexList.clear();
+	if (normalList.size())
+		normalList.clear();
+	if (texList.size())
+		texList.clear();
 
 	std::string curline;
 	while (std::getline(file, curline))
@@ -734,7 +740,6 @@ bool ObjMesh::loadObjMesh(string & path)
 			vpos.x = std::stof(spos[0]);
 			vpos.y = std::stof(spos[1]);
 			vpos.z = std::stof(spos[2]);
-
 			vertexList.push_back(vpos);
 		}
 		// Generate a Vertex Texture Coordinate
@@ -746,7 +751,6 @@ bool ObjMesh::loadObjMesh(string & path)
 
 			vtex.x = std::stof(stex[0]);
 			vtex.y = std::stof(stex[1]);
-
 			texList.push_back(vtex);
 		}
 		// Generate a Vertex Normal;
@@ -1058,6 +1062,200 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 	cout << "==========================" << endl;
 #endif // ZJW_DEUG
 
+	return true;
+}
+
+bool ObjMesh::loadObjMeshSimply(string & path)
+{
+	fstream objFile;
+	objFile.open(path, fstream::in | fstream::out | fstream::app);
+
+	if (!objFile.is_open()) {
+		cout << "open file failed!" << endl;
+		return false;
+	}
+
+#ifdef ZJW_DEBUG
+	cout << "starting load the obj: " << path << endl;
+#endif // ZJW_DEUG
+
+	//-----------------------init --------------------
+	if (mesh.facePoslist.size())
+		mesh.facePoslist.clear();
+	if (mesh.faceNormallist.size())
+		mesh.faceNormallist.clear();
+	if (mesh.faceTexturelist.size())
+		mesh.faceTexturelist.clear();
+
+	if (vertexList.size())
+		vertexList.clear();
+	if (normalList.size())
+		normalList.clear();
+	if (texList.size())
+		texList.clear();
+
+	string type;
+	while (objFile >> type)
+	{
+		if (type == "v")
+		{
+			Vertex v;
+			objFile >> v.x;
+			objFile >> v.y;
+			objFile >> v.z;
+			vertexList.push_back(v);
+		}
+		else if (type == "f")
+		{
+			Point3 faceVerIdx;
+			objFile >> faceVerIdx.x;
+			objFile >> faceVerIdx.y;
+			objFile >> faceVerIdx.z;
+			Point3 verIdx = faceVerIdx - 1.0;
+			mesh.facePoslist.push_back(verIdx);
+
+			////保存face的三个顶点的序号
+			//Point3 faceVerIdx;
+			//Point3 textureIndex;
+			//Point3 normalIndex;
+			//while (true)
+			//{
+			//	char ch = objFile.get();
+			//	if (ch == ' ')
+			//		continue;
+			//	else if (ch == '\n' || ch == EOF)
+			//		break;
+			//	else
+			//		objFile.putback(ch);
+			//	//--------------------get 第一组-----------------
+			//	objFile >> faceVerIdx.x;
+			//	char splitter = objFile.get();
+			//	normalIndex.x = 0;
+			//	//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
+			//	//说明是 vertex texture normal.如果是空格或者其他只有vertex
+			//	if (splitter == '/')
+			//	{
+			//		splitter = objFile.get();
+			//		if (splitter == '/')
+			//		{
+			//			objFile >> normalIndex.x;
+			//		}
+			//		else
+			//		{
+			//			objFile.putback(splitter);
+			//			objFile >> textureIndex.x;
+			//			splitter = objFile.get();
+			//			if (splitter == '/')
+			//			{
+			//				objFile >> normalIndex.x;
+			//			}
+			//			else
+			//				objFile.putback(splitter);
+			//		}
+			//	}
+			//	else
+			//		objFile.putback(splitter);
+			//	//--------------------get 第二组-----------------
+			//	objFile >> faceVerIdx.y;
+			//	splitter = objFile.get();
+			//	//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
+			//	//说明是 vertex texture normal.如果是空格或者其他只有vertex
+			//	if (splitter == '/')
+			//	{
+			//		splitter = objFile.get();
+			//		if (splitter == '/')
+			//		{
+			//			objFile >> normalIndex.y;
+			//		}
+			//		else
+			//		{
+			//			objFile.putback(splitter);
+			//			objFile >> textureIndex.y;
+			//			splitter = objFile.get();
+			//			if (splitter == '/')
+			//			{
+			//				objFile >> normalIndex.y;
+			//			}
+			//			else
+			//				objFile.putback(splitter);
+			//		}
+			//	}
+			//	else
+			//		objFile.putback(splitter);
+			//	//--------------------get 第三组-----------------
+			//	objFile >> faceVerIdx.z;
+			//		splitter = objFile.get();
+			//		//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
+			//		//说明是 vertex texture normal.如果是空格或者其他只有vertex
+			//		if (splitter == '/')
+			//		{
+			//			splitter = objFile.get();
+			//			if (splitter == '/')
+			//			{
+			//				objFile >> normalIndex.z;
+			//			}
+			//			else
+			//			{
+			//				objFile.putback(splitter);
+			//				objFile >> textureIndex.z;
+			//				splitter = objFile.get();
+			//				if (splitter == '/')
+			//				{
+			//					objFile >> normalIndex.x;
+			//				}
+			//				else
+			//					objFile.putback(splitter);
+			//			}
+			//		}
+			//		else
+			//			objFile.putback(splitter);
+			//	}
+			//	Point3 verIdx = faceVerIdx - 1.0;
+			//	mesh.facePoslist.push_back(verIdx);
+			//	//if (face.vertexIndex.size() > 2) {
+			//	//	//计算face的normal:  向量积
+			//	//	Vertex& a = vertexList[face.vertexIndex[0]];
+			//	//	Vertex& b = vertexList[face.vertexIndex[1]];
+			//	//	Vertex& c = vertexList[face.vertexIndex[2]];
+			//	//	//向量积计算法向量
+			//	//	Normal tempNor(0, 0, 0);
+			//	//	tempNor.x = (b - a).y * (c - b).z - (b - a).z * (c - b).y;
+			//	//	tempNor.y = (b - a).z * (c - b).x - (b - a).x * (c - b).z;
+			//	//	tempNor.z = (b - a).x * (c - b).y - (b - a).y * (c - b).x;
+			//	//	//向量归一化
+			//	//	Normal normal = tempNor * (1.0f / sqrt(tempNor.x * tempNor.x + tempNor.y *tempNor.y + tempNor.z * tempNor.z));
+			//	//	face.normalForFace = normal;
+			//	//	faceList.push_back(face);
+			//}
+		}
+		else if (type == "vn")
+		{
+			Normal vn;
+			objFile >> vn.x >> vn.y >> vn.z;
+			normalList.push_back(vn);
+		}
+		else if (type == "vt")
+		{
+			Vertex vt;
+			objFile >> vt.x;
+			objFile >> vt.y;
+			objFile >> vt.z;
+			texList.push_back(vt);
+		}
+		
+	}
+	objFile.close();
+#ifdef ZJW_DEBUG
+	cout << "finish load the obj!" << endl;
+#endif // ZJW_DEUG
+
+	//==================================
+	//获取其他信息
+	getVertexPosMaxMin();
+	printMaxMin();
+	verPosNormalize(rangeMin, rangeMax);
+	verNormalNormalize();
+	printMaxMin();
 	return true;
 }
 
