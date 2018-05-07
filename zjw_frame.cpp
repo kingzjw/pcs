@@ -41,6 +41,9 @@ bool Frame::octSgwt()
 	//得到叶子节点的边界，并保存相关的信息
 	pcsOct->getLeafboundary();
 
+	//test
+	//cout << pcsOct << endl;
+	//end test
 	pcsOct->getGraphMat();
 	pcsOct->getMatEigenVerValue();
 
@@ -72,24 +75,33 @@ void FrameManage::batchLoadObj(string fileNameFormat, string path)
 	fb->fileNum = fb->getFilesNum(fb->filePath);
 
 	//for (int f_it = 0; f_it < fb->fileNum; f_it++)
-	for (int f_it = 0; f_it < 1; f_it++)
+	for (int f_it = 0; f_it < fb->fileNum; f_it++)
 	{
+#ifdef ZJW_DEBUG
+		cout <<endl<<endl<< "##################################################" << endl;
+#endif
 		string totalFilePath;
-		totalFilePath.assign(path).append("/").append(string(1, (char)(f_it + '0'))).append(fileNameFormat);
+		stringstream ss;
+		ss << f_it;
+		totalFilePath.assign(path).append("/").append(ss.str()).append(fileNameFormat);
 		Frame * frame =new Frame(f_it);
-		frameList.push_back(*frame);
-		//frameList[f_it].objMesh.loadObjMesh(totalFilePath);
+		frameList.push_back(frame);
 
 		ZjwTimer timer;
 		timer.Start();
-		frameList[f_it].objMesh->loadObjMeshSimply(totalFilePath);
-		//frameList[f_it].objMesh->loadObjMesh(totalFilePath);
+		if (!frameList[f_it]->objMesh->loadObjMeshSimply(totalFilePath))
+		{
+			continue;
+		}
+		//frameList[f_it-1].objMesh->loadObjMeshSimply(totalFilePath);
 		timer.Stop();
 		timer.printTimeInMs("load obj time: ");
 		
 		ZjwTimer timer2;
 		timer2.Start();
-		frameList[f_it].octSgwt();
+		frameList[f_it]->octSgwt();
+		//frameList[f_it-1].octSgwt();
+
 		timer2.Stop();
 		timer2.printTimeInMs("build oct and compute the sgwt coeff time: ");
 

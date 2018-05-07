@@ -1071,7 +1071,7 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 	objFile.open(path, fstream::in | fstream::out | fstream::app);
 
 	if (!objFile.is_open()) {
-		cout << "open file failed!" << endl;
+		cout << "open file  "<<path<<" failed!" << endl;
 		return false;
 	}
 

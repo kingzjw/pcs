@@ -67,6 +67,7 @@ public:
 	vector<Vec3> maxVList;
 	//保存也子节点的list,并给叶子节点编号
 	vector<Octree<Node>::OctreeNode*> nodeList;
+	int leafIncr;
 
 public:
 	CallTraverseGetInfoSetLeaf();
@@ -166,7 +167,7 @@ public:
 
 #ifdef USE_SPARSE
 	SpMat * spLaplacian;
-	std::vector<T> coefficients;
+	std::vector<T> * coefficients;
 	//sgwt 的对象
 #ifdef SGWT_DEBUG
 	SgwtCheby *fastSgwt;

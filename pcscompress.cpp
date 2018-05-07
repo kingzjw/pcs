@@ -13,7 +13,16 @@ void pcsCompress::clickedOpenFileAction()
 		else
 			stt += st[i];
 	}
+	
+	string path =stt;
+	size_t lastpos = stt.rfind("//");
+	if (lastpos != string::npos)
+		path.erase(lastpos, path.length());
+
 	std::cout << "you choose the file: " << std::endl << stt << endl;
+	std::cout << "you choose the path: " << std::endl << path << endl;
+
+
 	//std::cout << "you can choose more rubost load obj code by yourself!!" << endl;
 	cout << "==================" << endl;
 

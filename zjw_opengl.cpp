@@ -118,13 +118,13 @@ void ZjwOpenGL::render()
 	}
 	else if (renderState == 1)
 	{
-		drawPointCloud(*(fm.frameList[0].objMesh));
+		drawPointCloud(*(fm.frameList[0]->objMesh));
 		//drawPointCloud(objMesh);
 
 	}
 	else if (renderState == 2)
 	{
-		drawPointCloudOctree(*(fm.frameList[0].objMesh), *(fm.frameList[0].pcsOct));
+		drawPointCloudOctree(*(fm.frameList[0]->objMesh), *(fm.frameList[0]->pcsOct));
 		//drawPointCloudOctree(objMesh, pcsOct);
 	}
 

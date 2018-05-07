@@ -13,6 +13,7 @@ PcsOctree::PcsOctree()
 
 #ifdef USE_SPARSE
 	spLaplacian = nullptr;
+	coefficients = new vector<T>;
 #endif // USE_SPARSE
 
 #ifdef SGWT_DEBUG
@@ -32,6 +33,9 @@ PcsOctree::~PcsOctree()
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
+
+	if (coefficients)
+		delete coefficients;
 
 #ifdef SGWT_DEBUG
 	if (fastSgwt)
@@ -72,7 +76,7 @@ void PcsOctree::setParam(Vec3 min, Vec3 max, Vec3 cellSize)
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
-	ctGraph = new CallTGetGraph(&coefficients);
+	ctGraph = new CallTGetGraph(coefficients);
 #endif // USE_SPARSE
 
 #ifdef USE_ARPACK
@@ -158,13 +162,20 @@ void PcsOctree::getGraphMat()
 		ctGraph->leafMidPoint = (ctLeaf->nodeList[i]->max + ctLeaf->nodeList[i]->min) / 2;
 		pcsOct->traverse(ctGraph);
 	}
+
+
 #ifdef USE_EIGEN
 	LaplacianMat = dMat - weightAMat;
 #endif //use eigen
 
 #ifdef  USE_SPARSE
+#ifdef ZJW_DEBUG
+	//cout << " spLaplacian size : " << spLaplacian->innerSize() << "  " << spLaplacian->outerSize() << endl;
+#endif //zjw_debug
+
 	//生成稀疏的LaplacianMat
-	spLaplacian->setFromTriplets(coefficients.begin(), coefficients.end());
+	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
+
 
 #ifdef ZJW_PRINT_INFO
 
@@ -509,6 +520,7 @@ CallTraverseGetInfoSetLeaf::CallTraverseGetInfoSetLeaf()
 {
 	minVList.clear();
 	maxVList.clear();
+	leafIncr = 0;
 }
 
 bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octree<Node>::OctreeNode * currNode)
@@ -522,8 +534,6 @@ bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octr
 	}
 	else
 	{
-		//叶子节点的计数
-		static int leafIncr = 0;
 		//是叶子节点，那么保留叶子节点的矩形范围，然后退出
 		flag = false;
 		minVList.push_back(currNode->min);
@@ -602,6 +612,10 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 
 #ifdef USE_SPARSE
 	//L  = D-W 下面直接保存为L了
+
+	//test
+	//cout << "coeff: "<<idx <<"  "<< leafIdx << endl;
+	//end test
 
 	coeff->push_back(T(idx, leafIdx, -1 / Length(delta)));
 	coeff->push_back(T(leafIdx, idx, -1 / Length(delta)));

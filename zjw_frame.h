@@ -3,6 +3,7 @@
 #include "zjw_pcs_octree.h"
 #include "zjw_fileBatch.h"
 #include "zjw_timer.h"
+#include <sstream>
 
 //点云序列中的帧
 class Frame
@@ -23,7 +24,7 @@ public:
 class FrameManage
 {
 public:
-	vector<Frame> frameList;
+	vector<Frame*> frameList;
 	FileBatch *fb;
 public:
 	FrameManage();
