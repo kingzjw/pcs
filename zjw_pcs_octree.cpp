@@ -3,6 +3,8 @@
 
 PcsOctree::PcsOctree()
 {
+//	this->objMesh = objMesh;
+
 	minPos = Vec3(0.0f, 0.0f, 0.0f);
 	maxPos = Vec3(1.0f + Epsilon, 1.0f + Epsilon, 1.0f + Epsilon);
 	cellSize = Vec3(0.1, 0.1, 0.1);
@@ -10,6 +12,7 @@ PcsOctree::PcsOctree()
 	ctLeaf = nullptr;
 	ctGraph = nullptr;
 	pcsOct = nullptr;
+	kmeans = new KMeans;
 
 #ifdef USE_SPARSE
 	spLaplacian = nullptr;
@@ -23,13 +26,17 @@ PcsOctree::PcsOctree()
 
 PcsOctree::~PcsOctree()
 {
+	//不需要delete objMesh，objMesh指示借用别人创建好的对象。
+
 	if (ctLeaf)
 		delete ctLeaf;
 	if (ctGraph)
 		delete ctGraph;
 	if (pcsOct)
 		delete pcsOct;
-
+	if (kmeans)
+		delete kmeans;
+	
 #ifdef USE_SPARSE
 	if (spLaplacian)
 		delete	spLaplacian;
@@ -97,7 +104,9 @@ void PcsOctree::buildPcsOctFrmPC(ObjMesh * objeMesh)
 		Node& n = pcsOct->getCell(objeMesh->vertexList[v_it]);
 
 		//把点放到叶子节点所属的里面。
-		n.pointList.push_back(objeMesh->vertexList[v_it]);
+		n.pointPosList.push_back(objeMesh->vertexList[v_it]); 
+		n.colorList.push_back(objeMesh->colorList[v_it]);
+		//n.pointIdxList.push_back(v_it);
 	}
 	cout << "Building octree done." << endl;
 	return;
@@ -316,16 +325,22 @@ void PcsOctree::setPointTo8Areas()
 	{
 		Octree<Node>::OctreeNode* octNode = ctLeaf->nodeList[leaf_it];
 
-		octNode->nodeData.leafNode8Areas.clear();
-		octNode->nodeData.leafNode8Areas.resize(8);
+		
+		octNode->nodeData.leafNodePos8Areas.clear();
+		octNode->nodeData.leafNodeColor8Areas.clear();
+
+		octNode->nodeData.leafNodePos8Areas.resize(8);
+		octNode->nodeData.leafNodeColor8Areas.resize(8);
+
 
 		Vec3 mid = 0.5 * (octNode->max + octNode->min);
 		//遍历该叶子节点上所有的点
-		for (int p_it = 0; p_it < octNode->nodeData.pointList.size(); p_it++)
+		for (int p_it = 0; p_it < octNode->nodeData.pointPosList.size(); p_it++)
 		{
 			//判断出该节点所属的象限
-			int index = judege8Aeros(mid, octNode->nodeData.pointList[p_it]);
-			octNode->nodeData.leafNode8Areas[index].push_back((Vec3 *)(&octNode->nodeData.pointList[p_it]));
+			int index = judege8Aeros(mid, octNode->nodeData.pointPosList[p_it]);
+			octNode->nodeData.leafNodePos8Areas[index].push_back((Vec3 *)(&octNode->nodeData.pointPosList[p_it]));
+			octNode->nodeData.leafNodeColor8Areas[index].push_back((Vec3 *)(&octNode->nodeData.colorList[p_it]));
 		}
 	}
 
@@ -393,13 +408,49 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 		}
 		break;
 	case SignalR:
-		//need to add
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.color8AreasSignal[j].x;
+				}
+			}
+		}
 		break;
 	case SignalG:
-		//need to add
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.color8AreasSignal[j].y;
+				}
+			}
+		}
 		break;
 	case SignalB:
-		//need to add
+		//遍历所有的叶子节点
+		for (int i = 0; i < ctLeaf->nodeList.size(); i++)
+		{
+			//遍历八个象限
+			for (int j = 0; j < 8; j++)
+			{
+				//排除象限中没有点的情况
+				if (ctLeaf->nodeList[i]->nodeData.pos8Flag[j])
+				{
+					posSignal[j](i) = ctLeaf->nodeList[i]->nodeData.color8AreasSignal[j].z;
+				}
+			}
+		}
 		break;
 	default:
 		break;
@@ -410,23 +461,93 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 
 vector<VectorXd> PcsOctree::getSgwtCoeffWS(SignalType type, int quadrant)
 {
+	//拿到这个信号，在所有象限中的信号，所有结点的信号。
 	vector<VectorXd> fSignal = getSignalF(type);
 
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
-	//得到这个象限的，这个信号的 sgwt的系数
+	//得到指定象限的，这个信号的 sgwt的系数
+
+	/*ZjwTimer test;
+	test.Start();*/
 	vector<VectorXd> wf_s = (*fastSgwt)(fSignal[quadrant]);
+	/*test.Stop();
+	test.printTimeInMs("sgwt_cheby_op: get sgw coeff for signal f ");*/
 
 #ifdef ZJW_DEBUG
-	cout << "*********getSgwtCoeffWS*********" << endl;
+	cout << "********* getSgwtCoeffWS *********" << endl;
 	cout << "sgwt for signal "<< type <<" in quadrant "<<quadrant<< endl;
-	fastSgwt->sgwt->getVectorVectorXd(wf_s);
+	fastSgwt->sgwt->getVectorVectorXdInfo(wf_s);
 	cout << "********************************" << endl;
 #endif //ZJW_DEUG
 
 #endif //SGWT_DEBUG
 	return wf_s;
+}
+
+bool PcsOctree::getFeatureVector(int nodeIdx, VectorXd *featureVector)
+{
+#ifdef SGWT_DEBUG
+	if (!fastSgwt)
+		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+
+#ifdef ZJW_TIMER
+	ZjwTimer test;
+	test.Start();
+#endif //ZJW_TIMER
+
+	//拿到这个信号，在所有象限中的信号，所有结点的信号。
+	vector<SignalType> typeList;
+	typeList.push_back(SignalX);
+	typeList.push_back(SignalY);
+	typeList.push_back(SignalZ);
+	typeList.push_back(SignalR);
+	typeList.push_back(SignalG);
+	typeList.push_back(SignalB);
+
+	//test
+	//cout << "g kernel scales: " << fastSgwt->sgwt->t.size() << endl;
+	//end 
+	//记录g func的scale的个数，在加上一个h func
+	int totalScale = (fastSgwt->sgwt->t.size() + 1);
+	int totalSignal = typeList.size();
+	int totalQuadrant = 8;
+	featureVector->resize(totalQuadrant * totalSignal * totalScale);
+
+	//向量下标
+	int idx = -1;
+	//8个vectorXd， 分别表示不同象限的信号
+	vector<VectorXd> fSignal;
+	//遍历所有的信号
+	for (int type_it = 0; type_it < typeList.size(); type_it++)
+	{
+		
+		fSignal = getSignalF(typeList[type_it]);
+
+		//遍历所有的象限
+		for (int quadrant_it = 0; quadrant_it < 8; quadrant_it++)
+		{
+			//vecotr中表示的5个不同尺度下面所有顶点的向量
+			vector<VectorXd> wf_s = (*fastSgwt)(fSignal[quadrant_it]);
+
+			//得到该节点在五个尺度下的系数：
+			for (int s_it = 0; s_it < totalScale; s_it++)
+			{
+				idx = type_it * totalQuadrant * totalScale + quadrant_it * totalScale + s_it;
+				(*featureVector)(idx) = wf_s[s_it](nodeIdx);
+			}
+		}
+
+	}
+
+#ifdef ZJW_TIMER
+	test.Stop();
+	test.printTimeInMs("get feature vector time : ");
+#endif //zjw_timer
+
+#endif //SGWT_DEBUG
+	return true;
 }
 
 void PcsOctree::getSgwtCoeffWS()
@@ -447,11 +568,40 @@ void PcsOctree::getSgwtCoeffWS()
 #ifdef SGWT_DEBUG
 		vector<VectorXd> wf_s = (*fastSgwt)(posSignalX[i]);
 #ifdef ZJW_DEBUG
-		fastSgwt->sgwt->getVectorVectorXd(wf_s);
-		//fastSgwt->sgwt->printVectorVectorXd(wf_s);
+		fastSgwt->sgwt->getVectorVectorXdInfo(wf_s);
+	   //fastSgwt->sgwt->printVectorVectorXd(wf_s);
 #endif //ZJW_DEUG
 #endif //SGWT_DEBUG
 	}
+}
+
+void PcsOctree::doKmeans()
+{
+#ifdef ZJW_DEBUG
+	cout << "start do Kmeans ...." << endl;
+#endif //zjw_debug
+
+#ifdef ZJW_TIMER
+	ZjwTimer timer2;
+	timer2.Start();
+#endif
+
+	//设置分类的组数
+	kmeans->setClusterNum(5);
+	//k means进行聚类
+	kmeans->cluster(ctLeaf->midVList);
+
+	//结果保存在clusterRes，保存了叶子节点的序号
+	//dosomething
+
+#ifdef ZJW_TIMER
+	timer2.Stop();
+	timer2.printTimeInMs("do kmeans in this frame!!");
+#endif
+
+#ifdef ZJW_DEBUG
+	cout << "end do Kmeans !!!!" << endl;
+#endif //zjw_debug
 }
 
 void PcsOctree::getLeafSignal()
@@ -466,31 +616,38 @@ void PcsOctree::getLeafSignal()
 		Octree<Node>::OctreeNode* octNode = ctLeaf->nodeList[leaf_it];
 
 		//遍历当前叶子节点的八个象限
-		for (int i = 0; i < octNode->nodeData.leafNode8Areas.size(); i++)
+		for (int i = 0; i < octNode->nodeData.leafNodePos8Areas.size(); i++)
 		{
 			////test
 			//cout << octNode->nodeData.leafNode8Areas.size() << endl;
 			////end
 
 			//这个象限没有point
-			if (octNode->nodeData.leafNode8Areas[i].size() == 0)
+			if (octNode->nodeData.leafNodePos8Areas[i].size() == 0)
 			{
 				octNode->nodeData.pos8Flag.push_back(false);
 				octNode->nodeData.pos8AreasSignal.push_back(Vec3(0, 0, 0));
+				octNode->nodeData.color8AreasSignal.push_back(Vec3(0, 0, 0));
 				continue;
 			}
 
 			octNode->nodeData.pos8Flag.push_back(true);
 
-			//遍历这个象限的所有point,来计算信号。下面用的是求评价的方法，来计算每个象限的所有点的平均信号
+			//遍历这个象限的所有point,来计算信号。下面用的是求平均的方法，来计算每个象限的所有点的平均信号
 			Vec3 posSignal(0, 0, 0);
-			for (int p_it = 0; p_it < octNode->nodeData.leafNode8Areas[i].size(); p_it++)
+			Vec3 colorSignal(0, 0, 0);
+
+			for (int p_it = 0; p_it < octNode->nodeData.leafNodePos8Areas[i].size(); p_it++)
 			{
-				posSignal += *(octNode->nodeData.leafNode8Areas[i][p_it]);
+				posSignal += *(octNode->nodeData.leafNodePos8Areas[i][p_it]);
+				colorSignal += *(octNode->nodeData.leafNodeColor8Areas[i][p_it]);
 			}
-			posSignal /= octNode->nodeData.leafNode8Areas[i].size();
+			posSignal /= octNode->nodeData.leafNodePos8Areas[i].size();
+			colorSignal /= octNode->nodeData.leafNodeColor8Areas[i].size();
 
 			octNode->nodeData.pos8AreasSignal.push_back(posSignal);
+			octNode->nodeData.color8AreasSignal.push_back(colorSignal);
+
 		}
 	}
 
@@ -518,9 +675,22 @@ void PcsOctree::printMat()
 
 CallTraverseGetInfoSetLeaf::CallTraverseGetInfoSetLeaf()
 {
+	midVList = new vector<Vec3>;
+
 	minVList.clear();
 	maxVList.clear();
 	leafIncr = 0;
+}
+
+CallTraverseGetInfoSetLeaf::~CallTraverseGetInfoSetLeaf()
+{
+	if (midVList)
+		delete midVList;
+
+	for (int i = 0; i < midVList->size(); i++)
+	{
+		delete (*midVList)[i];
+	}
 }
 
 bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octree<Node>::OctreeNode * currNode)
@@ -538,7 +708,10 @@ bool CallTraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, Octr
 		flag = false;
 		minVList.push_back(currNode->min);
 		maxVList.push_back(currNode->max);
-		//
+		
+		//保存叶子节点的中间
+		Vec3 temp = (currNode->min + currNode->max) / 2;
+		midVList->push_back(temp);
 		nodeList.push_back(currNode);
 		currNode->leafFlag = leafIncr;
 		leafIncr++;

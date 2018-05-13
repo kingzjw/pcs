@@ -115,6 +115,7 @@ public:
 	//mesh 保存面片信息
 	Mesh mesh;
 	vector<Vertex> vertexList;
+	vector<Color> colorList;
 	vector<Normal> normalList;
 	vector<Texture> texList;
 
@@ -136,6 +137,9 @@ public:
 	bool loadObjMeshSpeedUp(string & path);
 	//非常快速的针对,只有v  简单的三种f的情况
 	bool loadObjMeshSimply(string & path);
+
+	//如果obj中没有color ,那么默认填充color信息 0.752941(obj中默认的灰色值)
+	bool fillColorInfo();
 
 	bool trianglation(int size, vector<Vec3> &trangleFaceIndx);
 	//拿到vertex中最大值和最小值

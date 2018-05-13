@@ -1071,7 +1071,7 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 	objFile.open(path, fstream::in | fstream::out | fstream::app);
 
 	if (!objFile.is_open()) {
-		cout << "open file  "<<path<<" failed!" << endl;
+		cout << "open file  " << path << " failed!" << endl;
 		return false;
 	}
 
@@ -1105,6 +1105,23 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 			objFile >> v.z;
 			vertexList.push_back(v);
 		}
+		else if (type == "vn")
+		{
+			//现在不需要，需要的时候把下面的注释符号去掉就行
+
+			/*Normal vn;
+			objFile >> vn.x >> vn.y >> vn.z;
+			normalList.push_back(vn);*/
+		}
+		else if (type == "vt")
+		{
+			//现在不需要，需要的时候把下面的注释符号去掉就行
+
+			/*Texture vt;
+			objFile >> vt.x;
+			objFile >> vt.y;
+			texList.push_back(vt);*/
+		}
 		else if (type == "f")
 		{
 			Point3 faceVerIdx;
@@ -1114,10 +1131,14 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 			Point3 verIdx = faceVerIdx - 1.0;
 			mesh.facePoslist.push_back(verIdx);
 
-			////保存face的三个顶点的序号
+			////只保留了顶点的信息
 			//Point3 faceVerIdx;
-			//Point3 textureIndex;
-			//Point3 normalIndex;
+			//Point3 verIdx;
+			//double temp;
+			//char ch;
+
+			//int type = -1;
+			////确定 type
 			//while (true)
 			//{
 			//	char ch = objFile.get();
@@ -1127,10 +1148,10 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 			//		break;
 			//	else
 			//		objFile.putback(ch);
-			//	//--------------------get 第一组-----------------
+
+			//	double x;
 			//	objFile >> faceVerIdx.x;
 			//	char splitter = objFile.get();
-			//	normalIndex.x = 0;
 			//	//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
 			//	//说明是 vertex texture normal.如果是空格或者其他只有vertex
 			//	if (splitter == '/')
@@ -1138,113 +1159,93 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 			//		splitter = objFile.get();
 			//		if (splitter == '/')
 			//		{
-			//			objFile >> normalIndex.x;
+			//			// f n1//n2
+			//			type = 2;
+			//			break;
 			//		}
 			//		else
 			//		{
-			//			objFile.putback(splitter);
-			//			objFile >> textureIndex.x;
-			//			splitter = objFile.get();
-			//			if (splitter == '/')
-			//			{
-			//				objFile >> normalIndex.x;
-			//			}
-			//			else
-			//				objFile.putback(splitter);
+			//			// f n1/n2/n3
+			//			type = 3;
+			//			objFile.putback(ch);
+			//			break;
 			//		}
 			//	}
 			//	else
-			//		objFile.putback(splitter);
-			//	//--------------------get 第二组-----------------
+			//	{
+			//		//f n1
+			//		type = 1;
+			//		objFile.putback(ch);
+			//		break;
+			//	}
+			//}
+
+
+			//
+			//switch (type)
+			//{
+			//case -1:
+			//	cout << "loadObjMeshSimply: no this type of f" << endl;
+			//	break;
+			//case 1:
+			//	//Point3 faceVerIdx;
+			//	//objFile >> faceVerIdx.x;
 			//	objFile >> faceVerIdx.y;
-			//	splitter = objFile.get();
-			//	//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
-			//	//说明是 vertex texture normal.如果是空格或者其他只有vertex
-			//	if (splitter == '/')
-			//	{
-			//		splitter = objFile.get();
-			//		if (splitter == '/')
-			//		{
-			//			objFile >> normalIndex.y;
-			//		}
-			//		else
-			//		{
-			//			objFile.putback(splitter);
-			//			objFile >> textureIndex.y;
-			//			splitter = objFile.get();
-			//			if (splitter == '/')
-			//			{
-			//				objFile >> normalIndex.y;
-			//			}
-			//			else
-			//				objFile.putback(splitter);
-			//		}
-			//	}
-			//	else
-			//		objFile.putback(splitter);
-			//	//--------------------get 第三组-----------------
 			//	objFile >> faceVerIdx.z;
-			//		splitter = objFile.get();
-			//		//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
-			//		//说明是 vertex texture normal.如果是空格或者其他只有vertex
-			//		if (splitter == '/')
-			//		{
-			//			splitter = objFile.get();
-			//			if (splitter == '/')
-			//			{
-			//				objFile >> normalIndex.z;
-			//			}
-			//			else
-			//			{
-			//				objFile.putback(splitter);
-			//				objFile >> textureIndex.z;
-			//				splitter = objFile.get();
-			//				if (splitter == '/')
-			//				{
-			//					objFile >> normalIndex.x;
-			//				}
-			//				else
-			//					objFile.putback(splitter);
-			//			}
-			//		}
-			//		else
-			//			objFile.putback(splitter);
-			//	}
-			//	Point3 verIdx = faceVerIdx - 1.0;
+			//	verIdx = faceVerIdx - 1.0;
 			//	mesh.facePoslist.push_back(verIdx);
-			//	//if (face.vertexIndex.size() > 2) {
-			//	//	//计算face的normal:  向量积
-			//	//	Vertex& a = vertexList[face.vertexIndex[0]];
-			//	//	Vertex& b = vertexList[face.vertexIndex[1]];
-			//	//	Vertex& c = vertexList[face.vertexIndex[2]];
-			//	//	//向量积计算法向量
-			//	//	Normal tempNor(0, 0, 0);
-			//	//	tempNor.x = (b - a).y * (c - b).z - (b - a).z * (c - b).y;
-			//	//	tempNor.y = (b - a).z * (c - b).x - (b - a).x * (c - b).z;
-			//	//	tempNor.z = (b - a).x * (c - b).y - (b - a).y * (c - b).x;
-			//	//	//向量归一化
-			//	//	Normal normal = tempNor * (1.0f / sqrt(tempNor.x * tempNor.x + tempNor.y *tempNor.y + tempNor.z * tempNor.z));
-			//	//	face.normalForFace = normal;
-			//	//	faceList.push_back(face);
+			//	break;
+			//case 2:
+			//	//objFile >> faceVerIdx.x;
+			//	//ch = objFile.get();
+			//	//ch = objFile.get();
+			//	objFile >> temp;
+
+			//	objFile >> faceVerIdx.y;
+			//	ch = objFile.get();
+			//	ch = objFile.get();
+			//	objFile >> temp;
+
+			//	objFile >> faceVerIdx.z;
+			//	ch = objFile.get();
+			//	ch = objFile.get();
+			//	objFile >> temp;
+
+			//	verIdx = faceVerIdx - 1.0;
+			//	mesh.facePoslist.push_back(verIdx);
+
+			//	break;
+			//case 3:
+			//	//objFile >> faceVerIdx.x;
+			//	//ch = objFile.get();
+			//	objFile >> temp;
+			//	ch = objFile.get();
+			//	objFile >> temp;
+
+			//	objFile >> faceVerIdx.y;
+			//	ch = objFile.get();
+			//	objFile >> temp;
+			//	ch = objFile.get();
+			//	objFile >> temp;
+
+			//	objFile >> faceVerIdx.z;
+			//	ch = objFile.get();
+			//	objFile >> temp;
+			//	ch = objFile.get();
+			//	objFile >> temp;
+
+			//	verIdx = faceVerIdx - 1.0;
+			//	mesh.facePoslist.push_back(verIdx);
+			//	break;
+			//default:
+			//	break;
 			//}
 		}
-		else if (type == "vn")
-		{
-			Normal vn;
-			objFile >> vn.x >> vn.y >> vn.z;
-			normalList.push_back(vn);
-		}
-		else if (type == "vt")
-		{
-			Vertex vt;
-			objFile >> vt.x;
-			objFile >> vt.y;
-			objFile >> vt.z;
-			texList.push_back(vt);
-		}
-		
 	}
 	objFile.close();
+
+	fillColorInfo();
+
 #ifdef ZJW_DEBUG
 	cout << "finish load the obj!" << endl;
 #endif // ZJW_DEUG
@@ -1257,6 +1258,31 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 	verNormalNormalize();
 	printMaxMin();
 	return true;
+}
+
+bool ObjMesh::fillColorInfo()
+{
+#ifdef  ZJW_DEBUG
+	cout << "=====================" << endl;
+	cout << "as no color info, so fill color info!!!!!!!!!" << endl;
+#endif //  zjw_debu
+	Color defaultColor(0.752941, 0.752941, 0.752941);
+	if (colorList.empty())
+	{
+		for (int i = 0; i < vertexList.size(); i++)
+		{
+			colorList.push_back(defaultColor);
+		}
+		return true;
+	}
+	else
+	{
+		cout << "there are color info!! No need to set color info!" << endl;
+		return false;
+	}
+#ifdef  ZJW_DEBUG
+	cout << "=====================" << endl;
+#endif //  zjw_debu
 }
 
 bool ObjMesh::trianglation(int size, vector<Vec3> &triangleFaceList)

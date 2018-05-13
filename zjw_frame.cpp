@@ -28,12 +28,17 @@ bool Frame::loadObj(string path)
 
 bool Frame::octSgwt()
 {
+#ifdef ZJW_TIMER
+	ZjwTimer timer2;
+	timer2.Start();
+#endif
+	
 	Vec3 minPos(objMesh->rangeMin);
 	Vec3 maxPos((objMesh->rangeMax + Epsilon));
 	/*Vec3 minPos(objMesh.rangeMin);
 	Vec3 maxPos((objMesh.rangeMax + Epsilon));*/
 
-	Vec3 cellSize(0.42);
+	Vec3 cellSize(0.1);
 	//设置参数，并构建八叉树
 	pcsOct->setParam(minPos, maxPos, cellSize);
 	//pcsOct->buildPcsOctFrmPC(objMesh);
@@ -52,14 +57,26 @@ bool Frame::octSgwt()
 	pcsOct->getLeafSignal();
 	//pcsOct->getSgwtCoeffWS();
 	//拿到信号x在第一个象限0中的值
-	pcsOct->getSgwtCoeffWS(SignalType::SignalX, 0);
+	//pcsOct->getSgwtCoeffWS(SignalType::SignalX, 0);
+
+	VectorXd featureVec;
+	pcsOct->getFeatureVector(0,&featureVec);
+	//cout << featureVec << endl;
+
+
+#ifdef ZJW_TIMER
+	timer2.Stop();
+	timer2.printTimeInMs("build oct and compute the sgwt coeff time: ");
+#endif
+
+	pcsOct->doKmeans();
 	return true;
 }
 
 FrameManage::FrameManage()
 {
 	batchLoad = false;
-	getAllFielPath = false;
+	getAllFilePath = false;
 
 	fileBatch = nullptr;
 }
@@ -69,7 +86,7 @@ FrameManage::~FrameManage()
 	delete fileBatch;
 }
 
-void FrameManage::getAllFilesPath(string fileNameFormat, string path)
+void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, string path)
 {
 	//--------获取该路径下的所有文件-------------
 	if (fileBatch)
@@ -77,7 +94,7 @@ void FrameManage::getAllFilesPath(string fileNameFormat, string path)
 	fileBatch = new FileBatch(path, fileNameFormat);
 	fileBatch->fileNum = fileBatch->getFilesNum(fileBatch->filePath);
 	frameList.clear();
-	getAllFielPath = true;
+	getAllFilePath = true;
 
 	for (int f_it = 0; f_it < fileBatch->fileNum; f_it++)
 	{
@@ -85,7 +102,18 @@ void FrameManage::getAllFilesPath(string fileNameFormat, string path)
 		string totalFilePath;
 		stringstream ss;
 		ss << f_it;
-		totalFilePath.assign(path).append("/").append(ss.str()).append(fileNameFormat);
+
+		switch (type)
+		{
+		case FrameManage::NUM_FRONT:
+			totalFilePath.assign(path).append("/").append(ss.str()).append(fileNameFormat).append(".obj");
+			break;
+		case FrameManage::NUM_TAIL:
+			totalFilePath.assign(path).append("/").append(fileNameFormat).append(ss.str()).append(".obj");
+			break;
+		default:
+			break;
+		}
 
 		//按照需要从小到大，保存所有的文件路径
 		fileBatch->files.push_back(totalFilePath);
@@ -96,7 +124,7 @@ void FrameManage::getAllFilesPath(string fileNameFormat, string path)
 	}
 }
 
-void FrameManage::batchLoadObj(string fileNameFormat, string path)
+void FrameManage::batchLoadObj(FileNameForMat type,string fileNameFormat, string path)
 {
 	if (fileBatch)
 		delete fileBatch;
@@ -114,8 +142,19 @@ void FrameManage::batchLoadObj(string fileNameFormat, string path)
 		string totalFilePath;
 		stringstream ss;
 		ss << f_it;
-		totalFilePath.assign(path).append("/").append(ss.str()).append(fileNameFormat);
 
+		switch (type)
+		{
+		case FrameManage::NUM_FRONT:
+			totalFilePath.assign(path).append("/").append(ss.str()).append(fileNameFormat).append(".obj");
+			break;
+		case FrameManage::NUM_TAIL:
+			totalFilePath.assign(path).append("/").append(fileNameFormat).append(ss.str()).append(".obj");
+			break;
+		default:
+			break;
+		}
+ 
 		//按照需要从小到大，保存所有的文件路径
 		fileBatch->files.push_back(totalFilePath);
 
@@ -133,13 +172,8 @@ void FrameManage::batchLoadObj(string fileNameFormat, string path)
 		timer.Stop();
 		timer.printTimeInMs("load obj time: ");
 		
-		ZjwTimer timer2;
-		timer2.Start();
 		frameList[f_it]->octSgwt();
 		//frameList[f_it-1].octSgwt();
-
-		timer2.Stop();
-		timer2.printTimeInMs("build oct and compute the sgwt coeff time: ");
 
 #ifdef ZJW_DEBUG
 		//cout << totalFilePath << endl;
@@ -147,15 +181,16 @@ void FrameManage::batchLoadObj(string fileNameFormat, string path)
 	}
 }
 
-bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, string fileNameFormat, string path)
+bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type,string fileNameFormat, string path)
 {
 	assert(frameId1 > -1 && frameId2 >-1);
 	
 	if (batchLoad)
 		return true;
-	if (!getAllFielPath)
+
+	if (!getAllFilePath)
 	{
-		getAllFilesPath(fileNameFormat, path);
+		getAllFilesPath(type,fileNameFormat, path);
 	}
 
 	assert( frameId1 < fileBatch->fileNum && frameId2 < fileBatch->fileNum);
@@ -163,30 +198,29 @@ bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, string fileNa
 	//-----------进行读取，和sgw操作------------
 	ZjwTimer timer;
 	timer.Start();
+#ifdef ZJW_DEBUG
+	cout << endl << endl << "###################################################################" <<endl<< path << endl;
+#endif
 	if (frameList[frameId1]->objMesh->loadObjMeshSimply(fileBatch->files[frameId1]))
 	{
 		timer.Stop();
 		timer.printTimeInMs("load obj time: ");
 
-		ZjwTimer timer2;
-		timer2.Start();
 		frameList[frameId1]->octSgwt();
-		timer2.Stop();
-		timer2.printTimeInMs("build oct and compute the sgwt coeff time: ");
 	}
 
 	ZjwTimer timer3;
 	timer3.Start();
+#ifdef ZJW_DEBUG
+	cout << endl << endl << "###################################################################" <<endl<< path << endl;
+#endif
 	if (frameList[frameId2]->objMesh->loadObjMeshSimply(fileBatch->files[frameId2]))
 	{
 		timer3.Stop();
 		timer3.printTimeInMs("load obj time: ");
 
-		ZjwTimer timer4;
-		timer4.Start();
 		frameList[frameId2]->octSgwt();
 
-		timer4.Stop();
-		timer4.printTimeInMs("build oct and compute the sgwt coeff time: ");
 	}
+	return true;
 }

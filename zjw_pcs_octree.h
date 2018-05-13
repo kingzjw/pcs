@@ -17,6 +17,7 @@
 #include "util\zjw_obj.h"
 #include "zjw_timer.h"
 #include "zjw_dsaupd.h"
+#include "zjw_kmeans.h"
 
 
 using namespace Eigen;
@@ -45,17 +46,28 @@ enum SignalType
 class Node
 {
 public:
-	//每个在空间有一堆的 particle
-	vector<Vec3> pointList;
+	//每个在空间有一堆的 particle的位置信息
+	vector<Vec3> pointPosList;
+	
+	//每个在空间有一堆的 particle的位置信息
+	vector<Vec3> colorList;
 
-	//保存每个叶子节点下面8个象限的叶子节点
-	vector<vector<Vec3*>> leafNode8Areas;
+	//每个在空间有一堆的 particle在obj中的序号
+	//vector<int> pointIdxList;
+
+	//保存每个叶子节点下面8个象限的叶子节点的位置信息的指针
+	vector<vector<Vec3*>> leafNodePos8Areas;
+	//保存每个叶子节点下面8个象限的叶子节点的颜色信息的指针
+	vector<vector<Vec3*>> leafNodeColor8Areas;
 
 	//保存该叶子节点的在每个象限中的信号(true),如果没有信号，false signal (0,0,0)
 	vector <bool> pos8Flag;
 
-	//8个信号，每个象限一个
+	//8个信号，每个象限一个。 每个node上的顶点位置的的信号。（x,y,z）
 	vector<Vec3> pos8AreasSignal;
+
+	//8个信号，每个象限一个。 每个node上的顶点位置的的信号。（x,y,z）
+	vector<Vec3> color8AreasSignal;
 };
 
 //-----------------遍历整个八叉树，把叶子节点的边界值保存到list中，并给叶子节点编号-----------------
@@ -65,12 +77,17 @@ public:
 	//保存叶子节点的boundary ，用于渲染所用
 	vector<Vec3> minVList;
 	vector<Vec3> maxVList;
+	//叶子节点的中间位置，用于kmeans
+	vector<Vec3> *midVList;
+
 	//保存也子节点的list,并给叶子节点编号
 	vector<Octree<Node>::OctreeNode*> nodeList;
+	//叶子节点的编号器
 	int leafIncr;
 
 public:
 	CallTraverseGetInfoSetLeaf();
+	~CallTraverseGetInfoSetLeaf();
 
 	virtual bool operator()(const Vec3 min, const Vec3 max, Node& nodeData) {
 		return true;
@@ -145,9 +162,12 @@ public:
 	Vec3 maxPos;
 	Vec3 cellSize;
 
+	//ObjMesh * objMesh;
 	Octree<Node> *pcsOct;
 	CallTraverseGetInfoSetLeaf * ctLeaf;
 	CallTGetGraph * ctGraph;
+	//对八叉树的叶子节点进行k-means聚类
+	KMeans * kmeans;
 
 	//邻接权重矩阵，以及D矩阵，求解特征值和特征向量的存储矩阵。
 	int nodeNum;
@@ -208,12 +228,20 @@ public:
 	void setPointTo8Areas();
 	//计算叶子节点在每个象限上的信号
 	void getLeafSignal();
-	//把信号放到向量中:x,y,z,r,g,b
+
+	//把8个象限的信号（x,y,z,r,g,b）放到向量中:并封装到vector中
+	//8个vectorXd， 分别表示不同象限的信号。每个vector表示的是：所有在节点在这个象限中的该型号的具体的值
 	vector<VectorXd> getSignalF(SignalType sType);
-	//输入信号的值和象限的类型(0-7)
+
+	//输入信号的值和象限的类型(0-7),返回node上在所有持尺度上的系数
 	vector<VectorXd> getSgwtCoeffWS(SignalType type, int quadrant);
+
+	//得到这个node的feature vector 维数 8*6*5
+	bool getFeatureVector(int nodeIdx, VectorXd* featureVector);
+
 	void getSgwtCoeffWS();
 
+	void doKmeans();
 	//对外的接口
 	//void 
 	//=============== test ====================

@@ -62,7 +62,7 @@ public:
 	//min的顶点和Max的顶点确定 节点的空间范围
 	Vec3 min;
 	Vec3 max;
-	//// cellSize is the minimum subdivided cell size.
+	// cellSize is the minimum subdivided cell size.
 	Vec3 cellSize;
 	OctreeNode* root;
 

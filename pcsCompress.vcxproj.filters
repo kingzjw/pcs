@@ -98,6 +98,9 @@
     <ClCompile Include="util\zjw_timer.cc">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="util\zjw_kmeans.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -151,6 +154,9 @@
       <Filter>Header Files\util</Filter>
     </ClInclude>
     <ClInclude Include="util\zjw_timer.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="util\zjw_kmeans.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>

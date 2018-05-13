@@ -373,7 +373,7 @@ void Sgwt::printVectorVectorXd(vector<VectorXd>& vv)
 	cout << "==============================" << endl;
 }
 
-void Sgwt::getVectorVectorXd(vector<VectorXd>& vv)
+void Sgwt::getVectorVectorXdInfo(vector<VectorXd>& vv)
 {
 	cout << "vector( column ) " << vv.size() << endl << "vectorXd rows " << vv[0].rows() << endl;
 }
@@ -439,6 +439,9 @@ SgwtCheby::SgwtCheby(int m, int Nscales, SpMat& L, vector<VectorXd> &coeff, doub
 
 SgwtCheby::SgwtCheby(int m, int Nscales, SpMat &L)
 {
+#ifdef ZJW_DEBUG
+	cout << "SgwtCheby: polygon max degree= " << m << "  g func scale num= " << Nscales << endl;
+#endif //zjw_debug
 	sgwt = new Sgwt(m, Nscales, L);
 
 	sgwtDoChebyPrepare();

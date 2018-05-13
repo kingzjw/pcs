@@ -6,24 +6,15 @@
 
 using namespace std;
 
-
-KMeans::KMeans(int dimNum, int clusterNum)
+KMeans::KMeans( int clusterNum, int dimNum)
 {
 	this->dimNum = dimNum;
 	this->clusterNum = clusterNum;
 
-	//给质点分配空间，并初始化值(0,0,0)
-	
-	for(int i = 0; i < clusterNum; i++)
-	{
-		/*Vec3 *v = new Vec3();
-		means.push_back(v);*/
-		means.push_back(Vec3());
-	}
-
 	initMode = InitRandom;
 	maxIterNum = 100;
-	endError = 0.001;
+	thresholdValue = 0.001;
+	dataSize = 0;
 }
 
 KMeans::~KMeans()
@@ -35,129 +26,29 @@ KMeans::~KMeans()
 	}*/
 }
 
-//void KMeans::cluster(const char* sampleFileName, const char* labelFileName)
-//{
-//	// Check the sample file
-//	ifstream sampleFile(sampleFileName, ios_base::binary);
-//	assert(sampleFile);
-//
-//	int size = 0;
-//	int dim = 0;
-//	sampleFile.read((char*)&size, sizeof(int));
-//	sampleFile.read((char*)&dim, sizeof(int));
-//	assert(size >= clusterNum);
-//	assert(dim == dimNum);
-//
-//	// Initialize model
-//	init(sampleFile);
-//
-//	// Recursion
-//	double* x = new double[dimNum];	// Sample data
-//	int label = -1;		// Class index
-//	double iterNum = 0;
-//	double lastCost = 0;
-//	double currCost = 0;
-//	int unchanged = 0;
-//	bool loop = true;
-//	int* counts = new int[clusterNum];
-//	double** next_means = new double*[clusterNum];	// New model for reestimation
-//	for(int i = 0; i < clusterNum; i++)
-//	{
-//		next_means[i] = new double[dimNum];
-//	}
-//
-//	while(loop)
-//	{
-//	    //clean buffer for classification
-//		memset(counts, 0, sizeof(int) * clusterNum);
-//		for(int i = 0; i < clusterNum; i++)
-//		{
-//			memset(next_means[i], 0, sizeof(double) * dimNum);
-//		}
-//
-//		lastCost = currCost;
-//		currCost = 0;
-//
-//		sampleFile.clear();
-//		sampleFile.seekg(sizeof(int) * 2, ios_base::beg);
-//
-//		// Classification
-//		for(int i = 0; i < size; i++)
-//		{
-//			sampleFile.read((char*)x, sizeof(double) * dimNum);
-//			currCost += getClusteAndDis(x, &label);
-//
-//			counts[label]++;
-//			for(int d = 0; d < dimNum; d++)
-//			{
-//				next_means[label][d] += x[d];
-//			}
-//		}
-//		currCost /= size;
-//
-//		// Reestimation
-//		for(int i = 0; i < clusterNum; i++)
-//		{
-//			if(counts[i] > 0)
-//			{
-//				for(int d = 0; d < dimNum; d++)
-//				{
-//					next_means[i][d] /= counts[i];
-//				}
-//				memcpy(means[i], next_means[i], sizeof(double) * dimNum);
-//			}
-//		}
-//
-//		// Terminal conditions
-//		iterNum++;
-//		if(fabs(lastCost - currCost) < endError * lastCost)
-//		{
-//			unchanged++;
-//		}
-//		if(iterNum >= maxIterNum || unchanged >= 3)
-//		{
-//			loop = false;
-//		}
-//		//DEBUG
-//		//cout << "Iter: " << iterNum << ", Average Cost: " << currCost << endl;
-//	}
-//
-//	// Output the label file
-//	ofstream labelFile(labelFileName, ios_base::binary);
-//	assert(labelFile);
-//
-//	labelFile.write((char*)&size, sizeof(int));
-//	sampleFile.clear();
-//	sampleFile.seekg(sizeof(int) * 2, ios_base::beg);
-//
-//	for(int i = 0; i < size; i++)
-//	{
-//		sampleFile.read((char*)x, sizeof(double) * dimNum);
-//		getLabel(x, &label);
-//		labelFile.write((char*)&label, sizeof(int));
-//	}
-//
-//	sampleFile.close();
-//	labelFile.close();
-//
-//	delete[] counts;
-//	delete[] x;
-//	for(int i = 0; i < clusterNum; i++)
-//	{
-//		delete[] next_means[i];
-//	}
-//	delete[] next_means;
-//}
+void KMeans::setClusterNum(int i)
+{
+	clusterNum = i; 
+}
 
 //N 为特征向量数
-void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
+void KMeans::cluster(vector<Vec3> *data)
 {
-	int size = N;
+	dataSize = data->size();
+	assert(dataSize >= clusterNum);
 
-	assert(size >= clusterNum);
+	//分配需要的空间
+	vector<int> temp;
+	for (int i = 0; i < clusterNum; i++)
+	{
+		/*Vec3 *v = new Vec3();
+		means.push_back(v);*/
+		means.push_back(Vec3());
+		clusterRes.push_back(temp);
+	}
 
 	// Initialize model
-	init(data,N);
+	init(data, dataSize);
 
 	// Recursion
 	// Sample data
@@ -184,7 +75,6 @@ void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
 	{
 		next_means.push_back(Vec3());
 	}
-
 	/*double** next_means = new double*[clusterNum];	
 	for(int i = 0; i < clusterNum; i++)
 	{
@@ -206,9 +96,9 @@ void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
 		currAvgDis = 0;
 
 		// Classification 遍历所有的采样点，得到属于他的分类，以及距离该分类中质点的距离
-		for(int i = 0; i < size; i++)
+		for(int i = 0; i < dataSize; i++)
 		{
-			sampleData = *data[i];
+			sampleData = (*data)[i];
 			/*for(int j = 0; j < dimNum; j++)
 				x[j] = data[i*dimNum+j];*/
 
@@ -218,7 +108,7 @@ void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
 			next_means[clusterIdx] += sampleData;
 		}
 		//得到所有采样点距离自己相应质点的距离
-		currAvgDis /= size;
+		currAvgDis /= dataSize;
 
 		// 重新得到新的质点
 		for(int i = 0; i < clusterNum; i++)
@@ -233,7 +123,7 @@ void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
 
 		// Terminal conditions
 		iterNum++;
-		if(fabs(lastAvgDis - currAvgDis) < endError * lastAvgDis)
+		if(fabs(lastAvgDis - currAvgDis) < thresholdValue * lastAvgDis)
 		{
 			unchanged++;
 		}
@@ -247,17 +137,18 @@ void KMeans::cluster(vector<Vec3 * > data, int N, int *cluIdxList)
 #endif
 	}
 
-	// 得到最终的分类结果，保存在cluIdxList中
-	for(int i = 0; i < size; i++)
+	// 得到最终的分类结果，保存在clusterRes中
+	for(int i = 0; i < dataSize; i++)
 	{
-		sampleData = *data[i];
+		sampleData = (*data)[i];
 		getClusteAndDis((Vec3*)&sampleData,&clusterIdx);
-		cluIdxList[i] = clusterIdx;
+		//保存最终的结果
+		clusterRes[clusterIdx].push_back(i);
 	}
 	delete[] counts;
 }
 
-void KMeans::init(vector<Vec3 * > data, int num)
+void KMeans::init(vector<Vec3> *data, int num)
 {
 	int size = num;
 
@@ -275,9 +166,7 @@ void KMeans::init(vector<Vec3 * > data, int num)
 		for(int i = 0; i < clusterNum; i++)
 		{
 			int select = inteval * i + (inteval - 1) * rand() / RAND_MAX;
-			sample.x = data[select]->x;
-			sample.y = data[select]->y;
-			sample.z = data[select]->z;
+			sample = (*data)[select];
 
 			means[i] = sample;
 		}
@@ -290,11 +179,7 @@ void KMeans::init(vector<Vec3 * > data, int num)
 		for(int i = 0; i < clusterNum; i++)
 		{
 			int select = i * size / clusterNum;
-			
-			sample.x = data[select]->x;
-			sample.y = data[select]->y;
-			sample.z = data[select]->z;
-
+			sample = (*data)[select];
 			means[i] = sample;
 		}
 	}
@@ -303,57 +188,6 @@ void KMeans::init(vector<Vec3 * > data, int num)
 		// Do nothing
 	}
 }
-
-//void KMeans::init(ifstream& sampleFile)
-//{
-//	int size = 0;
-//	sampleFile.seekg(0, ios_base::beg);
-//	sampleFile.read((char*)&size, sizeof(int));
-//
-//	if(initMode ==  InitRandom)
-//	{
-//		int inteval = size / clusterNum;
-//		//sample保存随机产生的数据.默认是0,0,0
-//		Vec3 sample;
-//
-//		// Seed the random-number generator with current time
-//		srand((unsigned)time(NULL));
-//
-//		for(int i = 0; i < clusterNum; i++)
-//		{
-//			int select = inteval * i + (inteval - 1) * rand() / RAND_MAX;
-//			int offset = sizeof(int) * 2 + select * sizeof(double) * dimNum;
-//
-//			sampleFile.seekg(offset, ios_base::beg);
-//			sampleFile.read((char*)sample, sizeof(double) * dimNum);
-//			memcpy(means[i], sample, sizeof(double) * dimNum);
-//		}
-//
-//		delete[] sample;
-//	}
-//	else if(initMode == InitUniform)
-//	{
-//		double* sample = new double[dimNum];
-//
-//		for (int i = 0; i < clusterNum; i++)
-//		{
-//			int select = i * size / clusterNum;
-//			int offset = sizeof(int) * 2 + select * sizeof(double) * dimNum;
-//
-//			sampleFile.seekg(offset, ios_base::beg);
-//			sampleFile.read((char*)sample, sizeof(double) * dimNum);
-//			memcpy(means[i], sample, sizeof(double) * dimNum);
-//		}
-//
-//		delete[] sample;
-//	}
-//	else if(initMode == InitManual)
-//	{
-//		// Do nothing
-//	}
-//}
-
-
 //拿到于离这个sample采样点，最近的质点的序号，并返回距离
 double KMeans::getClusteAndDis(Vec3 * sample, int* clusterIdx)
 {

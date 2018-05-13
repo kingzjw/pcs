@@ -154,7 +154,7 @@ public:
 	//两点间的距离
 	inline double Distance(const Vec3 &u)
 	{
-		return sqrt(x * u.x + y * u.y + z * u.z);
+		return sqrt((x - u.x)*(x - u.x) + (y - u.y)*(y - u.y) + (z - u.z) * (z - u.z));
 	}
 };
 

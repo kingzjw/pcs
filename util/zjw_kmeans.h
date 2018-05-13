@@ -66,6 +66,8 @@ private:
 	int dimNum;
 	//分组的个数
 	int clusterNum;
+	//最终分类的结果，只保存叶子节点的序号
+	vector<vector<int>> clusterRes;
 	//每个组的质点
 	vector<Vec3> means;
 	//质点初始化的方式
@@ -73,8 +75,9 @@ private:
 	// 最大迭代次数
 	int maxIterNum;	
 	// 截止误差
-	double endError;		
+	double thresholdValue;
 
+	int dataSize;
 
 public:
 	enum InitMode
@@ -84,12 +87,13 @@ public:
 		InitUniform,
 	};
 
-	KMeans(int dimNum = 3, int clusterNum = 4);
+	KMeans(int clusterNum = 4,int dimNum = 3);
 	~KMeans();
 
+	void setClusterNum(int i);
 	void setInitMode(int i) { initMode = i; }
 	void setMaxIterNum(int i) { maxIterNum = i; }
-	void setEndError(double f) { endError = f; }
+	void setEndError(double f) { thresholdValue = f; }
 	//设置第i个质点的坐标.从0开始
 	void setMean(int i, Vec3  pos);
 
@@ -97,20 +101,16 @@ public:
 	Vec3 getMean(int i) { return means[i]; }
 	int getInitMode() { return initMode; }
 	int getMaxIterNum() { return maxIterNum; }
-	double getEndError() { return endError; }
+	double getEndError() { return thresholdValue; }
 	//拿到于这个sample采样点，最近的质点的序号，并返回距离
 	double getClusteAndDis(Vec3 * x, int* cluIdxList);
 	//得到两个点的距离
 	double calcDistance(Vec3 * m, Vec3 * n);
 
 	//初始化质点： 主函数  data 数据  N：数据的个数
-	void init(vector<Vec3 * > data, int num);
+	void init(vector<Vec3>  * data, int num);
 	//k-means 主函数  data 数据  N：数据的个数  Label: N个int的数组
-	void cluster(vector<Vec3 * > data, int N, int *Label);
+	void cluster(vector<Vec3> *data);
 
-
-
-	//void init(std::ifstream& sampleFile);
-	//void cluster(const char* sampleFileName, const char* labelFileName);
 	friend std::ostream& operator<<(std::ostream& out, KMeans& kmeans);
 };

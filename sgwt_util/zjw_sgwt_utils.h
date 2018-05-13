@@ -158,7 +158,8 @@ public:
 	void sgwt_cheby_coeff(int k, T g);		//n = m+1
 
 	//chebushev的不等式求解信号
-	//传入的信号 f ,以及计算好的多项式的近似系数
+	//传入的信号 f(f是包括所有节点上的信号的) ,以及计算好的多项式的近似系数
+	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
 	vector<VectorXd> sgwt_cheby_op(VectorXd f, vector<VectorXd> c);
 
 	//给定参数x,返回的是g(x)的值
@@ -173,7 +174,7 @@ public:
 
 #ifdef ZJW_DEBUG
 	void printVectorVectorXd(vector<VectorXd>& vv);
-	void getVectorVectorXd(vector<VectorXd>& vv);
+	void getVectorVectorXdInfo(vector<VectorXd>& vv);
 #endif //zjw_debug
 
 };
