@@ -106,7 +106,7 @@ void PcsOctree::buildPcsOctFrmPC(ObjMesh * objeMesh)
 		//把点放到叶子节点所属的里面。
 		n.pointPosList.push_back(objeMesh->vertexList[v_it]); 
 		n.colorList.push_back(objeMesh->colorList[v_it]);
-		//n.pointIdxList.push_back(v_it);
+		n.pointIdxList.push_back(v_it);
 	}
 	cout << "Building octree done." << endl;
 	return;
@@ -604,6 +604,16 @@ void PcsOctree::doKmeans()
 #endif //zjw_debug
 }
 
+int PcsOctree::judegePointToLeafNode(Vec3 * point, int & idx)
+{
+	CallTraverseJudePoint judgeP(*point);
+	pcsOct->traverse(&judgeP);
+	idx = judgeP.nodeIdx;
+
+	//如果没有匹配成功，返回的是-1.
+	return idx;
+}
+
 void PcsOctree::getLeafSignal()
 {
 #ifdef ZJW_DEBUG
@@ -676,7 +686,6 @@ void PcsOctree::printMat()
 CallTraverseGetInfoSetLeaf::CallTraverseGetInfoSetLeaf()
 {
 	midVList = new vector<Vec3>;
-
 	minVList.clear();
 	maxVList.clear();
 	leafIncr = 0;
@@ -808,5 +817,35 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 	laplacianMat->setAddMat(idx, 1 / Length(delta));
 #endif // USE_ARPACK
 
+	return true;
+}
+
+CallTraverseJudePoint::CallTraverseJudePoint(Vec3 point)
+{
+	nodeIdx = -1;
+	this->point = point;
+}
+
+CallTraverseJudePoint::~CallTraverseJudePoint()
+{
+
+}
+
+//返回false,终止递归遍历;返回true,继续递归遍历子节点
+bool CallTraverseJudePoint::operator()(const Vec3 min, const Vec3 max, Octree<Node>::OctreeNode * currNode)
+{
+	//不在这个node里面，不需要遍历子节点
+	if (!(point >= min && point < max))
+		return false;
+
+	//-------------如果在这个Node里面--------------
+
+	//不是叶子节点，需要遍历子节点，继续进行快速拒绝
+	int idx = currNode->leafFlag;
+	if (idx == -1)
+		return true;
+
+	//当前节点是叶子节点，得到idx
+	nodeIdx = idx;
 	return true;
 }

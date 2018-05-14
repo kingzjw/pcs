@@ -224,3 +224,66 @@ bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMa
 	}
 	return true;
 }
+
+bool FrameManage::matchNode(int frameId1, int frameId2)
+{
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId2];
+
+	//遍历frame1中所有的nodelist
+	for (int leaf_it = 0; leaf_it < frame1->pcsOct->ctLeaf->nodeList.size(); leaf_it++)
+	{
+		//frame1: 计算每个node中，点关于node相对于中点的距离成反比的权重。
+		Node * node1 = &(frame1->pcsOct->ctLeaf->nodeList[leaf_it]->nodeData);
+		Vec3 midPoint = (*frame1->pcsOct->ctLeaf->midVList)[leaf_it];
+		vector<float> wightList;
+		double totalWight = 0;
+		double tempW;
+		//遍历这个叶子节点上所有的点
+		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
+		{
+			tempW = 1 / node1->pointPosList[p_it].Distance(midPoint);
+			totalWight += tempW;
+			wightList.push_back(tempW);
+		}
+
+		//利用fram2对应点的位置，根据权重预计出对应Node的中点位置
+		Vec3 predictNodePos;
+		int idx;
+		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
+		{
+			//拿到frame1节点中点的序号，在frame2中的点的值
+			idx = node1->pointIdxList[p_it];
+			predictNodePos += wightList[p_it] * frame2->objMesh->vertexList[idx];
+		}
+		predictNodePos = predictNodePos / totalWight;
+
+		//根据预计出来的中点位置,通过在frame2上的八叉树，然后得到匹配的node结果
+		//先用for 循环实现，后面改用八叉树快速判断
+		int macthNodeIdx = -1;
+		frame2->pcsOct->judegePointToLeafNode((Vec3*)&predictNodePos, macthNodeIdx);
+
+		if (macthNodeIdx < 0)
+		{
+			cout << "frame1 node " << leaf_it << " match faied!!"<< endl;
+		}
+		else
+		{
+			//cout << "frame1 node " << leaf_it << " match frame2 node " << macthNodeIdx << endl;
+			cout << leaf_it << " " << macthNodeIdx << endl;
+
+			//cout <<"predict: "<< predictNodePos.x <<"  "<< predictNodePos.y << "  " << predictNodePos.z << endl;
+
+			//cout << (frame2->pcsOct->ctLeaf->minVList)[macthNodeIdx].x <<"  "<<
+			//	(frame2->pcsOct->ctLeaf->minVList)[macthNodeIdx].y <<"  "<<
+			//	(frame2->pcsOct->ctLeaf->minVList)[macthNodeIdx].z << "  " << endl;
+
+			//cout << (frame2->pcsOct->ctLeaf->maxVList)[macthNodeIdx].x << "  " <<
+			//	(frame2->pcsOct->ctLeaf->maxVList)[macthNodeIdx].y << "  " <<
+			//	(frame2->pcsOct->ctLeaf->maxVList)[macthNodeIdx].z << "  " << endl;
+
+			//cout << "+++++++++++++++++++++++++++++" << endl;
+		}
+	}
+	return true;
+}

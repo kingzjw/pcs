@@ -53,7 +53,7 @@ public:
 	vector<Vec3> colorList;
 
 	//每个在空间有一堆的 particle在obj中的序号
-	//vector<int> pointIdxList;
+	vector<int> pointIdxList;
 
 	//保存每个叶子节点下面8个象限的叶子节点的位置信息的指针
 	vector<vector<Vec3*>> leafNodePos8Areas;
@@ -68,6 +68,26 @@ public:
 
 	//8个信号，每个象限一个。 每个node上的顶点位置的的信号。（x,y,z）
 	vector<Vec3> color8AreasSignal;
+};
+
+
+//-----------------判断这个点在哪个叶子节点中-----------------
+class CallTraverseJudePoint : public Octree<Node>::Callback
+{
+public:
+	//保存当前这个点所在node的序号
+	int nodeIdx;
+	//需要被判断的点
+	Vec3 point;
+public:
+	CallTraverseJudePoint(Vec3 point);
+	~CallTraverseJudePoint();
+
+	virtual bool operator()(const Vec3 min, const Vec3 max, Node& nodeData) {
+		return true;
+	}
+	//返回false,终止递归遍历;返回true,继续递归遍历子节点
+	virtual bool operator()(const Vec3 min, const Vec3 max, Octree<Node>::OctreeNode* currNode);
 };
 
 //-----------------遍历整个八叉树，把叶子节点的边界值保存到list中，并给叶子节点编号-----------------
@@ -241,7 +261,11 @@ public:
 
 	void getSgwtCoeffWS();
 
+	//kmeans
 	void doKmeans();
+	//判断当前点在哪个叶子结点上,返回的是叶子节点的序号
+	int judegePointToLeafNode(Vec3* point, int& idx);
+
 	//对外的接口
 	//void 
 	//=============== test ====================

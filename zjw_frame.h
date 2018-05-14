@@ -52,6 +52,9 @@ public:
 	//对指定的连续两帧，读取obj并计算价值sgwt的系数，frameId 从0开始
 	bool loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT, string fileNameFormat = "_cleaner", string path = "./testData/football");
 
+	//对训练的数据连续两帧进行匹配
+	bool matchNode(int frameId1, int frameId2);
+
 };
 
 
