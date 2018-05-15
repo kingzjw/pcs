@@ -61,7 +61,7 @@ int main()
 
 class KMeans
 {
-private:
+public:
 	//每个样本的维度
 	int dimNum;
 	//分组的个数

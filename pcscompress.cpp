@@ -25,7 +25,10 @@ void pcsCompress::clickedOpenFileAction()
 	//ui.openGLWidget->fm.batchLoadObj();
 	ui.openGLWidget->fm.loadContinuousFrames(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL,  "walk_0_", path);
 	//ui.openGLWidget->fm.loadContinuousFrames(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_FRONT, "_cleaner", path);
-	ui.openGLWidget->fm.matchNode(0, 1);
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	ui.openGLWidget->fm.matchNode(1, 0, &f1nIdxList, &f2nIdxList);
+	ui.openGLWidget->fm.getMatrixP(0, 1, &f1nIdxList, &f2nIdxList, ui.openGLWidget->fm.P);
 
 	ui.openGLWidget->renderState = 2;
 	ui.openGLWidget->updateGL();

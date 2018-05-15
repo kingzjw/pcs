@@ -262,7 +262,7 @@ public:
 	void getSgwtCoeffWS();
 
 	//kmeans
-	void doKmeans();
+	void doKmeans(int clusterNum);
 	//判断当前点在哪个叶子结点上,返回的是叶子节点的序号
 	int judegePointToLeafNode(Vec3* point, int& idx);
 

@@ -575,7 +575,7 @@ void PcsOctree::getSgwtCoeffWS()
 	}
 }
 
-void PcsOctree::doKmeans()
+void PcsOctree::doKmeans(int clusterNum)
 {
 #ifdef ZJW_DEBUG
 	cout << "start do Kmeans ...." << endl;
@@ -587,7 +587,7 @@ void PcsOctree::doKmeans()
 #endif
 
 	//设置分类的组数
-	kmeans->setClusterNum(5);
+	kmeans->setClusterNum(clusterNum);
 	//k means进行聚类
 	kmeans->cluster(ctLeaf->midVList);
 
