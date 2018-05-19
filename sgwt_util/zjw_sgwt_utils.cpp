@@ -67,15 +67,19 @@ double Sgwt::sgwt_rough_lmax()
 	}
 
 	double size = 1.01;
+
+#ifdef ZJW_DEBUG
 	std::cout << "max Eigenvalues found:  " << evalues(0).real() <<
-		"    ( but we magnify 1.01 , use "<< evalues(0).real() * size<<" instead !!!!!!!!!) "<< std::endl;
+		"    ( but we magnify 1.01 , use " << evalues(0).real() * size << " instead !!!!!!!!!) " << std::endl;
+#endif //zjw_debug
+
 	return evalues(0).real() * size;
 }
 
 void Sgwt::setArange(const double lmin, const double lmax)
 {
 #ifdef ZJW_DEBUG
-	cout << "lmin : " << lmin << "  lamx : "<<lmax << endl;
+	cout << "lmin : " << lmin << "  lamx : " << lmax << endl;
 #endif //zjw_debug
 	arange[0] = lmin;
 	arange[1] = lmax;
@@ -114,11 +118,19 @@ VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 
 	double smin = t1 / lmax;
 	double smax = t2 / lmin;
-
 	//scales should be decreasing ... higher j should give larger s
-
 	//总共生成 Nscales个点，j越大，维度越高
 	VectorXd s = VectorXd::LinSpaced(Nscales, log(smax), log(smin));
+
+	////paper zjw
+	//double smin = va.t2 / lmax;
+	//double smax = va.t2 / lmin;
+
+	//VectorXd s = VectorXd::LinSpaced(Nscales, log(smax), log(smin));
+
+	//test
+	//cout << s;
+	//end test
 	//VectorXd::LinSpaced(size,low,high)
 
 	//zjw
@@ -150,7 +162,7 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		double lmin = lmax / varargin.K;
 
 		t = sgwt_setscales(lmin, lmax);
-		
+
 		//hx是指向h(x)的函数指针
 		G hx = Hx;
 		//G g1p = G1P;
@@ -191,12 +203,12 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 	//N 表示积分用多少次迭代代替
 	int N = m + 1;
 
-	/*double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;*/
+	double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;
 
 	//zjw  根据论文上来的
-	double a1 = (arange[1]) / 2;
-	double a2 = a1;
+	/*double a1 = (arange[1]) / 2;
+	double a2 = a1;*/
 
 	//cout << c[k] << endl;
 	//cout << c[k].size() << endl;
@@ -209,11 +221,11 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 		for (int i = 1; i <= N; i++)
 		{
 			//计算当前的theta
-			double theta = 3.1415926*(i - 0.5) / N;
+			double theta = 3.1415926 * (i - 0.5) / N;
 			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
 			//  tn的尺度信息，在g函数内部了
-			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta) + a2));
-			
+			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta)+a2));
+
 			//test
 			/*cout << 2.0 / N << endl;
 			cout << cos(m_it*theta) << endl;
@@ -254,11 +266,11 @@ vector<VectorXd> Sgwt::sgwt_cheby_op(VectorXd f, vector<VectorXd> coeff)
 			maxM = M[i];
 	}
 
-	/*double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;*/
+	double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;
 	//zjw
-	double a1 = (arange[1]) / 2;
-	double a2 = a1;
+	/*double a1 = (arange[1]) / 2;
+	double a2 = a1;*/
 
 	//Twf_old：保存原有的信号 f
 	VectorXd Twf_old(f);
@@ -368,7 +380,7 @@ void Sgwt::printVectorVectorXd(vector<VectorXd>& vv)
 		{
 			cout << vv[i](j) << " ";
 		}
-		cout <<endl<< "--------------------------------" << endl;
+		cout << endl << "--------------------------------" << endl;
 	}
 	cout << "==============================" << endl;
 }
@@ -450,7 +462,7 @@ SgwtCheby::SgwtCheby(int m, int Nscales, SpMat &L)
 #ifdef PRINT_CHEBY_COEFF
 	cout << "chebyCoeff: " << endl;
 	sgwt->printVectorVectorXd(chebyCoeff);
-	cout << "chebyCoeff!!!!!" << endl << endl<<endl;
+	cout << "chebyCoeff!!!!!" << endl << endl << endl;
 #endif //PRINT_CHEBY_COEFF
 }
 

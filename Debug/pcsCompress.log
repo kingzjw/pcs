@@ -1,3 +1,4 @@
 ﻿  zjw_frame.cpp
+e:\1.study\pointcloud\code\pcscompress\pcscompress\zjw_frame.cpp(497): warning C4700: 使用了未初始化的局部变量“n_it”
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

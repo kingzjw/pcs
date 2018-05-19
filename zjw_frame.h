@@ -61,12 +61,16 @@ public:
 	bool loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT, 
 		string fileNameFormat = "_cleaner", string path = "./testData/football");
 
-	//对训练的数据连续两帧进行匹配,对frameId1中的每个node，在fram2中找对应的匹配的Node idx
+	//训练数据：对训练的数据连续两帧进行匹配,对frameId1中的每个node，在fram2中找对应的匹配的Node idx
 	bool matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList);
 
-	//训练数据：计算得到样本数据的误差向量，然后计算协方差的矩阵，及其的逆 P
+	//训练数据：根据matchNode得到匹配关系。计算得到样本数据的误差向量，然后计算协方差的矩阵，及其的逆 P
 	bool getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList,
 		vector<int>* f2nIdxList, MatrixXd * P);
+
+	//训练得到矩阵P的总接口
+	bool trainGetP(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT,
+		string fileNameFormat = "_cleaner", string path = "./testData/football");
 
 	//测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
 	bool getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList,
@@ -75,6 +79,10 @@ public:
 	//测试数据：根据K-mean保存的结果，来保存稀疏的最佳匹配
 	bool doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList,vector<int>* f2nIdxList, 
 		vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList);
+
+
+	
+
 };
 
 

@@ -493,8 +493,8 @@ bool PcsOctree::getFeatureVector(int nodeIdx, VectorXd *featureVector)
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
 
 #ifdef ZJW_TIMER
-	ZjwTimer test;
-	test.Start();
+	/*ZjwTimer test;
+	test.Start();*/
 #endif //ZJW_TIMER
 
 	//拿到这个信号，在所有象限中的信号，所有结点的信号。
@@ -542,8 +542,9 @@ bool PcsOctree::getFeatureVector(int nodeIdx, VectorXd *featureVector)
 	}
 
 #ifdef ZJW_TIMER
-	test.Stop();
-	test.printTimeInMs("get feature vector time : ");
+	/*test.Stop();
+	cout << nodeIdx;
+	test.printTimeInMs(" get feature vector time : ");*/
 #endif //zjw_timer
 
 #endif //SGWT_DEBUG

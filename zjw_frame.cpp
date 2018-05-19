@@ -55,20 +55,21 @@ bool Frame::octSgwt()
 	//得到八叉树上顶点的信号
 	pcsOct->setPointTo8Areas();
 	pcsOct->getLeafSignal();
+
 	//pcsOct->getSgwtCoeffWS();
 	//拿到信号x在第一个象限0中的值
 	//pcsOct->getSgwtCoeffWS(SignalType::SignalX, 0);
 
-	VectorXd featureVec;
-	pcsOct->getFeatureVector(0, &featureVec);
+	/*VectorXd featureVec;
+	pcsOct->getFeatureVector(0, &featureVec);*/
 	//cout << featureVec << endl;
 
+	//pcsOct->doKmeans(5);
 #ifdef ZJW_TIMER
 	timer2.Stop();
-	timer2.printTimeInMs("build oct and compute the sgwt coeff time: ");
+	timer2.printTimeInMs("build oct and ready to compute the sgwt!");
 #endif
 
-	pcsOct->doKmeans();
 	return true;
 }
 
@@ -188,6 +189,8 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
 {
 	assert(frameId1 > -1 && frameId2 > -1);
+	assert(abs(frameId1-frameId2)==1);
+
 
 	if (batchLoad)
 		return true;
@@ -285,6 +288,7 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 }
 
 //对f1nIdxList中记录的所有的对应关系的误差向量都进行了计算
+//返回向量是P
 bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList, MatrixXd * p)
 {
 	//判断是连续的两帧
@@ -294,6 +298,8 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId2];
 
+	assert(frame1->pcsOct->ctLeaf->nodeList.size() == f1nIdxList->size());
+
 	//------------------计算每对对应Node之间的误差向量，并保存矩阵sample中-------------------
 	int totalScale = 5;
 	int totalSignal = 6;
@@ -302,14 +308,18 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	MatrixXd sample;
 	sample.resize(f1nIdxList->size(), totalScale * totalSignal * totalQuadrant);
 
-	VectorXd featureVec;
+	VectorXd featureVec1;
+	VectorXd featureVec2;
+
 	for (int it = 0; it < f1nIdxList->size(); it++)
 	{
-		frame1->pcsOct->getFeatureVector((*f1nIdxList)[it], &featureVec);
+		frame1->pcsOct->getFeatureVector((*f1nIdxList)[it], &featureVec1);
+		frame2->pcsOct->getFeatureVector((*f2nIdxList)[it], &featureVec2);
+
 		//ensure 自变量的个数是一致的
-		assert(sample.cols() == featureVec.rows());
+		//assert(sample.cols() == featureVec1.rows());
 		//保存这个到矩阵中,相应的行中
-		sample.row(it) = featureVec;
+		sample.row(it) = featureVec1-featureVec2;
 	}
 
 	//------------------求出sample的协方差矩阵----------------------
@@ -337,37 +347,61 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 		covMat = (zeroMeanMat.adjoint()*zeroMeanMat) / double(sample.rows() - 1);
 	}
 
-	//test
-	cout << covMat.rows() << " " << covMat.cols() << endl;
-	//end test
-
 	//---------------对协方差矩阵进行求逆，得到P----------------------
-	if (!covMat.determinant())
+#ifdef ZJW_DEBUG
+	double size = 1.00001;
+	cout << "对covMat的矩阵对角线上元素放大了： "<< size<<" 倍 " << endl;
+	assert(covMat.rows() == covMat.cols());
+	if (size > 1)
 	{
-		cout << "covMat determinant :"<<covMat.determinant() << endl;
-	//	cout << "cov mat rank: " << covMat.rank()<<endl;
+		for (int i = 0; i < covMat.rows(); i++)
+		{
+			covMat(i, i) *= size;
+		}
+	}
+#endif // zjw_debug
+
+	FullPivLU<MatrixXd> lu_decomp(covMat);
+
+	//covMat.rank()
+	if ((covMat.determinant())==0 && (lu_decomp.rank()!=covMat.rows()))
+	{
 		cout << "cov mat 不可逆，can not solve the inverse mat P" << endl;
+#ifdef ZJW_DEBUG
+		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
+		cout << "The size of covMat is " << covMat.rows() << " "<< covMat.cols() << endl;
+		cout << "cov mat: " << endl;
+		//cout << covMat << endl << endl;
+		cout << covMat.diagonal() << endl;
+#endif // zjw_debug
+
 	}
 	else
 	{
 		*p = covMat.inverse();
-	}
-
 
 #ifdef ZJW_DEBUG
-	cout << "cov mat: " << endl;
-	cout << covMat << endl<<endl;
-	cout << "mat P: " << endl;
-	cout << *p << endl << endl;
+		cout << "cov mat 矩阵可逆!!" << endl;
+		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
+		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
+		/*cout << covMat.diagonal() << endl;
+		cout << "mat P: " << endl;
+		cout << *p << endl << endl;*/
 #endif //zjw debug
+	}
 
 	return true;
 }
 
 //测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
 //返回值：maDist ， f1nIdxList f2nIdxList是得到最佳的匹配关系
-bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList, vector<int>* f2nIdxList,vector<double>* maDist)
+//f2nIdxList中的顶点序列应该是连续的，除非中间有顶点匹配失败
+bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList, vector<int>* f2nIdxList, vector<double>* maDist)
 {
+#ifdef ZJW_DEBUG
+	bool process = false;
+#endif // ZJW_DEBUG
+
 	//判断是连续的两帧
 	assert(abs(frameId1 - frameId2) == 1);
 	f1nIdxList->clear();
@@ -402,14 +436,36 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 		//找到node2对应到frame1上所有节点的马氏距离，找到最佳匹配（最小）
 		std::vector<double>::iterator smallest = std::min_element(std::begin(mahalanobisDist), std::end(mahalanobisDist));
 		int indexNode1 = std::distance(std::begin(mahalanobisDist), smallest);
-		
+
 		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
-		
+
 		//保存最佳对应关系,及最佳对应关系下面的马氏距离
 		f2nIdxList->push_back(node2_it);
 		f1nIdxList->push_back(indexNode1);
 		maDist->push_back(*smallest);
+#ifdef ZJW_DEBUG
+		if (process)
+		{
+			printf("\b\b\b\b\b\b");
+			cout.width(5);
+			cout.precision(2);
+			cout << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() <<"%";
+
+		}
+		else
+		{
+			cout.width(5);
+			cout.precision(2);
+			cout << "match process:  " << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size()<< "%";
+			process = true;
+		}
+
+#endif // ZJW_DEBUG
 	}
+
+#ifdef ZJW_DEBUG
+	cout << endl;
+#endif // ZJW_DEBUG
 
 	return true;
 }
@@ -418,30 +474,30 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 //f1nIdxList f2nIdxList 是传入的最佳匹配参数
 //maDist保存的是最佳匹配的距离
 //返回值：f1SparseIdxList  f2SparseIdxList   稀疏的最佳匹配
-bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList, 
+bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
 	vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList)
 {
-	assert(frameId >=0);
+	assert(frameId >= 0);
 	assert(f1nIdxList->size() > 0 && f1nIdxList->size() > 0 && maDist->size() > 0);
-	
+
 	f1SparseIdxList->clear();
 	f2SparseIdxList->clear();
 
 	Frame* frame = frameList[frameId];
 	KMeans * kmeans = frame->pcsOct->kmeans;
 	//frame2(target frame) 内容，进行do kmeans,取出结果
-	
+
 	frame->pcsOct->doKmeans(5);
 	//遍历每个cluster集的node
 	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
 	{
-		//得到最小maDist,保存每个区域最佳匹配的节点序号
+		//得到这个cluster中的最小maDist,保存每个区域最佳匹配的节点序号
 		int bestNodeId = -1;
 		double minDis = -1;
 		for (int n_it; n_it < kmeans->clusterRes[c_it].size(); n_it++)
 		{
 			int nodeIdx = kmeans->clusterRes[c_it][n_it];
-			
+
 			if ((*maDist)[nodeIdx] < minDis || minDis == -1)
 			{
 				bestNodeId = nodeIdx;
@@ -456,6 +512,34 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		f1SparseIdxList->push_back((*f1nIdxList)[bestNodeId]);
 		f2SparseIdxList->push_back((*f2nIdxList)[bestNodeId]);
 	}
-	
+
+	return true;
+}
+
+bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+{
+
+
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	//训练数据，得到矩阵P
+	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
+#ifdef ZJW_DEBUG
+	cout << "start to traie data for mat P ..." << endl;
+#ifdef ZJW_TIMER
+	ZjwTimer test;
+	test.Start();
+#endif //ZJW_TIMER
+#endif // ZJW_DEBUG
+	matchNode(frameId1, frameId2, &f1nIdxList, &f2nIdxList);
+	getMatrixP(frameId1, frameId2, &f1nIdxList, &f2nIdxList, P);
+
+#ifdef ZJW_DEBUG
+#ifdef ZJW_TIMER
+	test.printTimeInMs("traing data for mat P ");
+#endif //zjw_timer
+	cout << "end to traie data for mat P !!!" << endl;
+#endif // ZJW_DEBUG
+
 	return true;
 }

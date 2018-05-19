@@ -46,9 +46,16 @@ struct Varargin
 	double t2;
 
 	//abspline3： 实现的三次样条
-	Varargin(string type = "abspline3", double _K = 20, double _a = 2, double _b = 2, double _t1 = 1, double _t2 = 2) :
+	Varargin(string type = "abspline3", double _K = 20, double _a = 2, 
+		double _b = 2, double _t1 = 1, double _t2 = 2) :
 		designtype(type), K(_K), a(_a), b(_b), t1(_t1), t2(_t2)
 	{}
+	
+	//paper zjw 
+	/*Varargin(string type = "abspline3", double _K = 20, double _a = 1, double _b = 1, double _t1 = 1, double _t2 = 2) :
+		designtype(type), K(_K), a(_a), b(_b), t1(_t1), t2(_t2)
+	{}*/
+
 };
 
 //kernel g functino   分装了scalue，需要其他辅助函数
