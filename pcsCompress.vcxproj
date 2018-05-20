@@ -227,6 +227,7 @@
     <ClInclude Include="sgwt_util\zjw_fminbnd.h" />
     <ClInclude Include="sgwt_util\zjw_sgwt_utils.h" />
     <ClInclude Include="sgwt_util\zjw_sparse_laplacian.h" />
+    <ClInclude Include="signalType.h" />
     <ClInclude Include="util\zjw_kmeans.h" />
     <ClInclude Include="util\zjw_timer.h" />
     <ClInclude Include="util\zjw_fileBatch.h" />

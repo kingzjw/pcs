@@ -29,17 +29,17 @@ void pcsCompress::clickedOpenFileAction()
 	ui.openGLWidget->updateGL();
 
 	//≤‚ ‘ ˝æ›
-	vector<int> f1nIdxList;
-	vector<int> f2nIdxList;
-	vector<double> maDist;
-	ui.openGLWidget->fm.loadContinuousFrames(2, 3, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path);
-	ui.openGLWidget->fm.getBestMatchPoint(2, 3, ui.openGLWidget->fm.P, &f1nIdxList, &f2nIdxList, &maDist);
-	vector<int> f1SparseIdxList;
-	vector<int> f2SparseIdxList;
-	ui.openGLWidget->fm.doKmeansGetSparseBestMatch(3, &f1nIdxList, &f2nIdxList, &maDist, &f1SparseIdxList, &f2SparseIdxList);
+	//vector<int> f1nIdxList;
+	//vector<int> f2nIdxList;
+	//vector<double> maDist;
+	//ui.openGLWidget->fm.loadContinuousFrames(2, 3, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path);
+	//ui.openGLWidget->fm.getBestMatchPoint(2, 3, ui.openGLWidget->fm.P, &f1nIdxList, &f2nIdxList, &maDist);
+	//vector<int> f1SparseIdxList;
+	//vector<int> f2SparseIdxList;
+	//ui.openGLWidget->fm.doKmeansGetSparseBestMatch(3, &f1nIdxList, &f2nIdxList, &maDist, &f1SparseIdxList, &f2SparseIdxList);
 
-	ui.openGLWidget->renderState = 2;
-	ui.openGLWidget->updateGL();
+	//ui.openGLWidget->renderState = 2;
+	//ui.openGLWidget->updateGL();
 }
 
 pcsCompress::pcsCompress(QWidget *parent)

@@ -159,6 +159,9 @@
     <ClInclude Include="util\zjw_kmeans.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
+    <ClInclude Include="signalType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="util\zjw_macro.h">

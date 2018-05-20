@@ -19,6 +19,8 @@
 #include "zjw_macro.h"
 #include "zjw_fminbnd.h"
 #include "pcg.h"
+#include "signalType.h"
+
 
 using namespace std;
 using namespace Eigen;
@@ -94,12 +96,13 @@ public:
 	}
 };
 
+
 /*
   封装了利用切比雪夫展开式快速求解sgwt的工具接口
 */
 class Sgwt {
 public:
-	//模拟cell  大小  (Nscales+1) * (Nscales+1)
+	//模拟cell  大小  (Nscales+1) * (M+1)
 	//c(n,k) 所有的系数
 	vector<VectorXd> coeff;
 
@@ -124,6 +127,14 @@ public:
 
 	//一个表示的是：0表示lmin 和 1表示lmax
 	double arange[2];
+
+	//最外面的vector 的大小： 信号的数量 * 象限数  48
+	//里面的vector的大小，尺度+h的大小
+	//每个向量存储每个尺度下的系数(每个尺度：对应所有的顶点)
+	vector<vector<VectorXd>> sgwtCoeff_WS;
+
+	//int signalNum;
+	//int quadrantNum;
 
 public:
 	//_m 切比雪夫的高阶项模拟  _Nscales
@@ -169,6 +180,17 @@ public:
 	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
 	vector<VectorXd> sgwt_cheby_op(VectorXd f, vector<VectorXd> c);
 
+	//chebushev的不等式求解信号
+	//传入的信号 f(f是包括所有节点上的信号的) ,以及计算好的多项式的近似系数
+	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
+	bool sgwt_cheby_op(VectorXd *f, vector<VectorXd> *c, vector<VectorXd>* sgwt_out);
+
+	//input: type:信号的类型， quadrant: 象限 
+	bool saveSgwtCoeff(SignalType type, int quadrant,VectorXd *f, vector<VectorXd> *c);
+
+	//通过信号的类型，象限的类型，指定的node idx 返回这个node在的信号(5*1 因为scale 和 h是五维的)
+	bool sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd* sgwt_out);
+
 	//给定参数x,返回的是g(x)的值
 	static double sgwt_kernel_abspline3(double x);
 	//对sgwt_kernel_abspline3接口的返回值取相反数
@@ -202,5 +224,9 @@ public:
 	//sgwt 切比雪夫的准备工作，准备计算
 	void sgwtDoChebyPrepare();
 	//重载操作符"()"，没传入一个信号，俺么返回这个信号对应的系数
+	//传入的x是，特定某个信号，在某个象限下的信息（如果是叶子结点是N个，那么就是N*1维度）
 	vector<VectorXd> operator()(VectorXd x);
+
+	//isSiglePoint:标记输入的f是一个顶点   f: 1*1维度的
+	void operator()(int nodeIdx, int signalType, int quadrantType, VectorXd* sgwt_out);
 };

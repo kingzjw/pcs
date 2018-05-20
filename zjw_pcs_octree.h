@@ -18,6 +18,7 @@
 #include "zjw_timer.h"
 #include "zjw_dsaupd.h"
 #include "zjw_kmeans.h"
+#include "signalType.h"
 
 
 using namespace Eigen;
@@ -28,17 +29,6 @@ using namespace std;
 typedef Eigen::SparseMatrix<double> SpMat;
 typedef Eigen::Triplet<double> T;
 #endif // USE_SPARSE
-
-//信号的类型，要在这里注册
-enum SignalType
-{
-	SignalX,
-	SignalY,
-	SignalZ,
-	SignalR,
-	SignalG,
-	SignalB
-};
 
 //------------------------------ Class that holds your data.-----------------------
 
@@ -252,13 +242,22 @@ public:
 	//把8个象限的信号（x,y,z,r,g,b）放到向量中:并封装到vector中
 	//8个vectorXd， 分别表示不同象限的信号。每个vector表示的是：所有在节点在这个象限中的该型号的具体的值
 	vector<VectorXd> getSignalF(SignalType sType);
+	
+	//调用getSignalF得到所有信号，利用sgwt求出所有的系数，并保存在sgwt中。
+	bool getAllSignalAndSaveSGWTCoeff();
 
-	//输入信号的值和象限的类型(0-7),返回node上在所有持尺度上的系数
+	//返回这个节点在特定信号下面所有象限信号，返回值应该是8个系数的向量，对应每个象限
+	bool getSignalF(SignalType sType, int nodeIdx, VectorXd * sigVQ_out);
+
+	//废弃,输入信号的值和象限的类型(0-7),返回node上在所有持尺度上的系数
 	vector<VectorXd> getSgwtCoeffWS(SignalType type, int quadrant);
 
 	//得到这个node的feature vector 维数 8*6*5
 	bool getFeatureVector(int nodeIdx, VectorXd* featureVector);
+	//加速
+	bool getFeatureVector2(int nodeIdx, VectorXd* featureVector);
 
+	//废弃，x,y，z所有的信号
 	void getSgwtCoeffWS();
 
 	//kmeans

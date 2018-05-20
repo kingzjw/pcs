@@ -56,15 +56,8 @@ bool Frame::octSgwt()
 	pcsOct->setPointTo8Areas();
 	pcsOct->getLeafSignal();
 
-	//pcsOct->getSgwtCoeffWS();
-	//拿到信号x在第一个象限0中的值
-	//pcsOct->getSgwtCoeffWS(SignalType::SignalX, 0);
+	pcsOct->getAllSignalAndSaveSGWTCoeff();
 
-	/*VectorXd featureVec;
-	pcsOct->getFeatureVector(0, &featureVec);*/
-	//cout << featureVec << endl;
-
-	//pcsOct->doKmeans(5);
 #ifdef ZJW_TIMER
 	timer2.Stop();
 	timer2.printTimeInMs("build oct and ready to compute the sgwt!");
@@ -384,9 +377,11 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 		cout << "cov mat 矩阵可逆!!" << endl;
 		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
 		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
-		/*cout << covMat.diagonal() << endl;
+
+		//print
+		cout << covMat.diagonal() << endl;
 		cout << "mat P: " << endl;
-		cout << *p << endl << endl;*/
+		cout << *p << endl << endl;
 #endif //zjw debug
 	}
 
@@ -450,7 +445,6 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 			cout.width(5);
 			cout.precision(2);
 			cout << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() <<"%";
-
 		}
 		else
 		{
@@ -459,7 +453,6 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 			cout << "match process:  " << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size()<< "%";
 			process = true;
 		}
-
 #endif // ZJW_DEBUG
 	}
 
@@ -494,7 +487,7 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		//得到这个cluster中的最小maDist,保存每个区域最佳匹配的节点序号
 		int bestNodeId = -1;
 		double minDis = -1;
-		for (int n_it; n_it < kmeans->clusterRes[c_it].size(); n_it++)
+		for (int n_it = 0; n_it < kmeans->clusterRes[c_it].size(); n_it++)
 		{
 			int nodeIdx = kmeans->clusterRes[c_it][n_it];
 

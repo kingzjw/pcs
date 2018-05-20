@@ -45,6 +45,18 @@ Sgwt::Sgwt(const int _m, const int _Nscales, SpMat _L) :m(_m), Nscales(_Nscales)
 	init_c.setZero();
 	for (int i = 0; i < _Nscales + 1; i++)
 		coeff.push_back(init_c);
+
+	for (int i = 0; i < sgwtCoeff_WS.size(); i++)
+	{
+		sgwtCoeff_WS[i].clear();
+	}
+	sgwtCoeff_WS.clear();
+
+	//6个信号，8个象限
+	sgwtCoeff_WS.resize(6 * 8);
+	/*signalList.clear();
+	quadrantList.clear();*/
+
 };
 
 double Sgwt::sgwt_rough_lmax()
@@ -316,6 +328,121 @@ vector<VectorXd> Sgwt::sgwt_cheby_op(VectorXd f, vector<VectorXd> coeff)
 	return sgwtCoeff_WS;
 }
 
+bool Sgwt::sgwt_cheby_op(VectorXd * f, vector<VectorXd>* c, vector<VectorXd>* sgwt_out)
+{
+#ifdef  ZJW_TIMER
+	//timer
+	clock_t start, finish;
+	double duration;
+	start = clock();
+#endif //  zjw_TIMER
+
+	//保存每个尺度下的，最高阶的系数。
+	//cur nsacles 包括h 和g
+	int cur_nscales = coeff.size();
+	VectorXd M(cur_nscales);
+
+	//存储每个尺度下的系数
+	assert(sgwt_out);
+	VectorXd init_r(f->size());
+	init_r.setZero();
+
+	for (int i = 0; i < cur_nscales; i++)
+		sgwt_out->push_back(init_r);
+
+	//记录不同尺度下，最大的那个Mj (多项式最大阶)
+	int maxM = 0;
+	for (int i = 0; i < cur_nscales; i++)
+	{
+		M[i] = coeff[i].size();
+		if (M[i] > maxM)
+			maxM = M[i];
+	}
+
+	double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;
+	//zjw
+	/*double a1 = (arange[1]) / 2;
+	double a2 = a1;*/
+
+	//Twf_old：保存原有的信号 f
+	VectorXd Twf_old(f);
+	//利用矩阵相乘的递归，解决多项式的项
+	VectorXd Twf_cur(f->size());
+	//保存展开式中 T1的项的结果  (L-a)/a * f
+	Twf_cur = (lap*(*f) - a2*(*f)) / a1;
+
+	//-----计算每个尺度下面的，计算Wf函数展开式中的第0项，和第一项 的和,把计算出来的系数保存到sgwtCoeff_W 中-------
+	for (int j = 0; j < cur_nscales; j++)
+	{
+		// t[i]  n * 1
+		(*sgwt_out)[j] = 0.5*coeff[j](0)*Twf_old + coeff[j](1)*Twf_cur;
+	}
+
+	//----------------------计算展开中的每一项，累加到系数sgwtCoeff_W上-------------------------
+	VectorXd Twf_new;
+	for (int k = 1; k < maxM; k++)
+	{
+		/*VectorXd tmp = L*Twf_cur;		//< 3ms
+		Twf_new = (tmp - a2*Twf_cur);		// <2ms
+		Twf_new *= 2 / a1;					// <1ms
+		Twf_new-= Twf_old;				// <1ms*/
+
+		//计算第 k+1 的那个Tk的。当k = 1 ,计算第 T2的值
+		// T2 = T1和T0的组合
+		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;
+		//------用自底向上方法的方法，解决递归，同时计算多个尺度----
+		for (int j = 0; j < cur_nscales; j++)
+		{
+			if (1 + k < M(j))
+			{
+				//累加到sgwt的系数上  r[j]表示尺度第j项的系数
+				(*sgwt_out)[j] = (*sgwt_out)[j] + coeff[j](k + 1)*Twf_new;
+			}
+		}
+		Twf_old = Twf_cur;
+		Twf_cur = Twf_new;
+	}
+#ifdef  ZJW_TIMER
+	// time
+	finish = clock();
+	duration = (double)(finish - start) / CLOCKS_PER_SEC;
+#endif //  zjw_TIMER
+
+	return true;
+}
+
+bool Sgwt::saveSgwtCoeff(SignalType type, int quadrant, VectorXd * f, vector<VectorXd>* c)
+{
+	assert(quadrant > -1 && quadrant < 8);
+	assert(f);
+	assert(c);
+
+	int index = type * 8 + quadrant;
+	vector<VectorXd> tempSGWT;
+	sgwt_cheby_op(f, c, &tempSGWT);
+	sgwtCoeff_WS[index] = tempSGWT;
+	return true;
+}
+
+bool Sgwt::sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd * sgwt_out)
+{
+	assert(quadrantType > -1 && quadrantType < 8);
+
+	int index = signalType * 8 + quadrantType;
+
+	if (sgwt_out)
+		delete sgwt_out;
+	sgwt_out = new VectorXd(coeff.size());
+
+	for (int i = 0; i < coeff.size(); i++)
+	{
+		(*sgwt_out)(i) = sgwtCoeff_WS[index][i](nodeIdx);
+	}
+
+	return true;
+}
+
 VectorXd Sgwt::sgwt_adjoint(vector<VectorXd> y)
 {
 	VectorXd adj(lap.rows());
@@ -486,10 +613,13 @@ void SgwtCheby::sgwtDoChebyPrepare()
 //传输一个信号
 vector<VectorXd> SgwtCheby::operator()(VectorXd f)
 {
-	if (f.rows() <= 0)
-	{
-		cout << "f is not valid" << endl;
-	}
-
+	assert(f.rows() > 0);
 	return sgwt->sgwt_cheby_op(f, chebyCoeff);
+}
+
+void SgwtCheby::operator()(int nodeIdx, int signalType, int quadrantType, VectorXd* sgwt_out)
+{
+	sgwt->sgwt_cheby_op(nodeIdx, signalType, quadrantType, sgwt_out);
+
+	return; 
 }
