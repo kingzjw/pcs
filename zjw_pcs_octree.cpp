@@ -682,10 +682,10 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 	if (!fastSgwt)
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
 
-#ifdef ZJW_TIMER
-	ZjwTimer test;
-	test.Start();
-#endif //ZJW_TIMER
+//#ifdef ZJW_TIMER
+//	ZjwTimer test;
+//	test.Start();
+//#endif //ZJW_TIMER
 
 	//拿到这个信号，在所有象限中的信号，所有结点的信号。
 	vector<SignalType> typeList;
@@ -723,11 +723,12 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 		}
 	}
 
-#ifdef ZJW_TIMER
-	test.Stop();
-	cout << nodeIdx;
-	test.printTimeInMs(" getFeatureVector2  time : ");
-#endif //zjw_timer
+//#ifdef ZJW_TIMER
+//	test.Stop();
+//	cout << nodeIdx;
+//	test.printTimeInMs(" getFeatureVector2  time : ");
+//#endif //zjw_timer
+
 #endif //SGWT_DEBUG
 
 	return true;

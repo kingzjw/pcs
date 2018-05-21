@@ -1,50 +1,5 @@
-﻿  moc_pcscompress.cpp
-  moc_zjw_opengl.cpp
-  main.cpp
-  pcscompress.cpp
-  zjw_sgwt_utils.cpp
-e:\1.study\pointcloud\code\pcscompress\pcscompress\eigen\eigen\src/Core/Matrix.h(296): error C2664: “void Eigen::PlainObjectBase<Eigen::Matrix<double,-1,1,0,-1,1>>::_init1<T>(const Derived &)”: 无法将参数 1 从“Eigen::Matrix<double,-1,1,0,-1,1> *const ”转换为“Eigen::EigenBase<Derived>::Index”
-          with
-          [
-              T=Eigen::VectorXd *,
-              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
-          ]
-          and
-          [
-              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
-          ]
-  e:\1.study\pointcloud\code\pcscompress\pcscompress\eigen\eigen\src/Core/Matrix.h(296): note: 没有使该转换得以执行的上下文
-  sgwt_util\zjw_sgwt_utils.cpp(369): note: 参见对正在编译的函数 模板 实例化“Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::VectorXd*>(const T &)”的引用
-          with
-          [
-              T=Eigen::VectorXd *
-          ]
-  sgwt_util\zjw_sgwt_utils.cpp(369): note: 参见对正在编译的函数 模板 实例化“Eigen::Matrix<double,-1,1,0,-1,1>::Matrix<Eigen::VectorXd*>(const T &)”的引用
-          with
-          [
-              T=Eigen::VectorXd *
-          ]
-E:\software\VisualStudio2015\VC\include\xutility(2372): warning C4996: 'std::copy::_Unchecked_iterators::_Deprecate': Call to 'std::copy' with parameters that may be unsafe - this call relies on the caller to check that the passed values are correct. To disable this warning, use -D_SCL_SECURE_NO_WARNINGS. See documentation on how to use Visual C++ 'Checked Iterators'
-  E:\software\VisualStudio2015\VC\include\xutility(2372): note: 参见“std::copy::_Unchecked_iterators::_Deprecate”的声明
-  E:\1.study\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(538): note: 参见对正在编译的函数 模板 实例化“_OutIt *std::copy<const Scalar*,double*>(_InIt,_InIt,_OutIt)”的引用
-          with
-          [
-              _OutIt=double *,
-              Scalar=double,
-              _InIt=const double *
-          ]
-  E:\1.study\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(518): note: 编译类 模板 成员函数“void Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>::init(const Scalar *)”时
-          with
-          [
-              Scalar=double
-          ]
-  E:\1.study\pointCloud\code\pcsCompress\pcsCompress\spectra\include\GenEigsSolver.h(564): note: 参见对正在编译的函数 模板 实例化“void Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>::init(const Scalar *)”的引用
-          with
-          [
-              Scalar=double
-          ]
-  sgwt_util\zjw_sgwt_utils.cpp(68): note: 参见对正在编译的类 模板 实例化“Spectra::GenEigsSolver<double,0,Spectra::SparseGenMatProd<double,0,int>>”的引用
-  zjw_frame.cpp
-  zjw_opengl.cpp
+﻿  zjw_frame.cpp
   zjw_pcs_octree.cpp
   正在生成代码...
+  pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
+  pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

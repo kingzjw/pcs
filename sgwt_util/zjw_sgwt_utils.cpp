@@ -328,7 +328,7 @@ vector<VectorXd> Sgwt::sgwt_cheby_op(VectorXd f, vector<VectorXd> coeff)
 	return sgwtCoeff_WS;
 }
 
-bool Sgwt::sgwt_cheby_op(VectorXd * f, vector<VectorXd>* c, vector<VectorXd>* sgwt_out)
+bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt_out)
 {
 #ifdef  ZJW_TIMER
 	//timer
@@ -343,12 +343,12 @@ bool Sgwt::sgwt_cheby_op(VectorXd * f, vector<VectorXd>* c, vector<VectorXd>* sg
 	VectorXd M(cur_nscales);
 
 	//存储每个尺度下的系数
-	assert(sgwt_out);
-	VectorXd init_r(f->size());
+	sgwt_out.clear();
+	VectorXd init_r(f.size());
 	init_r.setZero();
 
 	for (int i = 0; i < cur_nscales; i++)
-		sgwt_out->push_back(init_r);
+		sgwt_out.push_back(init_r);
 
 	//记录不同尺度下，最大的那个Mj (多项式最大阶)
 	int maxM = 0;
@@ -368,15 +368,15 @@ bool Sgwt::sgwt_cheby_op(VectorXd * f, vector<VectorXd>* c, vector<VectorXd>* sg
 	//Twf_old：保存原有的信号 f
 	VectorXd Twf_old(f);
 	//利用矩阵相乘的递归，解决多项式的项
-	VectorXd Twf_cur(f->size());
+	VectorXd Twf_cur(f.size());
 	//保存展开式中 T1的项的结果  (L-a)/a * f
-	Twf_cur = (lap*(*f) - a2*(*f)) / a1;
+	Twf_cur = (lap*f - a2*f) / a1;
 
 	//-----计算每个尺度下面的，计算Wf函数展开式中的第0项，和第一项 的和,把计算出来的系数保存到sgwtCoeff_W 中-------
 	for (int j = 0; j < cur_nscales; j++)
 	{
 		// t[i]  n * 1
-		(*sgwt_out)[j] = 0.5*coeff[j](0)*Twf_old + coeff[j](1)*Twf_cur;
+		sgwt_out[j] = 0.5*coeff[j](0)*Twf_old + coeff[j](1)*Twf_cur;
 	}
 
 	//----------------------计算展开中的每一项，累加到系数sgwtCoeff_W上-------------------------
@@ -390,19 +390,20 @@ bool Sgwt::sgwt_cheby_op(VectorXd * f, vector<VectorXd>* c, vector<VectorXd>* sg
 
 		//计算第 k+1 的那个Tk的。当k = 1 ,计算第 T2的值
 		// T2 = T1和T0的组合
-		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;
+		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;	
 		//------用自底向上方法的方法，解决递归，同时计算多个尺度----
 		for (int j = 0; j < cur_nscales; j++)
 		{
 			if (1 + k < M(j))
 			{
 				//累加到sgwt的系数上  r[j]表示尺度第j项的系数
-				(*sgwt_out)[j] = (*sgwt_out)[j] + coeff[j](k + 1)*Twf_new;
+				sgwt_out[j] = sgwt_out[j] + coeff[j](k + 1)*Twf_new;
 			}
 		}
 		Twf_old = Twf_cur;
 		Twf_cur = Twf_new;
 	}
+
 #ifdef  ZJW_TIMER
 	// time
 	finish = clock();
@@ -420,7 +421,7 @@ bool Sgwt::saveSgwtCoeff(SignalType type, int quadrant, VectorXd * f, vector<Vec
 
 	int index = type * 8 + quadrant;
 	vector<VectorXd> tempSGWT;
-	sgwt_cheby_op(f, c, &tempSGWT);
+	sgwt_cheby_op(*f, *c, tempSGWT);
 	sgwtCoeff_WS[index] = tempSGWT;
 	return true;
 }
@@ -431,9 +432,10 @@ bool Sgwt::sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd
 
 	int index = signalType * 8 + quadrantType;
 
-	if (sgwt_out)
-		delete sgwt_out;
-	sgwt_out = new VectorXd(coeff.size());
+	if (!sgwt_out)
+		sgwt_out = new VectorXd(coeff.size());
+
+	sgwt_out->resize(coeff.size());
 
 	for (int i = 0; i < coeff.size(); i++)
 	{

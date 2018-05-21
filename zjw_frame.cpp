@@ -306,9 +306,8 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	for (int it = 0; it < f1nIdxList->size(); it++)
 	{
-		frame1->pcsOct->getFeatureVector((*f1nIdxList)[it], &featureVec1);
-		frame2->pcsOct->getFeatureVector((*f2nIdxList)[it], &featureVec2);
-
+		frame1->pcsOct->getFeatureVector2((*f1nIdxList)[it], &featureVec1);
+		frame2->pcsOct->getFeatureVector2((*f2nIdxList)[it], &featureVec2);
 		//ensure 自变量的个数是一致的
 		//assert(sample.cols() == featureVec1.rows());
 		//保存这个到矩阵中,相应的行中
@@ -380,8 +379,9 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 		//print
 		cout << covMat.diagonal() << endl;
-		cout << "mat P: " << endl;
-		cout << *p << endl << endl;
+		/*cout << "mat P: " << endl;
+		cout << *p << endl << endl;*/
+
 #endif //zjw debug
 	}
 
@@ -412,7 +412,7 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 		//计算当前frame2 中的feature vector
 		//Node * node1 = &(frame1->pcsOct->ctLeaf->nodeList[node2_it]->nodeData);
 		VectorXd featureVec2;
-		frame2->pcsOct->getFeatureVector(node2_it, &featureVec2);
+		frame2->pcsOct->getFeatureVector2(node2_it, &featureVec2);
 
 		//遍历frame1中所有的叶子节点,
 		VectorXd featureVec1;
@@ -421,7 +421,7 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 		for (int node1_it = 0; node1_it < frame1->pcsOct->ctLeaf->nodeList.size(); node1_it++)
 		{
 			//得到frame1中叶子节点的 fearture vector
-			frame1->pcsOct->getFeatureVector(node1_it, &featureVec1);
+			frame1->pcsOct->getFeatureVector2(node1_it, &featureVec1);
 
 			//计算node2 和node1两个feature vector的马氏距离
 			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);

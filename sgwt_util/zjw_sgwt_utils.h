@@ -183,7 +183,7 @@ public:
 	//chebushev的不等式求解信号
 	//传入的信号 f(f是包括所有节点上的信号的) ,以及计算好的多项式的近似系数
 	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
-	bool sgwt_cheby_op(VectorXd *f, vector<VectorXd> *c, vector<VectorXd>* sgwt_out);
+	bool sgwt_cheby_op(VectorXd f, vector<VectorXd> c, vector<VectorXd>& sgwt_out);
 
 	//input: type:信号的类型， quadrant: 象限 
 	bool saveSgwtCoeff(SignalType type, int quadrant,VectorXd *f, vector<VectorXd> *c);
