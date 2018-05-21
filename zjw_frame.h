@@ -48,7 +48,10 @@ private:
 public:
 	FrameManage();
 	~FrameManage();
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
+
+    //改变原数据，必须调用的接口
+	void switchSouceData();
+
 	//保存并处理文件夹下的所有的序列文件.并加载计算出相应的swg系数
 	void batchLoadObj(FileNameForMat type = NUM_FRONT, string fileNameFormat="_cleaner", 
 		string path = "./testData/football");
@@ -58,8 +61,8 @@ public:
 		string path = "./testData/football");
 
 	//对指定的连续两帧，读取obj并计算价值sgwt的系数，frameId 从0开始
-	bool loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT, 
-		string fileNameFormat = "_cleaner", string path = "./testData/football");
+	bool loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT,
+		string fileNameFormat = "_cleaner", string path = "./testData/football", bool changeData = true);
 
 	//训练数据：对训练的数据连续两帧进行匹配,对frameId1中的每个node，在fram2中找对应的匹配的Node idx
 	bool matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList);

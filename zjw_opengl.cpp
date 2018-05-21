@@ -31,6 +31,7 @@ ZjwOpenGL::ZjwOpenGL(QWidget * parent) : QGLWidget(parent) {
 
 	//============针对应用的扩展，可以删除=======================
 	renderState = 0;
+	showFrameIdx = 0;
 }
 
 ZjwOpenGL::~ZjwOpenGL() {
@@ -118,17 +119,22 @@ void ZjwOpenGL::render()
 	}
 	else if (renderState == 1)
 	{
-		drawPointCloud(*(fm.frameList[0]->objMesh));
+		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
 		//drawPointCloud(objMesh);
 
 	}
 	else if (renderState == 2)
 	{
-		drawPointCloudOctree(*(fm.frameList[0]->objMesh), *(fm.frameList[0]->pcsOct));
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
 		//drawPointCloudOctree(objMesh, pcsOct);
 	}
 
 	glPopMatrix();
+}
+
+void ZjwOpenGL::setShowFrameIdx(int i)
+{
+	showFrameIdx = i;
 }
 
 void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)

@@ -73,6 +73,8 @@ public:
 
 	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树
 	int renderState;
+	int showFrameIdx;
+	void setShowFrameIdx(int i = 0);
 	void drawPointCloud(ObjMesh &objMesh);
 	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
 	void drawWireCube(Vec3 min, Vec3 max);

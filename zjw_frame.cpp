@@ -70,6 +70,7 @@ FrameManage::FrameManage()
 {
 	batchLoad = false;
 	getAllFilePath = false;
+	//changeSouceData = true;
 
 	fileBatch = nullptr;
 	P = new MatrixXd;
@@ -82,6 +83,13 @@ FrameManage::~FrameManage()
 
 	if (fileBatch)
 		delete fileBatch;
+}
+
+void FrameManage::switchSouceData()
+{
+	batchLoad = false;
+	getAllFilePath = false;
+	fileBatch = nullptr;
 }
 
 void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, string path)
@@ -179,10 +187,15 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 	}
 }
 
-bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path, bool changeData)
 {
 	assert(frameId1 > -1 && frameId2 > -1);
 	assert(abs(frameId1-frameId2)==1);
+	
+	if (changeData)
+	{
+		switchSouceData();
+	}
 
 
 	if (batchLoad)
@@ -425,6 +438,8 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 
 			//计算node2 和node1两个feature vector的马氏距离
 			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);
+			//正定矩阵P
+			assert(maha>0);
 			mahalanobisDist.push_back(maha);
 		}
 

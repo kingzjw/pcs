@@ -761,11 +761,8 @@ void PcsOctree::getSgwtCoeffWS()
 
 void PcsOctree::doKmeans(int clusterNum)
 {
-#ifdef ZJW_DEBUG
-	cout << "start do Kmeans ...." << endl;
-#endif //zjw_debug
-
 #ifdef ZJW_TIMER
+	cout << "start do Kmeans ...." << endl;
 	ZjwTimer timer2;
 	timer2.Start();
 #endif
@@ -780,12 +777,8 @@ void PcsOctree::doKmeans(int clusterNum)
 
 #ifdef ZJW_TIMER
 	timer2.Stop();
-	timer2.printTimeInMs("do kmeans in this frame!!");
+	timer2.printTimeInMs("end do Kmeans: ");
 #endif
-
-#ifdef ZJW_DEBUG
-	cout << "end do Kmeans !!!!" << endl;
-#endif //zjw_debug
 }
 
 int PcsOctree::judegePointToLeafNode(Vec3 * point, int & idx)

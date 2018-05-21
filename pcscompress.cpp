@@ -25,21 +25,22 @@ void pcsCompress::clickedOpenFileAction()
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path);
 
-	ui.openGLWidget->renderState = 2;
-	ui.openGLWidget->updateGL();
+	/*ui.openGLWidget->renderState = 2;
+	ui.openGLWidget->updateGL();*/
 
 	//测试数据
-	//vector<int> f1nIdxList;
-	//vector<int> f2nIdxList;
-	//vector<double> maDist;
-	//ui.openGLWidget->fm.loadContinuousFrames(2, 3, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path);
-	//ui.openGLWidget->fm.getBestMatchPoint(2, 3, ui.openGLWidget->fm.P, &f1nIdxList, &f2nIdxList, &maDist);
-	//vector<int> f1SparseIdxList;
-	//vector<int> f2SparseIdxList;
-	//ui.openGLWidget->fm.doKmeansGetSparseBestMatch(3, &f1nIdxList, &f2nIdxList, &maDist, &f1SparseIdxList, &f2SparseIdxList);
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	vector<double> maDist;
+	ui.openGLWidget->fm.loadContinuousFrames(2, 3, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path, true);
+	ui.openGLWidget->fm.getBestMatchPoint(2, 3, ui.openGLWidget->fm.P, &f1nIdxList, &f2nIdxList, &maDist);
+	vector<int> f1SparseIdxList;
+	vector<int> f2SparseIdxList;
+	ui.openGLWidget->fm.doKmeansGetSparseBestMatch(3, &f1nIdxList, &f2nIdxList, &maDist, &f1SparseIdxList, &f2SparseIdxList);
 
-	//ui.openGLWidget->renderState = 2;
-	//ui.openGLWidget->updateGL();
+	ui.openGLWidget->setShowFrameIdx(2);
+	ui.openGLWidget->renderState = 2;
+	ui.openGLWidget->updateGL();
 }
 
 pcsCompress::pcsCompress(QWidget *parent)
