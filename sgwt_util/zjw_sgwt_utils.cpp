@@ -64,6 +64,9 @@ double Sgwt::sgwt_rough_lmax()
 	SparseGenMatProd<double> op(lap);
 
 	// Construct eigen solver object, requesting the largest three eigenvalues
+
+	//GenEigsSolver中的要求，后面我们传递了参数10,也要求叶子节点的数量也不超过10
+	assert(op.rows() > 10);
 	GenEigsSolver< double, LARGEST_MAGN, SparseGenMatProd<double> > eigs(&op, 1, 10);
 
 	// Initialize and compute

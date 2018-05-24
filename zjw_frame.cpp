@@ -626,7 +626,7 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 	for (int node_it = 0; node_it < f1SparseIdxList->size(); node_it++)
 	{
 		// 拿到应该拿的Mn
-		VectorXd MnMat_out;
+		MatrixXd MnMat_out;
 		int Mn = (*f1SparseIdxList)[node_it];
 		getMnMat(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
 
