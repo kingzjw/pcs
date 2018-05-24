@@ -262,6 +262,42 @@ void PcsOctree::getMatEigenVerValue()
 #endif //use_arpack
 }
 
+//拿到nodeidx这个点的two hop。拿到的点不包括自己，因为是无向图，所以这里的two hop包括一步的
+void PcsOctree::getTwoHopNeighborhood(int nodeIdx, set<int>* nodeList_out, SpMat * spLaplacian)
+{
+	assert(nodeIdx > -1 && nodeIdx < ctLeaf->nodeList.size());
+	//只支持列主序
+	assert(!spLaplacian->IsRowMajor);
+	assert(nodeList_out);
+	
+	//保存第一跳的结果
+	vector<int> tempList;
+	//遍历这一列的所有非0元素
+	for (SparseMatrix<double>::InnerIterator it(*spLaplacian, nodeIdx); it; ++it)
+	{
+		if (it.value() != 0)
+		{
+			tempList.push_back(it.row());
+		}
+	}
+
+	//set<int> nodeList_out;
+	nodeList_out->clear();
+	for (int node_it = 0; node_it < tempList.size(); node_it++)
+	{
+		int index = tempList[node_it];
+		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, index); it; ++it)
+		{
+			if (it.value() != 0)
+			{
+				nodeList_out->insert(it.row());
+			}
+		}
+	}
+	//移除自己
+	nodeList_out->erase(nodeIdx);
+}
+
 void PcsOctree::clearOct()
 {
 	if (pcsOct != nullptr)
@@ -486,10 +522,10 @@ bool PcsOctree::getAllSignalAndSaveSGWTCoeff()
 		fSignal = getSignalF(typeList[type_it]);
 
 		//遍历所有的象限
-		for (int quadrant_it = 0; quadrant_it <totalQuadrant; quadrant_it++)
+		for (int quadrant_it = 0; quadrant_it < totalQuadrant; quadrant_it++)
 		{
 			//vector中表示的5个不同尺度下面所有顶点的向量
-			(*fastSgwt).sgwt->saveSgwtCoeff(typeList[type_it], quadrant_it, &fSignal[quadrant_it], &((*fastSgwt).sgwt->coeff) );
+			(*fastSgwt).sgwt->saveSgwtCoeff(typeList[type_it], quadrant_it, &fSignal[quadrant_it], &((*fastSgwt).sgwt->coeff));
 		}
 	}
 
@@ -632,9 +668,6 @@ bool PcsOctree::getFeatureVector(int nodeIdx, VectorXd *featureVector)
 	typeList.push_back(SignalG);
 	typeList.push_back(SignalB);
 
-	//test
-	//cout << "g kernel scales: " << fastSgwt->sgwt->t.size() << endl;
-	//end
 	//记录g func的scale的个数，在加上一个h func
 	int totalScale = (fastSgwt->sgwt->t.size() + 1);
 	int totalSignal = typeList.size();
@@ -682,12 +715,12 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 	if (!fastSgwt)
 		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
 
-//#ifdef ZJW_TIMER
-//	ZjwTimer test;
-//	test.Start();
-//#endif //ZJW_TIMER
+	//#ifdef ZJW_TIMER
+	//	ZjwTimer test;
+	//	test.Start();
+	//#endif //ZJW_TIMER
 
-	//拿到这个信号，在所有象限中的信号，所有结点的信号。
+		//拿到这个信号，在所有象限中的信号，所有结点的信号。
 	vector<SignalType> typeList;
 	typeList.push_back(SignalX);
 	typeList.push_back(SignalY);
@@ -703,7 +736,7 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 
 	//向量下标
 	int idx = -1;
-	//表示这个顶点在这个信号，这个象限的系数 维度：5*1 
+	//表示这个顶点在这个信号，这个象限的系数 维度：5*1
 	VectorXd w_s;
 	//遍历所有的信号
 	for (int type_it = 0; type_it < typeList.size(); type_it++)
@@ -723,11 +756,11 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 		}
 	}
 
-//#ifdef ZJW_TIMER
-//	test.Stop();
-//	cout << nodeIdx;
-//	test.printTimeInMs(" getFeatureVector2  time : ");
-//#endif //zjw_timer
+	//#ifdef ZJW_TIMER
+	//	test.Stop();
+	//	cout << nodeIdx;
+	//	test.printTimeInMs(" getFeatureVector2  time : ");
+	//#endif //zjw_timer
 
 #endif //SGWT_DEBUG
 
@@ -805,10 +838,6 @@ void PcsOctree::getLeafSignal()
 		//遍历当前叶子节点的八个象限
 		for (int i = 0; i < octNode->nodeData.leafNodePos8Areas.size(); i++)
 		{
-			////test
-			//cout << octNode->nodeData.leafNode8Areas.size() << endl;
-			////end
-
 			//这个象限没有point
 			if (octNode->nodeData.leafNodePos8Areas[i].size() == 0)
 			{
@@ -970,10 +999,6 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 
 #ifdef USE_SPARSE
 	//L  = D-W 下面直接保存为L了
-
-	//test
-	//cout << "coeff: "<<idx <<"  "<< leafIdx << endl;
-	//end test
 
 	coeff->push_back(T(idx, leafIdx, -1 / Length(delta)));
 	coeff->push_back(T(leafIdx, idx, -1 / Length(delta)));

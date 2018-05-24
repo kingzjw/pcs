@@ -1180,7 +1180,6 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 			//	}
 			//}
 
-
 			//
 			//switch (type)
 			//{

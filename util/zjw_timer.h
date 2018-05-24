@@ -29,5 +29,4 @@ public:
 	void Stop();
 	int64_t GetInMs();
 	void printTimeInMs(std::string info);
-
 };

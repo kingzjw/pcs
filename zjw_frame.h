@@ -49,15 +49,15 @@ public:
 	FrameManage();
 	~FrameManage();
 
-    //改变原数据，必须调用的接口
+	//改变原数据，必须调用的接口
 	void switchSouceData();
 
 	//保存并处理文件夹下的所有的序列文件.并加载计算出相应的swg系数
-	void batchLoadObj(FileNameForMat type = NUM_FRONT, string fileNameFormat="_cleaner", 
+	void batchLoadObj(FileNameForMat type = NUM_FRONT, string fileNameFormat = "_cleaner",
 		string path = "./testData/football");
 
 	//保存所有格式和路径的，从小到大保存完整路径名字,并得到所有的frameList
-	void getAllFilesPath(FileNameForMat type = NUM_FRONT,string fileNameFormat =  "_cleaner", 
+	void getAllFilesPath(FileNameForMat type = NUM_FRONT, string fileNameFormat = "_cleaner",
 		string path = "./testData/football");
 
 	//对指定的连续两帧，读取obj并计算价值sgwt的系数，frameId 从0开始
@@ -71,21 +71,29 @@ public:
 	bool getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList,
 		vector<int>* f2nIdxList, MatrixXd * P);
 
+	//测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
+	bool getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList,
+		vector<int>* f2nIdxList, vector<double>* maDist);
+
+	//测试数据：根据K-mean保存的结果，来保存稀疏的最佳匹配
+	bool doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
+		vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList);
+
 	//训练得到矩阵P的总接口
 	bool trainGetP(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT,
 		string fileNameFormat = "_cleaner", string path = "./testData/football");
 
-	//测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
-	bool getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList,
-		vector<int>* f2nIdxList, vector<double>* maDist );
+	//得到测试数据的稀疏最佳匹配
+	bool getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<int>* f1SparseIdxList_out,
+		vector<int>* f2SparseIdxList_out, FileNameForMat type = NUM_FRONT, string fileNameFormat = "_cleaner",
+		string path = "./testData/football", bool changeData = true);
 
-	//测试数据：根据K-mean保存的结果，来保存稀疏的最佳匹配
-	bool doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList,vector<int>* f2nIdxList, 
-		vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList);
+	//-------------------------计算motion vector---------------------------
 
+	//对稀疏的最佳匹配中的Mn 和n对应关系，得到在frame1上的3*3 mat 
+	void getMnMat(int frameId1, int bestMatchIdx, int MnIdx, int NIdx, VectorXd & MnMat_out);
 
-	
+	//利用Mn Mat, 得到Q矩阵
+	void getQ(int frameId1, vector<int>* f1SparseIdxList ,vector<int>* f2SparseIdxList, VectorXd & Q);
 
 };
-
-

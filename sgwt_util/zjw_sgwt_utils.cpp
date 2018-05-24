@@ -56,7 +56,6 @@ Sgwt::Sgwt(const int _m, const int _Nscales, SpMat _L) :m(_m), Nscales(_Nscales)
 	sgwtCoeff_WS.resize(6 * 8);
 	/*signalList.clear();
 	quadrantList.clear();*/
-
 };
 
 double Sgwt::sgwt_rough_lmax()
@@ -140,9 +139,6 @@ VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 
 	//VectorXd s = VectorXd::LinSpaced(Nscales, log(smax), log(smin));
 
-	//test
-	//cout << s;
-	//end test
 	//VectorXd::LinSpaced(size,low,high)
 
 	//zjw
@@ -237,14 +233,6 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
 			//  tn的尺度信息，在g函数内部了
 			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta)+a2));
-
-			//test
-			/*cout << 2.0 / N << endl;
-			cout << cos(m_it*theta) << endl;
-			cout << 2.0 / N * cos(m_it*theta) << endl;
-			cout << g(a1 * cos((theta)+a2)) << endl;
-			cout << "coeff : " << coeff[j](m_it) << endl;*/
-			//end
 		}
 	}
 }
@@ -390,7 +378,7 @@ bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt
 
 		//计算第 k+1 的那个Tk的。当k = 1 ,计算第 T2的值
 		// T2 = T1和T0的组合
-		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;	
+		Twf_new = (2.0 / a1) * (lap * Twf_cur - a2 * Twf_cur) - Twf_old;
 		//------用自底向上方法的方法，解决递归，同时计算多个尺度----
 		for (int j = 0; j < cur_nscales; j++)
 		{
@@ -623,5 +611,5 @@ void SgwtCheby::operator()(int nodeIdx, int signalType, int quadrantType, Vector
 {
 	sgwt->sgwt_cheby_op(nodeIdx, signalType, quadrantType, sgwt_out);
 
-	return; 
+	return;
 }

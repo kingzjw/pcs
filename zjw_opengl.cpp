@@ -121,7 +121,6 @@ void ZjwOpenGL::render()
 	{
 		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
 		//drawPointCloud(objMesh);
-
 	}
 	else if (renderState == 2)
 	{

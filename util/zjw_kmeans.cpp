@@ -6,7 +6,7 @@
 
 using namespace std;
 
-KMeans::KMeans( int clusterNum, int dimNum)
+KMeans::KMeans(int clusterNum, int dimNum)
 {
 	this->dimNum = dimNum;
 	this->clusterNum = clusterNum;
@@ -28,7 +28,7 @@ KMeans::~KMeans()
 
 void KMeans::setClusterNum(int i)
 {
-	clusterNum = i; 
+	clusterNum = i;
 }
 
 //N 为特征向量数
@@ -52,10 +52,10 @@ void KMeans::cluster(vector<Vec3> *data)
 
 	// Recursion
 	// Sample data
-	Vec3 sampleData;	
+	Vec3 sampleData;
 
 	//标记 Class index
-	int clusterIdx = -1;		
+	int clusterIdx = -1;
 	//表示当前迭代的次数
 	double iterNum = 0;
 	//所有采样点距离相应质点的平均距离
@@ -68,24 +68,24 @@ void KMeans::cluster(vector<Vec3> *data)
 	bool loop = true;
 	//记录每个分类下面总共有多少数目
 	int* counts = new int[clusterNum];
-	
+
 	// 存储计算得到新的质点，现在分配空间
 	vector<Vec3> next_means;
 	for (int i = 0; i < clusterNum; i++)
 	{
 		next_means.push_back(Vec3());
 	}
-	/*double** next_means = new double*[clusterNum];	
+	/*double** next_means = new double*[clusterNum];
 	for(int i = 0; i < clusterNum; i++)
 	{
 		next_means[i] = new double[dimNum];
 	}*/
 
-	while(loop)
+	while (loop)
 	{
-	    //clean buffer for classification
+		//clean buffer for classification
 		memset(counts, 0, sizeof(int) * clusterNum);
-		
+
 		next_means.clear();
 		for (int i = 0; i < clusterNum; i++)
 		{
@@ -96,7 +96,7 @@ void KMeans::cluster(vector<Vec3> *data)
 		currAvgDis = 0;
 
 		// Classification 遍历所有的采样点，得到属于他的分类，以及距离该分类中质点的距离
-		for(int i = 0; i < dataSize; i++)
+		for (int i = 0; i < dataSize; i++)
 		{
 			sampleData = (*data)[i];
 			/*for(int j = 0; j < dimNum; j++)
@@ -111,9 +111,9 @@ void KMeans::cluster(vector<Vec3> *data)
 		currAvgDis /= dataSize;
 
 		// 重新得到新的质点
-		for(int i = 0; i < clusterNum; i++)
+		for (int i = 0; i < clusterNum; i++)
 		{
-			if(counts[i] > 0)
+			if (counts[i] > 0)
 			{
 				next_means[i] /= counts[i];
 				means = next_means;
@@ -123,11 +123,11 @@ void KMeans::cluster(vector<Vec3> *data)
 
 		// Terminal conditions
 		iterNum++;
-		if(fabs(lastAvgDis - currAvgDis) < thresholdValue * lastAvgDis)
+		if (fabs(lastAvgDis - currAvgDis) < thresholdValue * lastAvgDis)
 		{
 			unchanged++;
 		}
-		if(iterNum >= maxIterNum || unchanged >= 3)
+		if (iterNum >= maxIterNum || unchanged >= 3)
 		{
 			loop = false;
 		}
@@ -138,10 +138,10 @@ void KMeans::cluster(vector<Vec3> *data)
 	}
 
 	// 得到最终的分类结果，保存在clusterRes中
-	for(int i = 0; i < dataSize; i++)
+	for (int i = 0; i < dataSize; i++)
 	{
 		sampleData = (*data)[i];
-		getClusteAndDis((Vec3*)&sampleData,&clusterIdx);
+		getClusteAndDis((Vec3*)&sampleData, &clusterIdx);
 		//保存最终的结果
 		clusterRes[clusterIdx].push_back(i);
 	}
@@ -153,17 +153,17 @@ void KMeans::init(vector<Vec3> *data, int num)
 	int size = num;
 
 	//随机产生质点
-	if(initMode ==  InitRandom)
+	if (initMode == InitRandom)
 	{
 		int inteval = size / clusterNum;
-		
+
 		//sample保存随机产生的数据.默认是0,0,0
 		Vec3 sample;
 
 		// Seed the random-number generator with current time
 		srand((unsigned)time(NULL));
 
-		for(int i = 0; i < clusterNum; i++)
+		for (int i = 0; i < clusterNum; i++)
 		{
 			int select = inteval * i + (inteval - 1) * rand() / RAND_MAX;
 			sample = (*data)[select];
@@ -171,19 +171,19 @@ void KMeans::init(vector<Vec3> *data, int num)
 			means[i] = sample;
 		}
 	}
-	else if(initMode == InitUniform)
+	else if (initMode == InitUniform)
 	{
 		//产生的均匀的质点
 		//double* sample = new double[dimNum];
 		Vec3 sample;
-		for(int i = 0; i < clusterNum; i++)
+		for (int i = 0; i < clusterNum; i++)
 		{
 			int select = i * size / clusterNum;
 			sample = (*data)[select];
 			means[i] = sample;
 		}
 	}
-	else if(initMode == InitManual)
+	else if (initMode == InitManual)
 	{
 		// Do nothing
 	}
@@ -193,14 +193,10 @@ double KMeans::getClusteAndDis(Vec3 * sample, int* clusterIdx)
 {
 	double dist = -1;
 	//拿到于这个sample采样点，最近的质点的序号，并返回距离
-	for(int i = 0; i < clusterNum; i++)
+	for (int i = 0; i < clusterNum; i++)
 	{
-		//test
-		//cout << sample->x << " " << sample->y << " " << sample->z << endl;
-		//cout << means[i].x << " " << means[i].y << " " << means[i].z << endl;
-		//end test
 		double temp = calcDistance(sample, (Vec3 *)&means[i]);
-		if(temp < dist || dist == -1)
+		if (temp < dist || dist == -1)
 		{
 			dist = temp;
 			*clusterIdx = i;
@@ -225,9 +221,9 @@ ostream& operator<<(ostream& out, KMeans& kmeans)
 	out << "<ClusterNum> " << kmeans.clusterNum << " </CluterNum>" << endl;
 
 	out << "<Mean>" << endl;
-	for(int i = 0; i < kmeans.clusterNum; i++)
+	for (int i = 0; i < kmeans.clusterNum; i++)
 	{
-		for(int d = 0; d < kmeans.dimNum; d++)
+		for (int d = 0; d < kmeans.dimNum; d++)
 		{
 			out << kmeans.means[i][d] << " ";
 		}

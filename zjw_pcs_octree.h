@@ -1,10 +1,12 @@
 #pragma once
 
 #include <vector>
+#include <set>
 #include <iomanip>
 #include <math.h>
 #include <stdlib.h>
 #include <Eigen/Dense>
+
 
 #include "zjw_macro.h"
 
@@ -19,7 +21,6 @@
 #include "zjw_dsaupd.h"
 #include "zjw_kmeans.h"
 #include "signalType.h"
-
 
 using namespace Eigen;
 using namespace std;
@@ -38,7 +39,7 @@ class Node
 public:
 	//每个在空间有一堆的 particle的位置信息
 	vector<Vec3> pointPosList;
-	
+
 	//每个在空间有一堆的 particle的位置信息
 	vector<Vec3> colorList;
 
@@ -59,7 +60,6 @@ public:
 	//8个信号，每个象限一个。 每个node上的顶点位置的的信号。（x,y,z）
 	vector<Vec3> color8AreasSignal;
 };
-
 
 //-----------------判断这个点在哪个叶子节点中-----------------
 class CallTraverseJudePoint : public Octree<Node>::Callback
@@ -175,7 +175,7 @@ public:
 	//ObjMesh * objMesh;
 	Octree<Node> *pcsOct;
 	CallTraverseGetInfoSetLeaf * ctLeaf;
-	CallTGetGraph * ctGraph;
+	CallTGetGraph *ctGraph;
 	//对八叉树的叶子节点进行k-means聚类
 	KMeans * kmeans;
 
@@ -186,7 +186,7 @@ public:
 	vector<VectorXd> posSignalX;
 	vector<VectorXd> posSignalY;
 	vector<VectorXd> posSignalZ;
-	
+
 #ifdef USE_EIGEN
 	MatrixXd  dMat;
 	MatrixXd  weightAMat;
@@ -242,7 +242,7 @@ public:
 	//把8个象限的信号（x,y,z,r,g,b）放到向量中:并封装到vector中
 	//8个vectorXd， 分别表示不同象限的信号。每个vector表示的是：所有在节点在这个象限中的该型号的具体的值
 	vector<VectorXd> getSignalF(SignalType sType);
-	
+
 	//调用getSignalF得到所有信号，利用sgwt求出所有的系数，并保存在sgwt中。
 	bool getAllSignalAndSaveSGWTCoeff();
 
@@ -265,9 +265,12 @@ public:
 	//判断当前点在哪个叶子结点上,返回的是叶子节点的序号
 	int judegePointToLeafNode(Vec3* point, int& idx);
 
+
+	//拿到nodeidx这个点的two hop。拿到的点不包括自己，因为是无向图，所以这里的two hop包括一步的
+	void getTwoHopNeighborhood(int nodeIdx, set<int> * nodeList_out, SpMat * spLaplacian);
+
 	//对外的接口
-	//void 
+	//void
 	//=============== test ====================
 	void printMat();
 };
-

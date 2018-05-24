@@ -37,7 +37,6 @@
 #define USE_SPARSE
 #define SGWT_DEBUG
 
-
 //¥Ú”°–≈œ¢
 
 //#define PRINT_CHEBY_COEFF

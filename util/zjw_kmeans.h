@@ -4,7 +4,7 @@
  * \author King
  * \date 五月 2018
  * 针对三维点的k-means，参考http://www.cnblogs.com/luxiaoxun/archive/2013/05/09/3069594.html
- * 
+ *
  */
 #pragma once
 #include <fstream>
@@ -73,7 +73,7 @@ public:
 	//质点初始化的方式
 	int initMode;
 	// 最大迭代次数
-	int maxIterNum;	
+	int maxIterNum;
 	// 截止误差
 	double thresholdValue;
 
@@ -87,7 +87,7 @@ public:
 		InitUniform,
 	};
 
-	KMeans(int clusterNum = 4,int dimNum = 3);
+	KMeans(int clusterNum = 4, int dimNum = 3);
 	~KMeans();
 
 	void setClusterNum(int i);

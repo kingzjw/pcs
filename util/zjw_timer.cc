@@ -48,5 +48,5 @@ int64_t ZjwTimer::GetInMs() {
 
 void ZjwTimer::printTimeInMs(std::string info)
 {
-	std::cout << info << "  " << GetInMs()<<" ms"<<std::endl;
+	std::cout << info << "  " << GetInMs() << " ms" << std::endl;
 }

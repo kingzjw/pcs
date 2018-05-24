@@ -21,7 +21,6 @@
 #include "pcg.h"
 #include "signalType.h"
 
-
 using namespace std;
 using namespace Eigen;
 using namespace Spectra;
@@ -48,16 +47,15 @@ struct Varargin
 	double t2;
 
 	//abspline3： 实现的三次样条
-	Varargin(string type = "abspline3", double _K = 20, double _a = 2, 
+	Varargin(string type = "abspline3", double _K = 20, double _a = 2,
 		double _b = 2, double _t1 = 1, double _t2 = 2) :
 		designtype(type), K(_K), a(_a), b(_b), t1(_t1), t2(_t2)
 	{}
-	
-	//paper zjw 
+
+	//paper zjw
 	/*Varargin(string type = "abspline3", double _K = 20, double _a = 1, double _b = 1, double _t1 = 1, double _t2 = 2) :
 		designtype(type), K(_K), a(_a), b(_b), t1(_t1), t2(_t2)
 	{}*/
-
 };
 
 //kernel g functino   分装了scalue，需要其他辅助函数
@@ -95,7 +93,6 @@ public:
 		this->gamma_1 = gamma_1;
 	}
 };
-
 
 /*
   封装了利用切比雪夫展开式快速求解sgwt的工具接口
@@ -185,8 +182,8 @@ public:
 	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
 	bool sgwt_cheby_op(VectorXd f, vector<VectorXd> c, vector<VectorXd>& sgwt_out);
 
-	//input: type:信号的类型， quadrant: 象限 
-	bool saveSgwtCoeff(SignalType type, int quadrant,VectorXd *f, vector<VectorXd> *c);
+	//input: type:信号的类型， quadrant: 象限
+	bool saveSgwtCoeff(SignalType type, int quadrant, VectorXd *f, vector<VectorXd> *c);
 
 	//通过信号的类型，象限的类型，指定的node idx 返回这个node在的信号(5*1 因为scale 和 h是五维的)
 	bool sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd* sgwt_out);
@@ -205,7 +202,6 @@ public:
 	void printVectorVectorXd(vector<VectorXd>& vv);
 	void getVectorVectorXdInfo(vector<VectorXd>& vv);
 #endif //zjw_debug
-
 };
 
 /*

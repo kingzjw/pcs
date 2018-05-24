@@ -18,7 +18,7 @@ class pcsCompress : public QMainWindow
 {
 	Q_OBJECT
 
-public slots:
+		public slots:
 	void clickedOpenFileAction();
 
 public:

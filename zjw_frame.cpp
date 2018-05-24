@@ -1,4 +1,4 @@
-#include "zjw_frame.h"
+ï»¿#include "zjw_frame.h"
 
 //Frame::Frame()
 //{
@@ -38,21 +38,23 @@ bool Frame::octSgwt()
 	/*Vec3 minPos(objMesh.rangeMin);
 	Vec3 maxPos((objMesh.rangeMax + Epsilon));*/
 
-	Vec3 cellSize(0.1);
-	//ÉèÖÃ²ÎÊı£¬²¢¹¹½¨°Ë²æÊ÷
+	Vec3 cellSize(0.6);
+	//è®¾ç½®å‚æ•°ï¼Œå¹¶æ„å»ºå…«å‰æ ‘
 	pcsOct->setParam(minPos, maxPos, cellSize);
 	//pcsOct->buildPcsOctFrmPC(objMesh);
 	pcsOct->buildPcsOctFrmPC(objMesh);
-	//µÃµ½Ò¶×Ó½ÚµãµÄ±ß½ç£¬²¢±£´æÏà¹ØµÄĞÅÏ¢
+	//å¾—åˆ°å¶å­èŠ‚ç‚¹çš„è¾¹ç•Œï¼Œå¹¶ä¿å­˜ç›¸å…³çš„ä¿¡æ¯
 	pcsOct->getLeafboundary();
-
-	//test
-	//cout << pcsOct << endl;
-	//end test
 	pcsOct->getGraphMat();
 	pcsOct->getMatEigenVerValue();
 
-	//µÃµ½°Ë²æÊ÷ÉÏ¶¥µãµÄĞÅºÅ
+	//test
+	//set<int>  nodeList_out;
+	//SpMat * spLaplacian
+	//pcsOct->getTwoHopNeighborhood(0, &nodeList_out, pcsOct->spLaplacian);
+	//end test
+
+	//å¾—åˆ°å…«å‰æ ‘ä¸Šé¡¶ç‚¹çš„ä¿¡å·
 	pcsOct->setPointTo8Areas();
 	pcsOct->getLeafSignal();
 
@@ -94,7 +96,7 @@ void FrameManage::switchSouceData()
 
 void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, string path)
 {
-	//--------»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş-------------
+	//--------è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶-------------
 	if (fileBatch)
 		delete fileBatch;
 	fileBatch = new FileBatch(path, fileNameFormat);
@@ -104,7 +106,7 @@ void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, st
 
 	for (int f_it = 0; f_it < fileBatch->fileNum; f_it++)
 	{
-		//ÄÃµ½ËùÓĞµÄÂ·¾¶
+		//æ‹¿åˆ°æ‰€æœ‰çš„è·¯å¾„
 		string totalFilePath;
 		stringstream ss;
 		ss << f_it;
@@ -121,10 +123,10 @@ void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, st
 			break;
 		}
 
-		//°´ÕÕĞèÒª´ÓĞ¡µ½´ó£¬±£´æËùÓĞµÄÎÄ¼şÂ·¾¶
+		//æŒ‰ç…§éœ€è¦ä»å°åˆ°å¤§ï¼Œä¿å­˜æ‰€æœ‰çš„æ–‡ä»¶è·¯å¾„
 		fileBatch->files.push_back(totalFilePath);
 
-		//ÄÃµ½ËùÓĞµÄframeList
+		//æ‹¿åˆ°æ‰€æœ‰çš„frameList
 		Frame * frame = new Frame(f_it);
 		frameList.push_back(frame);
 	}
@@ -139,7 +141,7 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 	frameList.clear();
 	batchLoad = true;
 
-	//--------»ñÈ¡¸ÃÂ·¾¶ÏÂµÄËùÓĞÎÄ¼ş-------------
+	//--------è·å–è¯¥è·¯å¾„ä¸‹çš„æ‰€æœ‰æ–‡ä»¶-------------
 	for (int f_it = 0; f_it < fileBatch->fileNum; f_it++)
 	{
 #ifdef ZJW_DEBUG
@@ -161,13 +163,13 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 			break;
 		}
 
-		//°´ÕÕĞèÒª´ÓĞ¡µ½´ó£¬±£´æËùÓĞµÄÎÄ¼şÂ·¾¶
+		//æŒ‰ç…§éœ€è¦ä»å°åˆ°å¤§ï¼Œä¿å­˜æ‰€æœ‰çš„æ–‡ä»¶è·¯å¾„
 		fileBatch->files.push_back(totalFilePath);
 
 		Frame * frame = new Frame(f_it);
 		frameList.push_back(frame);
 
-		//-----------¶ÔÃ¿¸öÂ·¾¶£¬¶¼½øĞĞ¶ÁÈ¡£¬ºÍsgw²Ù×÷------------
+		//-----------å¯¹æ¯ä¸ªè·¯å¾„ï¼Œéƒ½è¿›è¡Œè¯»å–ï¼Œå’Œsgwæ“ä½œ------------
 		ZjwTimer timer;
 		timer.Start();
 		if (!frameList[f_it]->objMesh->loadObjMeshSimply(totalFilePath))
@@ -190,13 +192,12 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path, bool changeData)
 {
 	assert(frameId1 > -1 && frameId2 > -1);
-	assert(abs(frameId1-frameId2)==1);
-	
+	assert(abs(frameId1 - frameId2) == 1);
+
 	if (changeData)
 	{
 		switchSouceData();
 	}
-
 
 	if (batchLoad)
 		return true;
@@ -208,7 +209,7 @@ bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMa
 
 	assert(frameId1 < fileBatch->fileNum && frameId2 < fileBatch->fileNum);
 
-	//-----------½øĞĞ¶ÁÈ¡£¬ºÍsgw²Ù×÷------------
+	//-----------è¿›è¡Œè¯»å–ï¼Œå’Œsgwæ“ä½œ------------
 	ZjwTimer timer;
 	timer.Start();
 #ifdef ZJW_DEBUG
@@ -246,16 +247,16 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId2];
 
-	//±éÀúframe1ÖĞËùÓĞµÄnodelist
+	//éå†frame1ä¸­æ‰€æœ‰çš„nodelist
 	for (int leaf_it = 0; leaf_it < frame1->pcsOct->ctLeaf->nodeList.size(); leaf_it++)
 	{
-		//frame1: ¼ÆËãÃ¿¸önodeÖĞ£¬µã¹ØÓÚnodeÏà¶ÔÓÚÖĞµãµÄ¾àÀë³É·´±ÈµÄÈ¨ÖØ¡£
+		//frame1: è®¡ç®—æ¯ä¸ªnodeä¸­ï¼Œç‚¹å…³äºnodeç›¸å¯¹äºä¸­ç‚¹çš„è·ç¦»æˆåæ¯”çš„æƒé‡ã€‚
 		Node * node1 = &(frame1->pcsOct->ctLeaf->nodeList[leaf_it]->nodeData);
 		Vec3 midPoint = (*frame1->pcsOct->ctLeaf->midVList)[leaf_it];
 		vector<float> wightList;
 		double totalWight = 0;
 		double tempW;
-		//±éÀúÕâ¸öÒ¶×Ó½ÚµãÉÏËùÓĞµÄµã
+		//éå†è¿™ä¸ªå¶å­èŠ‚ç‚¹ä¸Šæ‰€æœ‰çš„ç‚¹
 		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
 		{
 			tempW = 1 / node1->pointPosList[p_it].Distance(midPoint);
@@ -263,20 +264,20 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 			wightList.push_back(tempW);
 		}
 
-		//ÀûÓÃfram2¶ÔÓ¦µãµÄÎ»ÖÃ£¬¸ù¾İÈ¨ÖØÔ¤¼Æ³ö¶ÔÓ¦NodeµÄÖĞµãÎ»ÖÃ
+		//åˆ©ç”¨fram2å¯¹åº”ç‚¹çš„ä½ç½®ï¼Œæ ¹æ®æƒé‡é¢„è®¡å‡ºå¯¹åº”Nodeçš„ä¸­ç‚¹ä½ç½®
 		Vec3 predictNodePos;
 		int idx;
 		//Node * node2 = &(frame2->pcsOct->ctLeaf->nodeList[leaf_it]->nodeData);
 		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
 		{
-			//ÄÃµ½frame1½ÚµãÖĞµãµÄĞòºÅ£¬ÔÚframe2ÖĞµÄµãµÄÖµ
+			//æ‹¿åˆ°frame1èŠ‚ç‚¹ä¸­ç‚¹çš„åºå·ï¼Œåœ¨frame2ä¸­çš„ç‚¹çš„å€¼
 			idx = node1->pointIdxList[p_it];
 			predictNodePos += wightList[p_it] * frame2->objMesh->vertexList[idx];
 		}
 		predictNodePos = predictNodePos / totalWight;
 
-		//¸ù¾İÔ¤¼Æ³öÀ´µÄÖĞµãÎ»ÖÃ,Í¨¹ıÔÚframe2ÉÏµÄ°Ë²æÊ÷£¬È»ºóµÃµ½Æ¥ÅäµÄnode½á¹û
-		//ÏÈÓÃfor Ñ­»·ÊµÏÖ£¬ºóÃæ¸ÄÓÃ°Ë²æÊ÷¿ìËÙÅĞ¶Ï
+		//æ ¹æ®é¢„è®¡å‡ºæ¥çš„ä¸­ç‚¹ä½ç½®,é€šè¿‡åœ¨frame2ä¸Šçš„å…«å‰æ ‘ï¼Œç„¶åå¾—åˆ°åŒ¹é…çš„nodeç»“æœ
+		//å…ˆç”¨for å¾ªç¯å®ç°ï¼Œåé¢æ”¹ç”¨å…«å‰æ ‘å¿«é€Ÿåˆ¤æ–­
 		int macthNodeIdx = -1;
 		frame2->pcsOct->judegePointToLeafNode((Vec3*)&predictNodePos, macthNodeIdx);
 
@@ -293,11 +294,11 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 	return true;
 }
 
-//¶Ôf1nIdxListÖĞ¼ÇÂ¼µÄËùÓĞµÄ¶ÔÓ¦¹ØÏµµÄÎó²îÏòÁ¿¶¼½øĞĞÁË¼ÆËã
-//·µ»ØÏòÁ¿ÊÇP
+//å¯¹f1nIdxListä¸­è®°å½•çš„æ‰€æœ‰çš„å¯¹åº”å…³ç³»çš„è¯¯å·®å‘é‡éƒ½è¿›è¡Œäº†è®¡ç®—
+//è¿”å›å‘é‡æ˜¯P
 bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList, MatrixXd * p)
 {
-	//ÅĞ¶ÏÊÇÁ¬ĞøµÄÁ½Ö¡
+	//åˆ¤æ–­æ˜¯è¿ç»­çš„ä¸¤å¸§
 	assert(abs(frameId1 - frameId2) == 1);
 	assert(f1nIdxList->size() > 0 && f2nIdxList->size() > 0);
 
@@ -306,7 +307,7 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	assert(frame1->pcsOct->ctLeaf->nodeList.size() == f1nIdxList->size());
 
-	//------------------¼ÆËãÃ¿¶Ô¶ÔÓ¦NodeÖ®¼äµÄÎó²îÏòÁ¿£¬²¢±£´æ¾ØÕósampleÖĞ-------------------
+	//------------------è®¡ç®—æ¯å¯¹å¯¹åº”Nodeä¹‹é—´çš„è¯¯å·®å‘é‡ï¼Œå¹¶ä¿å­˜çŸ©é˜µsampleä¸­-------------------
 	int totalScale = 5;
 	int totalSignal = 6;
 	int totalQuadrant = 8;
@@ -321,41 +322,41 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	{
 		frame1->pcsOct->getFeatureVector2((*f1nIdxList)[it], &featureVec1);
 		frame2->pcsOct->getFeatureVector2((*f2nIdxList)[it], &featureVec2);
-		//ensure ×Ô±äÁ¿µÄ¸öÊıÊÇÒ»ÖÂµÄ
+		//ensure è‡ªå˜é‡çš„ä¸ªæ•°æ˜¯ä¸€è‡´çš„
 		//assert(sample.cols() == featureVec1.rows());
-		//±£´æÕâ¸öµ½¾ØÕóÖĞ,ÏàÓ¦µÄĞĞÖĞ
-		sample.row(it) = featureVec1-featureVec2;
+		//ä¿å­˜è¿™ä¸ªåˆ°çŸ©é˜µä¸­,ç›¸åº”çš„è¡Œä¸­
+		sample.row(it) = featureVec1 - featureVec2;
 	}
 
-	//------------------Çó³ösampleµÄĞ­·½²î¾ØÕó----------------------
+	//------------------æ±‚å‡ºsampleçš„åæ–¹å·®çŸ©é˜µ----------------------
 
 	Eigen::MatrixXd covMat;
-	//ÇóÈ¡ÁĞÏòÁ¿¾ùÖµ(ÇóÃ¿Ò»¸öÁĞÏòÁ¿µÄ¾ùÖµ)
+	//æ±‚å–åˆ—å‘é‡å‡å€¼(æ±‚æ¯ä¸€ä¸ªåˆ—å‘é‡çš„å‡å€¼)
 	Eigen::MatrixXd meanVec = sample.colwise().mean();
 
-	//½«ÁĞÏòÁ¿¾ùÖµ´ÓMatrixXf ×ª»»ÎªĞĞÏòÁ¿ RowVectorXf
+	//å°†åˆ—å‘é‡å‡å€¼ä»MatrixXf è½¬æ¢ä¸ºè¡Œå‘é‡ RowVectorXf
 	Eigen::RowVectorXd meanVecRow(Eigen::RowVectorXd::Map(meanVec.data(), sample.cols()));
 
-	//ÇóÈ¡¼õÈ¥¾ùÖµµÄÁĞÏòÁ¿¾ØÕó
+	//æ±‚å–å‡å»å‡å€¼çš„åˆ—å‘é‡çŸ©é˜µ
 	Eigen::MatrixXd zeroMeanMat = sample;
-	//Ã¿Ò»ĞĞµÄÑù±¾£¨ÓĞ¼¸ÁĞ¾ÍÊÇ¼¸¸ö×Ô±äÁ¿£©£¬¶¼¼õÈ¥×ÔÉíµÄ¾ùÖµ
+	//æ¯ä¸€è¡Œçš„æ ·æœ¬ï¼ˆæœ‰å‡ åˆ—å°±æ˜¯å‡ ä¸ªè‡ªå˜é‡ï¼‰ï¼Œéƒ½å‡å»è‡ªèº«çš„å‡å€¼
 	zeroMeanMat.rowwise() -= meanVecRow;
 
 	if (sample.rows() == 1)
 	{
-		//¼ÆËãĞ­·½²î
+		//è®¡ç®—åæ–¹å·®
 		covMat = (zeroMeanMat.adjoint()*zeroMeanMat) / double(sample.rows());
 	}
 	else
 	{
-		//¼ÆËãĞ­·½²î
+		//è®¡ç®—åæ–¹å·®
 		covMat = (zeroMeanMat.adjoint()*zeroMeanMat) / double(sample.rows() - 1);
 	}
 
-	//---------------¶ÔĞ­·½²î¾ØÕó½øĞĞÇóÄæ£¬µÃµ½P----------------------
+	//---------------å¯¹åæ–¹å·®çŸ©é˜µè¿›è¡Œæ±‚é€†ï¼Œå¾—åˆ°P----------------------
 #ifdef ZJW_DEBUG
 	double size = 1.00001;
-	cout << "¶ÔcovMatµÄ¾ØÕó¶Ô½ÇÏßÉÏÔªËØ·Å´óÁË£º "<< size<<" ±¶ " << endl;
+	cout << "å¯¹covMatçš„çŸ©é˜µå¯¹è§’çº¿ä¸Šå…ƒç´ æ”¾å¤§äº†ï¼š " << size << " å€ " << endl;
 	assert(covMat.rows() == covMat.cols());
 	if (size > 1)
 	{
@@ -369,24 +370,23 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	FullPivLU<MatrixXd> lu_decomp(covMat);
 
 	//covMat.rank()
-	if ((covMat.determinant())==0 && (lu_decomp.rank()!=covMat.rows()))
+	if ((covMat.determinant()) == 0 && (lu_decomp.rank() != covMat.rows()))
 	{
-		cout << "cov mat ²»¿ÉÄæ£¬can not solve the inverse mat P" << endl;
+		cout << "cov mat ä¸å¯é€†ï¼Œcan not solve the inverse mat P" << endl;
 #ifdef ZJW_DEBUG
 		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
-		cout << "The size of covMat is " << covMat.rows() << " "<< covMat.cols() << endl;
+		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
 		cout << "cov mat: " << endl;
 		//cout << covMat << endl << endl;
 		cout << covMat.diagonal() << endl;
 #endif // zjw_debug
-
 	}
 	else
 	{
 		*p = covMat.inverse();
 
 #ifdef ZJW_DEBUG
-		cout << "cov mat ¾ØÕó¿ÉÄæ!!" << endl;
+		cout << "cov mat çŸ©é˜µå¯é€†!!" << endl;
 		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
 		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
 
@@ -401,16 +401,16 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	return true;
 }
 
-//²âÊÔÊı¾İ£ºÄÃµ½frame2ÖĞÃ¿¸önode idxÔÚ frame1ÖĞµÄ×î¼ÑÆ¥Åä¡£×î¼ÑÆ¥Åä¹ØÏµ£¬´ÓÁ½¸övectorÖĞ·µ»Ø¡£
-//·µ»ØÖµ£ºmaDist £¬ f1nIdxList f2nIdxListÊÇµÃµ½×î¼ÑµÄÆ¥Åä¹ØÏµ
-//f2nIdxListÖĞµÄ¶¥µãĞòÁĞÓ¦¸ÃÊÇÁ¬ĞøµÄ£¬³ı·ÇÖĞ¼äÓĞ¶¥µãÆ¥ÅäÊ§°Ü
+//æµ‹è¯•æ•°æ®ï¼šæ‹¿åˆ°frame2ä¸­æ¯ä¸ªnode idxåœ¨ frame1ä¸­çš„æœ€ä½³åŒ¹é…ã€‚æœ€ä½³åŒ¹é…å…³ç³»ï¼Œä»ä¸¤ä¸ªvectorä¸­è¿”å›ã€‚
+//è¿”å›å€¼ï¼šmaDist ï¼Œ f1nIdxList f2nIdxListæ˜¯å¾—åˆ°æœ€ä½³çš„åŒ¹é…å…³ç³»
+//f2nIdxListä¸­çš„é¡¶ç‚¹åºåˆ—åº”è¯¥æ˜¯è¿ç»­çš„ï¼Œé™¤éä¸­é—´æœ‰é¡¶ç‚¹åŒ¹é…å¤±è´¥
 bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList, vector<int>* f2nIdxList, vector<double>* maDist)
 {
 #ifdef ZJW_DEBUG
 	bool process = false;
 #endif // ZJW_DEBUG
 
-	//ÅĞ¶ÏÊÇÁ¬ĞøµÄÁ½Ö¡
+	//åˆ¤æ–­æ˜¯è¿ç»­çš„ä¸¤å¸§
 	assert(abs(frameId1 - frameId2) == 1);
 	f1nIdxList->clear();
 	f2nIdxList->clear();
@@ -419,37 +419,36 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId2];
 
-	//±éÀútarget frame £¨frame2£©ÖĞËùÓĞNode,ÕÒ¶Ô×î¼ÑÆ¥ÅäµÄnode
+	//éå†target frame ï¼ˆframe2ï¼‰ä¸­æ‰€æœ‰Node,æ‰¾å¯¹æœ€ä½³åŒ¹é…çš„node
 	for (int node2_it = 0; node2_it < frame2->pcsOct->ctLeaf->nodeList.size(); node2_it++)
 	{
-		//¼ÆËãµ±Ç°frame2 ÖĞµÄfeature vector
+		//è®¡ç®—å½“å‰frame2 ä¸­çš„feature vector
 		//Node * node1 = &(frame1->pcsOct->ctLeaf->nodeList[node2_it]->nodeData);
 		VectorXd featureVec2;
 		frame2->pcsOct->getFeatureVector2(node2_it, &featureVec2);
 
-		//±éÀúframe1ÖĞËùÓĞµÄÒ¶×Ó½Úµã,
+		//éå†frame1ä¸­æ‰€æœ‰çš„å¶å­èŠ‚ç‚¹,
 		VectorXd featureVec1;
 		vector<double> mahalanobisDist;
 		mahalanobisDist.clear();
 		for (int node1_it = 0; node1_it < frame1->pcsOct->ctLeaf->nodeList.size(); node1_it++)
 		{
-			//µÃµ½frame1ÖĞÒ¶×Ó½ÚµãµÄ fearture vector
+			//å¾—åˆ°frame1ä¸­å¶å­èŠ‚ç‚¹çš„ fearture vector
 			frame1->pcsOct->getFeatureVector2(node1_it, &featureVec1);
-
-			//¼ÆËãnode2 ºÍnode1Á½¸öfeature vectorµÄÂíÊÏ¾àÀë
+			//è®¡ç®—node2 å’Œnode1ä¸¤ä¸ªfeature vectorçš„é©¬æ°è·ç¦»
 			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);
-			//Õı¶¨¾ØÕóP
-			assert(maha>0);
+			//æ­£å®šçŸ©é˜µP
+			assert(maha > 0);
 			mahalanobisDist.push_back(maha);
 		}
 
-		//ÕÒµ½node2¶ÔÓ¦µ½frame1ÉÏËùÓĞ½ÚµãµÄÂíÊÏ¾àÀë£¬ÕÒµ½×î¼ÑÆ¥Åä£¨×îĞ¡£©
+		//æ‰¾åˆ°node2å¯¹åº”åˆ°frame1ä¸Šæ‰€æœ‰èŠ‚ç‚¹çš„é©¬æ°è·ç¦»ï¼Œæ‰¾åˆ°æœ€ä½³åŒ¹é…ï¼ˆæœ€å°ï¼‰
 		std::vector<double>::iterator smallest = std::min_element(std::begin(mahalanobisDist), std::end(mahalanobisDist));
 		int indexNode1 = std::distance(std::begin(mahalanobisDist), smallest);
 
 		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
 
-		//±£´æ×î¼Ñ¶ÔÓ¦¹ØÏµ,¼°×î¼Ñ¶ÔÓ¦¹ØÏµÏÂÃæµÄÂíÊÏ¾àÀë
+		//ä¿å­˜æœ€ä½³å¯¹åº”å…³ç³»,åŠæœ€ä½³å¯¹åº”å…³ç³»ä¸‹é¢çš„é©¬æ°è·ç¦»
 		f2nIdxList->push_back(node2_it);
 		f1nIdxList->push_back(indexNode1);
 		maDist->push_back(*smallest);
@@ -459,13 +458,13 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 			printf("\b\b\b\b\b\b");
 			cout.width(5);
 			cout.precision(2);
-			cout << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() <<"%";
+			cout << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() << "%";
 		}
 		else
 		{
 			cout.width(5);
 			cout.precision(2);
-			cout << "match process:  " << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size()<< "%";
+			cout << "match process:  " << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() << "%";
 			process = true;
 		}
 #endif // ZJW_DEBUG
@@ -478,10 +477,10 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 	return true;
 }
 
-//´«ÈëµÄframeId£º ÊÇtarget frameµÄid
-//f1nIdxList f2nIdxList ÊÇ´«ÈëµÄ×î¼ÑÆ¥Åä²ÎÊı
-//maDist±£´æµÄÊÇ×î¼ÑÆ¥ÅäµÄ¾àÀë
-//·µ»ØÖµ£ºf1SparseIdxList  f2SparseIdxList   Ï¡ÊèµÄ×î¼ÑÆ¥Åä
+//ä¼ å…¥çš„frameIdï¼š æ˜¯target frameçš„id
+//f1nIdxList f2nIdxList æ˜¯ä¼ å…¥çš„æœ€ä½³åŒ¹é…å‚æ•°
+//maDistä¿å­˜çš„æ˜¯æœ€ä½³åŒ¹é…çš„è·ç¦»
+//è¿”å›å€¼ï¼šf1SparseIdxList  f2SparseIdxList   ç¨€ç–çš„æœ€ä½³åŒ¹é…
 bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
 	vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList)
 {
@@ -493,13 +492,13 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 
 	Frame* frame = frameList[frameId];
 	KMeans * kmeans = frame->pcsOct->kmeans;
-	//frame2(target frame) ÄÚÈİ£¬½øĞĞdo kmeans,È¡³ö½á¹û
+	//frame2(target frame) å†…å®¹ï¼Œè¿›è¡Œdo kmeans,å–å‡ºç»“æœ
 
-	frame->pcsOct->doKmeans(5);
-	//±éÀúÃ¿¸öcluster¼¯µÄnode
+	frame->pcsOct->doKmeans(10);
+	//éå†æ¯ä¸ªclusteré›†çš„node
 	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
 	{
-		//µÃµ½Õâ¸öclusterÖĞµÄ×îĞ¡maDist,±£´æÃ¿¸öÇøÓò×î¼ÑÆ¥ÅäµÄ½ÚµãĞòºÅ
+		//å¾—åˆ°è¿™ä¸ªclusterä¸­çš„æœ€å°maDist,ä¿å­˜æ¯ä¸ªåŒºåŸŸæœ€ä½³åŒ¹é…çš„èŠ‚ç‚¹åºå·
 		int bestNodeId = -1;
 		double minDis = -1;
 		for (int n_it = 0; n_it < kmeans->clusterRes[c_it].size(); n_it++)
@@ -513,10 +512,10 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 			}
 		}
 #ifdef  ZJW_DEBUG
-		//ÒòÎªgetBestMatchPointÖĞµÃµ½µÄf2Ó¦¸ÃĞòºÅÊÇ´ÓµÍµ½¸ßÅÅĞòµÄ
+		//å› ä¸ºgetBestMatchPointä¸­å¾—åˆ°çš„f2åº”è¯¥åºå·æ˜¯ä»ä½åˆ°é«˜æ’åºçš„
 		assert(bestNodeId == (*f2nIdxList)[bestNodeId]);
 #endif //  zjw_debug
-		//±£´æ¶ÔÓ¦¹ØÏµµ½sparse ver idxÖĞ
+		//ä¿å­˜å¯¹åº”å…³ç³»åˆ°sparse ver idxä¸­
 		f1SparseIdxList->push_back((*f1nIdxList)[bestNodeId]);
 		f2SparseIdxList->push_back((*f2nIdxList)[bestNodeId]);
 	}
@@ -524,13 +523,77 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 	return true;
 }
 
-bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<int>* f1SparseIdxList_out,
+	vector<int>* f2SparseIdxList_out, FileNameForMat type, string fileNameFormat, string path, bool changeData)
 {
-
-
 	vector<int> f1nIdxList;
 	vector<int> f2nIdxList;
-	//ÑµÁ·Êı¾İ£¬µÃµ½¾ØÕóP
+	vector<double> maDist;
+	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path, changeData);
+	getBestMatchPoint(frameId1, frameId2, P, &f1nIdxList, &f2nIdxList, &maDist);
+	//å¯¹target frameä¸Šçš„å¸§è¿›è¡Œk-means
+	doKmeansGetSparseBestMatch(frameId2, &f1nIdxList, &f2nIdxList, &maDist, f1SparseIdxList_out, f2SparseIdxList_out);
+	return true;
+}
+
+//frameId1æ˜¯referen frame idx.
+//Mnæ˜¯frame1ä¸Šçš„ç¨€ç–æœ€ä½³åŒ¹é…çš„ä¸‹æ ‡
+//Næ˜¯frame2ä¸Šçš„ç¨€ç–æœ€ä½³åŒ¹é…çš„ä¸‹æ ‡
+void FrameManage::getMnMat(int frameId1, int bestMatchIdx, int MnIdx, int NIdx, VectorXd & MnMat_out)
+{
+	//åˆ¤æ–­æ˜¯è¿ç»­çš„ä¸¤å¸§
+	assert(frameId1>0);
+
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId1 + 1];
+	MnMat_out.setZero();
+
+	//å¾—åˆ°frame1 ç‚¹ Mnä¸ºä¸­å¿ƒï¼Œtwo hopä¹‹é—´çš„é¡¶ç‚¹åºå·
+	set<int>  MTwoHopList;
+	frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
+
+	//éå†æ‰€æœ‰çš„two hopä¸Šçš„é¡¶ç‚¹ï¼Œè®¡ç®—å¹³å‡çš„MnçŸ©é˜µ
+	set<int>::iterator it = MTwoHopList.begin();
+	VectorXd featureVector1;
+	VectorXd featureVector2;
+
+	for (; it != MTwoHopList.end(); it++)
+	{
+		//two hop node m
+		int M = *it;
+
+		//Ïƒ(mn, n)çš„è®¡ç®—
+		frame1->pcsOct->getFeatureVector2(MnIdx, &featureVector1);
+		frame2->pcsOct->getFeatureVector2(NIdx, &featureVector2);
+		double maDis_Mn_N = (featureVector1 - featureVector2).transpose() * (*P) * (featureVector1 - featureVector2);
+
+		//Ïƒ(m, n) 
+		frame1->pcsOct->getFeatureVector2(M, &featureVector1);
+		frame2->pcsOct->getFeatureVector2(NIdx, &featureVector2);
+		double maDis_M_N = (featureVector1 - featureVector2).transpose() * (*P) * (featureVector1 - featureVector2);
+
+		//(pt(m) âˆ’ pt(mn))
+		Vec3 pM = (*(frame1->pcsOct->ctLeaf->midVList))[M];
+		Vec3 pMn = (*(frame1->pcsOct->ctLeaf->midVList))[MnIdx];
+		Vector3d pDif(pM.x - pMn.x, pM.y - pMn.y, pM.z - pMn.z);
+
+		//æ±‚å’Œ sqrt
+		MnMat_out += (pDif * pDif.transpose()) / sqrtf(maDis_M_N - maDis_Mn_N);
+	}
+
+	MnMat_out /= MTwoHopList.size();
+}
+
+void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & Q)
+{
+
+}
+
+bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+{
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	//è®­ç»ƒæ•°æ®ï¼Œå¾—åˆ°çŸ©é˜µP
 	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
 #ifdef ZJW_DEBUG
 	cout << "start to traie data for mat P ..." << endl;

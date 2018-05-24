@@ -85,8 +85,8 @@ int FileBatch::getFilesNum(string filePath)
 void FileBatch::printFiles()
 {
 	cout << "############################" << endl;
-	cout << "file num : "<< files.size() << endl;
-	
+	cout << "file num : " << files.size() << endl;
+
 	for (int i = 0; i < files.size(); i++)
 	{
 		cout << files[i] << endl;
