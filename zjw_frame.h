@@ -36,8 +36,12 @@ public:
 		NUM_FRONT,
 		NUM_TAIL
 	};
+
 	//存储训练数据保存下来的矩阵P;
 	MatrixXd * P;
+
+	//常量 u,用于计算motion vector的一个参数。
+	double u;
 
 private:
 	//标记是否调用过batchLoadObj接口
@@ -91,9 +95,18 @@ public:
 	//-------------------------计算motion vector---------------------------
 
 	//对稀疏的最佳匹配中的Mn 和n对应关系，得到在frame1上的3*3 mat 
-	void getMnMat(int frameId1, int bestMatchIdx, int MnIdx, int NIdx, VectorXd & MnMat_out);
+	void getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out);
 
 	//利用Mn Mat, 得到Q矩阵
-	void getQ(int frameId1, vector<int>* f1SparseIdxList ,vector<int>* f2SparseIdxList, VectorXd & Q);
+	void getQ(int frameId1, vector<int>* f1SparseIdxList ,vector<int>* f2SparseIdxList, MatrixXd & Q_out);
+	//计算的得到矩阵P
+	void getV0(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & V0_out);
+	
+	//得到selection matric ，index是这个矩阵的下标：分别表示不同的component
+	//index: 取值范围：{1,2,3},sMat_out其实是稀疏矩阵，这里可以改进
+	void selectionMatrix(int frameId1, int index, MatrixXd & sMat_out);
 
+	//计算最后的motion vector
+	void computeMotinVector(int frameId1, vector<int>* f1SparseIdxList, 
+		vector<int>* f2SparseIdxList,VectorXd & Vt_out);
 };

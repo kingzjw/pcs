@@ -76,6 +76,8 @@ FrameManage::FrameManage()
 
 	fileBatch = nullptr;
 	P = new MatrixXd;
+
+	u = 1;
 }
 
 FrameManage::~FrameManage()
@@ -536,10 +538,36 @@ bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<
 	return true;
 }
 
+bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+{
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	//训练数据，得到矩阵P
+	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
+#ifdef ZJW_DEBUG
+	cout << "start to traie data for mat P ..." << endl;
+#ifdef ZJW_TIMER
+	ZjwTimer test;
+	test.Start();
+#endif //ZJW_TIMER
+#endif // ZJW_DEBUG
+	matchNode(frameId1, frameId2, &f1nIdxList, &f2nIdxList);
+	getMatrixP(frameId1, frameId2, &f1nIdxList, &f2nIdxList, P);
+
+#ifdef ZJW_DEBUG
+#ifdef ZJW_TIMER
+	test.printTimeInMs("traing data for mat P ");
+#endif //zjw_timer
+	cout << "end to traie data for mat P !!!" << endl;
+#endif // ZJW_DEBUG
+
+	return true;
+}
+
 //frameId1是referen frame idx.
 //Mn是frame1上的稀疏最佳匹配的下标
 //N是frame2上的稀疏最佳匹配的下标
-void FrameManage::getMnMat(int frameId1, int bestMatchIdx, int MnIdx, int NIdx, VectorXd & MnMat_out)
+void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out)
 {
 	//判断是连续的两帧
 	assert(frameId1>0);
@@ -584,33 +612,104 @@ void FrameManage::getMnMat(int frameId1, int bestMatchIdx, int MnIdx, int NIdx, 
 	MnMat_out /= MTwoHopList.size();
 }
 
-void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & Q)
+void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, MatrixXd & Q_out)
 {
+	assert(frameId1>0);
+	Frame* frame1 = frameList[frameId1];
+	//Frame* frame2 = frameList[frameId1 + 1];
+
+	int Nt = frame1->pcsOct->ctLeaf->nodeList.size();
+	Q_out.resize(3 * Nt, 3 * Nt);
+	Q_out.setZero();
+
+	//遍历sparse list,
+	for (int node_it = 0; node_it < f1SparseIdxList->size(); node_it++)
+	{
+		// 拿到应该拿的Mn
+		VectorXd MnMat_out;
+		int Mn = (*f1SparseIdxList)[node_it];
+		getMnMat(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
+
+		//把Mn赋值到Q中对应的位置上
+		for (int col_it; col_it < MnMat_out.cols(); col_it++)
+		{
+			for (int row_it; row_it < MnMat_out.rows(); row_it++)
+			{
+				Q_out(Mn * 3+ row_it , Mn * 3 + col_it) = MnMat_out(row_it, col_it);
+			}
+		}
+	}
+}
+
+void FrameManage::getV0(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & V0_out)
+{
+	assert(frameId1>0);
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId1 + 1];
+
+	int Nt = frame1->pcsOct->ctLeaf->nodeList.size();
+	V0_out.resize(3 * Nt);
+	V0_out.setZero();
+
+	//遍历sparse list
+	for (int node_it = 0; node_it < f1SparseIdxList->size(); node_it++)
+	{
+		// 拿到应该拿的Mn
+		VectorXd MnMat_out;
+		int Mn = (*f1SparseIdxList)[node_it];
+		
+		//拿到对应点的motion vector
+		Vec3 pMn = (*(frame1->pcsOct->ctLeaf->midVList))[(*f1SparseIdxList)[node_it]];
+		Vec3 pN = (*(frame2->pcsOct->ctLeaf->midVList))[(*f2SparseIdxList)[node_it]];
+		Vector3d pDif(pMn.x - pN.x, pMn.y - pN.y, pMn.z - pN.z);
+
+		//把 v(m) 赋值到V0中对应的位置上
+		for (int row_it; row_it < pDif.rows(); row_it++)
+		{
+			V0_out(Mn * 3 + row_it) = pDif(row_it);
+		}
+	}
 
 }
 
-bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
+//index: 取值范围：{1,2,3}
+void FrameManage::selectionMatrix(int frameId1, int index, MatrixXd & sMat_out)
 {
-	vector<int> f1nIdxList;
-	vector<int> f2nIdxList;
-	//训练数据，得到矩阵P
-	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
-#ifdef ZJW_DEBUG
-	cout << "start to traie data for mat P ..." << endl;
-#ifdef ZJW_TIMER
-	ZjwTimer test;
-	test.Start();
-#endif //ZJW_TIMER
-#endif // ZJW_DEBUG
-	matchNode(frameId1, frameId2, &f1nIdxList, &f2nIdxList);
-	getMatrixP(frameId1, frameId2, &f1nIdxList, &f2nIdxList, P);
+	assert(index > 0 && index <4);
+	assert(frameId1 > -1);
 
-#ifdef ZJW_DEBUG
-#ifdef ZJW_TIMER
-	test.printTimeInMs("traing data for mat P ");
-#endif //zjw_timer
-	cout << "end to traie data for mat P !!!" << endl;
-#endif // ZJW_DEBUG
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId1 + 1];
 
-	return true;
+	int Nt = frame1->pcsOct->ctLeaf->nodeList.size();
+	sMat_out.resize(Nt, 3 * Nt);
+	sMat_out.setZero();
+
+	for (int n_it = 0; n_it < Nt; n_it++)
+	{
+		sMat_out(n_it, n_it * 3 + index - 1) = 1;
+	}
+}
+
+void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
+	vector<int>* f2SparseIdxList, VectorXd & Vt_out)
+{
+	assert(frameId1 > -1);
+	Frame* frame1 = frameList[frameId1];
+
+	MatrixXd  Q;
+	VectorXd V0;
+	getQ(frameId1,f1SparseIdxList,f2SparseIdxList,Q);
+	getV0(frameId1,f1SparseIdxList,f2SparseIdxList, V0);
+
+	MatrixXd totalS;
+	MatrixXd S;
+	selectionMatrix(frameId1, 1, S);
+	totalS = S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+	selectionMatrix(frameId1, 2, S);
+	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+	selectionMatrix(frameId1, 3, S);
+	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+
+	Vt_out = (Q + u * totalS).inverse() * Q * V0;
 }
