@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <string>
 #include <iostream>
+#include <sstream>
 
 #include "ui_pcscompress.h"
 
@@ -26,11 +27,16 @@ public slots:
 	void clickPCOctTreeButton();
 	void clickTwoFrameButton();
 
-	//frame id change
+	//frame id change. 改变连续两帧之间的
 	void changeRefFrameId();
 	void changeTargetFrameId();
 
-
+	//chagnge oct cell size
+	void changeOctCellSize();
+	//change kmeans result cluster num
+	void changeClusterNum();
+	//change motion vector u
+	void changeU();
 
 
 public:

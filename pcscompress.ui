@@ -220,7 +220,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>10</string>
+        <string>5</string>
        </property>
        <property name="dragEnabled">
         <bool>true</bool>
@@ -324,7 +324,17 @@
     </property>
     <addaction name="actionOpen"/>
    </widget>
+   <widget class="QMenu" name="menuOperation">
+    <property name="title">
+     <string>Operation</string>
+    </property>
+    <addaction name="actiontrainMatP"/>
+    <addaction name="actiongetSparseMatch"/>
+    <addaction name="actiongetMotionVector"/>
+    <addaction name="actionTest"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuOperation"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -338,6 +348,26 @@
   <action name="actionOpen">
    <property name="text">
     <string>Open</string>
+   </property>
+  </action>
+  <action name="actiontrainMatP">
+   <property name="text">
+    <string>trainMatP</string>
+   </property>
+  </action>
+  <action name="actiongetSparseMatch">
+   <property name="text">
+    <string>getSparseMatch</string>
+   </property>
+  </action>
+  <action name="actiongetMotionVector">
+   <property name="text">
+    <string>getMotionVector</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
    </property>
   </action>
  </widget>

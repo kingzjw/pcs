@@ -32,6 +32,10 @@ class Ui_pcsCompressClass
 {
 public:
     QAction *actionOpen;
+    QAction *actiontrainMatP;
+    QAction *actiongetSparseMatch;
+    QAction *actiongetMotionVector;
+    QAction *actionTest;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *parameter;
@@ -57,6 +61,7 @@ public:
     ZjwOpenGL *openGLWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
+    QMenu *menuOperation;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -67,6 +72,14 @@ public:
         pcsCompressClass->resize(811, 554);
         actionOpen = new QAction(pcsCompressClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
+        actiontrainMatP = new QAction(pcsCompressClass);
+        actiontrainMatP->setObjectName(QStringLiteral("actiontrainMatP"));
+        actiongetSparseMatch = new QAction(pcsCompressClass);
+        actiongetSparseMatch->setObjectName(QStringLiteral("actiongetSparseMatch"));
+        actiongetMotionVector = new QAction(pcsCompressClass);
+        actiongetMotionVector->setObjectName(QStringLiteral("actiongetMotionVector"));
+        actionTest = new QAction(pcsCompressClass);
+        actionTest->setObjectName(QStringLiteral("actionTest"));
         centralWidget = new QWidget(pcsCompressClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -147,6 +160,8 @@ public:
         menuBar->setGeometry(QRect(0, 0, 811, 23));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
+        menuOperation = new QMenu(menuBar);
+        menuOperation->setObjectName(QStringLiteral("menuOperation"));
         pcsCompressClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(pcsCompressClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -156,7 +171,12 @@ public:
         pcsCompressClass->setStatusBar(statusBar);
 
         menuBar->addAction(menuFile->menuAction());
+        menuBar->addAction(menuOperation->menuAction());
         menuFile->addAction(actionOpen);
+        menuOperation->addAction(actiontrainMatP);
+        menuOperation->addAction(actiongetSparseMatch);
+        menuOperation->addAction(actiongetMotionVector);
+        menuOperation->addAction(actionTest);
 
         retranslateUi(pcsCompressClass);
 
@@ -170,6 +190,10 @@ public:
     {
         pcsCompressClass->setWindowTitle(QApplication::translate("pcsCompressClass", "pcsCompress", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("pcsCompressClass", "Open", Q_NULLPTR));
+        actiontrainMatP->setText(QApplication::translate("pcsCompressClass", "trainMatP", Q_NULLPTR));
+        actiongetSparseMatch->setText(QApplication::translate("pcsCompressClass", "getSparseMatch", Q_NULLPTR));
+        actiongetMotionVector->setText(QApplication::translate("pcsCompressClass", "getMotionVector", Q_NULLPTR));
+        actionTest->setText(QApplication::translate("pcsCompressClass", "Test", Q_NULLPTR));
         oct_2->setText(QApplication::translate("pcsCompressClass", "render mode", Q_NULLPTR));
         pc_radioButtion->setText(QApplication::translate("pcsCompressClass", "point cloud", Q_NULLPTR));
         oct_radioButton->setText(QApplication::translate("pcsCompressClass", "octTree and pc", Q_NULLPTR));
@@ -184,7 +208,7 @@ public:
         label_2->setText(QApplication::translate("pcsCompressClass", "algorithm", Q_NULLPTR));
         u_motionVec->setText(QApplication::translate("pcsCompressClass", " u", Q_NULLPTR));
         clusterNumLineEdit->setInputMask(QString());
-        clusterNumLineEdit->setText(QApplication::translate("pcsCompressClass", "10", Q_NULLPTR));
+        clusterNumLineEdit->setText(QApplication::translate("pcsCompressClass", "5", Q_NULLPTR));
         oct->setText(QApplication::translate("pcsCompressClass", "octTree leaf", Q_NULLPTR));
         cluster->setText(QApplication::translate("pcsCompressClass", "cluster num", Q_NULLPTR));
         u_motionVecLineEdit->setInputMask(QString());
@@ -194,6 +218,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(parameter), QApplication::translate("pcsCompressClass", "param", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(others), QApplication::translate("pcsCompressClass", "others", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("pcsCompressClass", "File", Q_NULLPTR));
+        menuOperation->setTitle(QApplication::translate("pcsCompressClass", "Operation", Q_NULLPTR));
     } // retranslateUi
 
 };

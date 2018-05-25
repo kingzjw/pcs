@@ -36,7 +36,10 @@ public:
 		NUM_FRONT,
 		NUM_TAIL
 	};
-
+	//oct 里面用到的参数：
+	Vec3 cellSize;
+	//kmeans的个数
+	int clusterNum;
 	//存储训练数据保存下来的矩阵P;
 	MatrixXd * P;
 

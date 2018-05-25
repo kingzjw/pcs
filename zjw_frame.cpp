@@ -58,7 +58,6 @@ bool Frame::octSgwt()
 	timer2.Stop();
 	timer2.printTimeInMs("build oct and ready to compute the sgwt!");
 #endif
-
 	return true;
 }
 
@@ -69,6 +68,9 @@ FrameManage::FrameManage()
 	//changeSouceData = true;
 
 	fileBatch = nullptr;
+	//oct 中用到的参数
+	cellSize.x = cellSize.y = cellSize.z = 0.1;
+	clusterNum = 5;
 	P = new MatrixXd;
 
 	u = 1;
@@ -495,7 +497,7 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 	KMeans * kmeans = frame->pcsOct->kmeans;
 	//frame2(target frame) 内容，进行do kmeans,取出结果
 
-	frame->pcsOct->doKmeans(10);
+	frame->pcsOct->doKmeans(clusterNum);
 	//遍历每个cluster集的node
 	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
 	{
