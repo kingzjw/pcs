@@ -18,8 +18,20 @@ class pcsCompress : public QMainWindow
 {
 	Q_OBJECT
 
-		public slots:
+public slots:
 	void clickedOpenFileAction();
+
+	//¸Ä±ärender mode
+	void clickPointCloudButton();
+	void clickPCOctTreeButton();
+	void clickTwoFrameButton();
+
+	//frame id change
+	void changeRefFrameId();
+	void changeTargetFrameId();
+
+
+
 
 public:
 	pcsCompress(QWidget *parent = 0);

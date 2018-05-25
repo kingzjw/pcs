@@ -71,12 +71,20 @@ public:
 	//PcsOctree pcsOct;
 	FrameManage fm;
 
-	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树
+	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树 3:表示渲染的两个连续帧之间的点云
 	int renderState;
+	//reference frame
 	int showFrameIdx;
+	//target frame 比 showFrameIdx
+	int showFrameIdx2;
+
 	void setShowFrameIdx(int i = 0);
+
+	//画点云
 	void drawPointCloud(ObjMesh &objMesh);
+	//画点云和 八叉树的包围结构
 	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
+	//draw 长方体的框
 	void drawWireCube(Vec3 min, Vec3 max);
 };
 

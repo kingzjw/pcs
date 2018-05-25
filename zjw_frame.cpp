@@ -38,7 +38,7 @@ bool Frame::octSgwt()
 	/*Vec3 minPos(objMesh.rangeMin);
 	Vec3 maxPos((objMesh.rangeMax + Epsilon));*/
 
-	Vec3 cellSize(0.6);
+	Vec3 cellSize(0.1);
 	//设置参数，并构建八叉树
 	pcsOct->setParam(minPos, maxPos, cellSize);
 	//pcsOct->buildPcsOctFrmPC(objMesh);
@@ -47,12 +47,6 @@ bool Frame::octSgwt()
 	pcsOct->getLeafboundary();
 	pcsOct->getGraphMat();
 	pcsOct->getMatEigenVerValue();
-
-	//test
-	//set<int>  nodeList_out;
-	//SpMat * spLaplacian
-	//pcsOct->getTwoHopNeighborhood(0, &nodeList_out, pcsOct->spLaplacian);
-	//end test
 
 	//得到八叉树上顶点的信号
 	pcsOct->setPointTo8Areas();
@@ -378,9 +372,9 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 #ifdef ZJW_DEBUG
 		cout << "The rank of covMat is " << lu_decomp.rank() << endl;
 		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
-		cout << "cov mat: " << endl;
+		//cout << "cov mat: " << endl;
 		//cout << covMat << endl << endl;
-		cout << covMat.diagonal() << endl;
+		//cout << covMat.diagonal() << endl;
 #endif // zjw_debug
 	}
 	else
@@ -393,7 +387,7 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 		cout << "The size of covMat is " << covMat.rows() << " " << covMat.cols() << endl;
 
 		//print
-		cout << covMat.diagonal() << endl;
+		//cout << covMat.diagonal() << endl;
 		/*cout << "mat P: " << endl;
 		cout << *p << endl << endl;*/
 
@@ -406,17 +400,19 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 //测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
 //返回值：maDist ， f1nIdxList f2nIdxList是得到最佳的匹配关系
 //f2nIdxList中的顶点序列应该是连续的，除非中间有顶点匹配失败
-bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList, vector<int>* f2nIdxList, vector<double>* maDist)
+bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, 
+	MatrixXd * P, vector<int>* f1nIdxList_out, vector<int>* f2nIdxList_out, vector<double>* maDist_out)
 {
 #ifdef ZJW_DEBUG
+	//该函数非常消耗时间，需要进度条记录进展。
 	bool process = false;
 #endif // ZJW_DEBUG
 
 	//判断是连续的两帧
 	assert(abs(frameId1 - frameId2) == 1);
-	f1nIdxList->clear();
-	f2nIdxList->clear();
-	maDist->clear();
+	f1nIdxList_out->clear();
+	f2nIdxList_out->clear();
+	maDist_out->clear();
 
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId2];
@@ -451,10 +447,12 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
 
 		//保存最佳对应关系,及最佳对应关系下面的马氏距离
-		f2nIdxList->push_back(node2_it);
-		f1nIdxList->push_back(indexNode1);
-		maDist->push_back(*smallest);
+		f2nIdxList_out->push_back(node2_it);
+		f1nIdxList_out->push_back(indexNode1);
+		maDist_out->push_back(*smallest);
+
 #ifdef ZJW_DEBUG
+		//显示这个函数进度
 		if (process)
 		{
 			printf("\b\b\b\b\b\b");
@@ -470,6 +468,7 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 			process = true;
 		}
 #endif // ZJW_DEBUG
+
 	}
 
 #ifdef ZJW_DEBUG
@@ -484,13 +483,13 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, ve
 //maDist保存的是最佳匹配的距离
 //返回值：f1SparseIdxList  f2SparseIdxList   稀疏的最佳匹配
 bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
-	vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList)
+	vector<double>* maDist, vector<int>* f1SparseIdxList_out, vector<int>* f2SparseIdxList_out)
 {
 	assert(frameId >= 0);
 	assert(f1nIdxList->size() > 0 && f1nIdxList->size() > 0 && maDist->size() > 0);
 
-	f1SparseIdxList->clear();
-	f2SparseIdxList->clear();
+	f1SparseIdxList_out->clear();
+	f2SparseIdxList_out->clear();
 
 	Frame* frame = frameList[frameId];
 	KMeans * kmeans = frame->pcsOct->kmeans;
@@ -505,6 +504,7 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		double minDis = -1;
 		for (int n_it = 0; n_it < kmeans->clusterRes[c_it].size(); n_it++)
 		{
+			//nodeIdx的范围，就是当前frame 中叶子结点的序号范围  0 - (nodeSize-1)
 			int nodeIdx = kmeans->clusterRes[c_it][n_it];
 
 			if ((*maDist)[nodeIdx] < minDis || minDis == -1)
@@ -516,10 +516,14 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 #ifdef  ZJW_DEBUG
 		//因为getBestMatchPoint中得到的f2应该序号是从低到高排序的
 		assert(bestNodeId == (*f2nIdxList)[bestNodeId]);
+		//test
+		cout << "sparse match : " << (*f1nIdxList)[bestNodeId] << " " << (*f2nIdxList)[bestNodeId] << endl;
+		//end test
 #endif //  zjw_debug
+
 		//保存对应关系到sparse ver idx中
-		f1SparseIdxList->push_back((*f1nIdxList)[bestNodeId]);
-		f2SparseIdxList->push_back((*f2nIdxList)[bestNodeId]);
+		f1SparseIdxList_out->push_back((*f1nIdxList)[bestNodeId]);
+		f2SparseIdxList_out->push_back((*f2nIdxList)[bestNodeId]);
 	}
 
 	return true;
@@ -531,7 +535,10 @@ bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<
 	vector<int> f1nIdxList;
 	vector<int> f2nIdxList;
 	vector<double> maDist;
+	
+	//训练数据
 	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path, changeData);
+	//拿到frame2中每个node idx在 frame1中的最佳匹配
 	getBestMatchPoint(frameId1, frameId2, P, &f1nIdxList, &f2nIdxList, &maDist);
 	//对target frame上的帧进行k-means
 	doKmeansGetSparseBestMatch(frameId2, &f1nIdxList, &f2nIdxList, &maDist, f1SparseIdxList_out, f2SparseIdxList_out);
@@ -574,6 +581,7 @@ void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_o
 
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId1 + 1];
+	MnMat_out.resize(3, 3);
 	MnMat_out.setZero();
 
 	//得到frame1 点 Mn为中心，two hop之间的顶点序号
@@ -694,6 +702,9 @@ void FrameManage::selectionMatrix(int frameId1, int index, MatrixXd & sMat_out)
 void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
 	vector<int>* f2SparseIdxList, VectorXd & Vt_out)
 {
+#ifdef ZJW_DEBUG
+	cout << "start compute MotinVector ..." << endl;
+#endif //zjw_debug
 	assert(frameId1 > -1);
 	Frame* frame1 = frameList[frameId1];
 
@@ -701,7 +712,7 @@ void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
 	VectorXd V0;
 	getQ(frameId1,f1SparseIdxList,f2SparseIdxList,Q);
 	getV0(frameId1,f1SparseIdxList,f2SparseIdxList, V0);
-
+	
 	MatrixXd totalS;
 	MatrixXd S;
 	selectionMatrix(frameId1, 1, S);
@@ -712,4 +723,25 @@ void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
 	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
 
 	Vt_out = (Q + u * totalS).inverse() * Q * V0;
+
+#ifdef ZJW_DEBUG
+	//test
+	cout << "Q: " << endl;
+	cout << Q << endl;
+	cout << endl << endl;
+	cout << "V0: " << endl;
+	cout << V0 << endl;
+	cout << endl << endl;
+	//end test
+
+	//test
+	FullPivLU<MatrixXd> lu_decomp((Q + u * totalS));
+	cout << "mat: " << (Q + u * totalS).rows() <<" "<< (Q + u * totalS).cols() << endl;
+	cout << "mat rank: " << lu_decomp.rank() << endl;
+	cout << "motion vector: " << endl;
+	cout << Vt_out << endl;
+	//end test
+
+	cout << "end compute MotinVector !!" << endl;
+#endif //zjw_debug
 }

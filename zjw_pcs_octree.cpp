@@ -796,6 +796,7 @@ void PcsOctree::doKmeans(int clusterNum)
 {
 #ifdef ZJW_TIMER
 	cout << "start do Kmeans ...." << endl;
+	cout << "kmeans cluster set to " << clusterNum << endl;
 	ZjwTimer timer2;
 	timer2.Start();
 #endif
@@ -807,6 +808,21 @@ void PcsOctree::doKmeans(int clusterNum)
 
 	//结果保存在clusterRes，保存了叶子节点的序号
 	//dosomething
+
+#ifdef ZJW_DEBUG
+	//打印分类信息
+	cout << "kmeans result: " << endl;
+	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
+	{
+		cout << "cluster " << c_it << " : " << endl;
+
+		for (int n_it = 0; n_it < kmeans->clusterRes[c_it].size(); n_it++)
+		{
+			cout << kmeans->clusterRes[c_it][n_it]<<" ";
+		}
+		cout <<endl;
+	}
+#endif // ZJW_DEBUG
 
 #ifdef ZJW_TIMER
 	timer2.Stop();

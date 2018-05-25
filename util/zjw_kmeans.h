@@ -66,7 +66,7 @@ public:
 	int dimNum;
 	//分组的个数
 	int clusterNum;
-	//最终分类的结果，只保存叶子节点的序号
+	//最终分类的结果，只保存叶子节点的序号。
 	vector<vector<int>> clusterRes;
 	//每个组的质点
 	vector<Vec3> means;

@@ -34,6 +34,7 @@ void KMeans::setClusterNum(int i)
 //N 为特征向量数
 void KMeans::cluster(vector<Vec3> *data)
 {
+	//midVList的数量
 	dataSize = data->size();
 	assert(dataSize >= clusterNum);
 

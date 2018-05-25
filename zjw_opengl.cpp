@@ -32,6 +32,7 @@ ZjwOpenGL::ZjwOpenGL(QWidget * parent) : QGLWidget(parent) {
 	//============针对应用的扩展，可以删除=======================
 	renderState = 0;
 	showFrameIdx = 0;
+	showFrameIdx2 = 1;
 }
 
 ZjwOpenGL::~ZjwOpenGL() {
@@ -116,6 +117,7 @@ void ZjwOpenGL::render()
 
 	if (renderState == 0)
 	{
+		//不进行渲染
 	}
 	else if (renderState == 1)
 	{
@@ -127,6 +129,15 @@ void ZjwOpenGL::render()
 		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
 		//drawPointCloudOctree(objMesh, pcsOct);
 	}
+	else if (renderState = 3)
+	{
+		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+
+		glPushMatrix();
+		glTranslated(-0.5, 0, 0);
+		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh));
+		glPopMatrix();
+	}
 
 	glPopMatrix();
 }
@@ -134,6 +145,7 @@ void ZjwOpenGL::render()
 void ZjwOpenGL::setShowFrameIdx(int i)
 {
 	showFrameIdx = i;
+	showFrameIdx2 = showFrameIdx + 1;
 }
 
 void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)
@@ -169,9 +181,6 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
 #ifdef ZJW_DEBUG
-	/*Vec3 min(0, 0, 0);
-	Vec3 max(1, 1, 1);
-	drawWireCube(min,max);*/
 #endif
 }
 
