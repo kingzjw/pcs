@@ -32,9 +32,9 @@ class Ui_pcsCompressClass
 {
 public:
     QAction *actionOpen;
-    QAction *actiontrainMatP;
-    QAction *actiongetSparseMatch;
-    QAction *actiongetMotionVector;
+    QAction *actionTrainMatP;
+    QAction *actionGetSparseMatch;
+    QAction *actionGetMotionVector;
     QAction *actionTest;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
@@ -72,12 +72,12 @@ public:
         pcsCompressClass->resize(811, 554);
         actionOpen = new QAction(pcsCompressClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
-        actiontrainMatP = new QAction(pcsCompressClass);
-        actiontrainMatP->setObjectName(QStringLiteral("actiontrainMatP"));
-        actiongetSparseMatch = new QAction(pcsCompressClass);
-        actiongetSparseMatch->setObjectName(QStringLiteral("actiongetSparseMatch"));
-        actiongetMotionVector = new QAction(pcsCompressClass);
-        actiongetMotionVector->setObjectName(QStringLiteral("actiongetMotionVector"));
+        actionTrainMatP = new QAction(pcsCompressClass);
+        actionTrainMatP->setObjectName(QStringLiteral("actionTrainMatP"));
+        actionGetSparseMatch = new QAction(pcsCompressClass);
+        actionGetSparseMatch->setObjectName(QStringLiteral("actionGetSparseMatch"));
+        actionGetMotionVector = new QAction(pcsCompressClass);
+        actionGetMotionVector->setObjectName(QStringLiteral("actionGetMotionVector"));
         actionTest = new QAction(pcsCompressClass);
         actionTest->setObjectName(QStringLiteral("actionTest"));
         centralWidget = new QWidget(pcsCompressClass);
@@ -173,9 +173,9 @@ public:
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuOperation->menuAction());
         menuFile->addAction(actionOpen);
-        menuOperation->addAction(actiontrainMatP);
-        menuOperation->addAction(actiongetSparseMatch);
-        menuOperation->addAction(actiongetMotionVector);
+        menuOperation->addAction(actionTrainMatP);
+        menuOperation->addAction(actionGetSparseMatch);
+        menuOperation->addAction(actionGetMotionVector);
         menuOperation->addAction(actionTest);
 
         retranslateUi(pcsCompressClass);
@@ -190,9 +190,9 @@ public:
     {
         pcsCompressClass->setWindowTitle(QApplication::translate("pcsCompressClass", "pcsCompress", Q_NULLPTR));
         actionOpen->setText(QApplication::translate("pcsCompressClass", "Open", Q_NULLPTR));
-        actiontrainMatP->setText(QApplication::translate("pcsCompressClass", "trainMatP", Q_NULLPTR));
-        actiongetSparseMatch->setText(QApplication::translate("pcsCompressClass", "getSparseMatch", Q_NULLPTR));
-        actiongetMotionVector->setText(QApplication::translate("pcsCompressClass", "getMotionVector", Q_NULLPTR));
+        actionTrainMatP->setText(QApplication::translate("pcsCompressClass", "TrainMatP", Q_NULLPTR));
+        actionGetSparseMatch->setText(QApplication::translate("pcsCompressClass", "GetSparseMatch", Q_NULLPTR));
+        actionGetMotionVector->setText(QApplication::translate("pcsCompressClass", "GetMotionVector", Q_NULLPTR));
         actionTest->setText(QApplication::translate("pcsCompressClass", "Test", Q_NULLPTR));
         oct_2->setText(QApplication::translate("pcsCompressClass", "render mode", Q_NULLPTR));
         pc_radioButtion->setText(QApplication::translate("pcsCompressClass", "point cloud", Q_NULLPTR));

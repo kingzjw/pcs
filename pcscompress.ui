@@ -328,9 +328,9 @@
     <property name="title">
      <string>Operation</string>
     </property>
-    <addaction name="actiontrainMatP"/>
-    <addaction name="actiongetSparseMatch"/>
-    <addaction name="actiongetMotionVector"/>
+    <addaction name="actionTrainMatP"/>
+    <addaction name="actionGetSparseMatch"/>
+    <addaction name="actionGetMotionVector"/>
     <addaction name="actionTest"/>
    </widget>
    <addaction name="menuFile"/>
@@ -350,19 +350,19 @@
     <string>Open</string>
    </property>
   </action>
-  <action name="actiontrainMatP">
+  <action name="actionTrainMatP">
    <property name="text">
-    <string>trainMatP</string>
+    <string>TrainMatP</string>
    </property>
   </action>
-  <action name="actiongetSparseMatch">
+  <action name="actionGetSparseMatch">
    <property name="text">
-    <string>getSparseMatch</string>
+    <string>GetSparseMatch</string>
    </property>
   </action>
-  <action name="actiongetMotionVector">
+  <action name="actionGetMotionVector">
    <property name="text">
-    <string>getMotionVector</string>
+    <string>GetMotionVector</string>
    </property>
   </action>
   <action name="actionTest">

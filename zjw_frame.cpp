@@ -624,7 +624,7 @@ void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_o
 
 void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, MatrixXd & Q_out)
 {
-	assert(frameId1>0);
+	assert(frameId1>=0);
 	Frame* frame1 = frameList[frameId1];
 	//Frame* frame2 = frameList[frameId1 + 1];
 

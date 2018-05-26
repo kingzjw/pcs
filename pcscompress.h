@@ -38,6 +38,11 @@ public slots:
 	//change motion vector u
 	void changeU();
 
+	//算法核心步骤
+	void trainMatP();
+	void getSparseMatch();
+	void getMotionVector();
+	void test();
 
 public:
 	pcsCompress(QWidget *parent = 0);
@@ -45,6 +50,12 @@ public:
 
 private:
 	Ui::pcsCompressClass ui;
+
+	string dirPath;
+	string filePath;
+	//测试数据，拿到稀疏最佳匹配
+	vector<int> f1SparseIdxList;
+	vector<int> f2SparseIdxList;
 };
 
 #endif // PCSCOMPRESS_H

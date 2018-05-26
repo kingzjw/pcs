@@ -19,21 +19,17 @@ void pcsCompress::clickedOpenFileAction()
 	if (lastpos != string::npos)
 		path.erase(lastpos, path.length());
 
+	dirPath = path;
+	filePath = stt;
+
 	std::cout << "you choose the file: " << std::endl << stt << endl;
 	std::cout << "you choose the path: " << std::endl << path << endl;
 
-	//训练数据，得到矩阵P
-	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path);
+	
 
-	//测试数据，拿到稀疏最佳匹配
-	vector<int> f1SparseIdxList;
-	vector<int> f2SparseIdxList;
-	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
-		&f1SparseIdxList, &f2SparseIdxList, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", path, true);
+	
 
-	//测试数据，拿到motion vector
-	VectorXd Vt;
-	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, &f1SparseIdxList, &f2SparseIdxList, Vt);
+	
 
 	//render
 	ui.openGLWidget->updateGL();
@@ -109,13 +105,20 @@ void pcsCompress::changeOctCellSize()
 	istringstream iss(ui.octTreeLeafineEdit->text().toStdString());
 	double temp;
 	iss >> temp;
-	ui.openGLWidget->fm.cellSize.x = temp;
-	ui.openGLWidget->fm.cellSize.y = temp;
-	ui.openGLWidget->fm.cellSize.z = temp;
 
+	if (temp < 1 && temp>0)
+	{
+		ui.openGLWidget->fm.cellSize.x = temp;
+		ui.openGLWidget->fm.cellSize.y = temp;
+		ui.openGLWidget->fm.cellSize.z = temp;
 #ifdef ZJW_DEBUG
-	cout << "cell size set to " << temp << endl;
+		cout << "cell size set to " << temp << endl;
 #endif // ZJW_DEBUG
+	}
+	else
+	{
+		cout << "error input,please input range (0,1) !" << endl;
+	}
 }
 
 void pcsCompress::changeClusterNum()
@@ -124,11 +127,18 @@ void pcsCompress::changeClusterNum()
 	istringstream iss(ui.clusterNumLineEdit->text().toStdString());
 	double temp;
 	iss >> temp;
-	ui.openGLWidget->fm.u = temp;
 
+	if (temp > 1 )
+	{
+		ui.openGLWidget->fm.u = temp;
 #ifdef ZJW_DEBUG
-	cout << "cluster num  set to " << temp << endl;
+		cout << "cluster num  set to " << temp << endl;
 #endif // ZJW_DEBUG
+	}
+	else
+	{
+		cout << "error input,please input range [2,+inf) !" << endl;
+	}
 }
 
 void pcsCompress::changeU()
@@ -137,11 +147,51 @@ void pcsCompress::changeU()
 	istringstream iss(ui.u_motionVecLineEdit->text().toStdString());
 	double temp;
 	iss >> temp;
-	ui.openGLWidget->fm.u = temp;
 
+	ui.openGLWidget->fm.u = temp;
 #ifdef ZJW_DEBUG
 	cout << "motion vector param u set to " << temp << endl;
 #endif // ZJW_DEBUG
+}
+
+void pcsCompress::trainMatP()
+{
+	//训练数据，得到矩阵P
+	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
+		"walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+
+#ifdef ZJW_DEBUG
+	cout << "train path: " << ".//testData//walk" << endl;
+	cout << "train frame id :  0 and 1"<< endl;
+#endif // ZJW_DEBUG
+}
+
+void pcsCompress::getSparseMatch()
+{
+	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
+		&f1SparseIdxList, &f2SparseIdxList, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+}
+
+void pcsCompress::getMotionVector()
+{
+	//测试数据，拿到motion vector
+	VectorXd Vt;
+	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, &f1SparseIdxList, &f2SparseIdxList, Vt);
+}
+
+void pcsCompress::test()
+{
+	//训练数据，得到矩阵P
+	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_",
+		"E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+
+	//测试数据，拿到稀疏最佳匹配
+	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
+		&f1SparseIdxList, &f2SparseIdxList, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+
+	//测试数据，拿到motion vector
+	VectorXd Vt;
+	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, &f1SparseIdxList, &f2SparseIdxList, Vt);
 }
 
 pcsCompress::pcsCompress(QWidget *parent)
@@ -151,7 +201,6 @@ pcsCompress::pcsCompress(QWidget *parent)
 
 	//打开文件
 	connect(ui.actionOpen, SIGNAL(triggered()), this, SLOT(clickedOpenFileAction()));
-
 	//改变render mode
 	connect(ui.pc_radioButtion, SIGNAL(clicked()), this, SLOT(clickPointCloudButton()));
 	connect(ui.oct_radioButton, SIGNAL(clicked()), this, SLOT(clickPCOctTreeButton()));
@@ -167,6 +216,13 @@ pcsCompress::pcsCompress(QWidget *parent)
 	connect(ui.clusterNumLineEdit, SIGNAL(returnPressed()), this, SLOT(changeClusterNum()));
 	//change motion vector u
 	connect(ui.u_motionVecLineEdit, SIGNAL(returnPressed()), this, SLOT(changeU()));
+
+	//核心算法步骤
+	connect(ui.actionTrainMatP, SIGNAL(triggered()), this, SLOT(trainMatP()));
+	connect(ui.actionGetSparseMatch, SIGNAL(triggered()), this, SLOT(getSparseMatch()));
+	connect(ui.actionGetMotionVector, SIGNAL(triggered()), this, SLOT(getMotionVector()));
+	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(test()));
+
 }
 
 pcsCompress::~pcsCompress()
