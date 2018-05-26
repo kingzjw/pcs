@@ -131,12 +131,19 @@ void ZjwOpenGL::render()
 	}
 	else if (renderState = 3)
 	{
-		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+		//drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
 
 		glPushMatrix();
+		double movestep = -0.5;
 		glTranslated(-0.5, 0, 0);
-		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh));
+		//drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh));
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx2]->objMesh), *(fm.frameList[showFrameIdx2]->pcsOct));
 		glPopMatrix();
+
+		//画匹配线
+		//drawSparseMatchLine(movestep);
+		drawBestMatchLine(movestep);
 	}
 
 	glPopMatrix();
@@ -220,6 +227,53 @@ void ZjwOpenGL::drawWireCube(Vec3 min, Vec3 max)
 	glVertex3f(min.x, min.y, max.z);
 
 	glEnd();
+}
+
+void ZjwOpenGL::drawSparseMatchLine(double moveStep)
+{
+	Frame * frame1 = fm.frameList[showFrameIdx];
+	Frame * frame2 = fm.frameList[showFrameIdx2];
+
+	//遍历所有稀疏的匹配
+	glLineWidth(2.0f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	for (int i = 0; i < fm.f1SparseIdxList.size(); i++)
+	{
+		Vec3 v1 = (*frame1->pcsOct->ctLeaf->midVList)[fm.f1SparseIdxList[i]];
+		Vec3 v2 = (*frame2->pcsOct->ctLeaf->midVList)[fm.f2SparseIdxList[i]];
+		
+		glBegin(GL_LINES);
+		glVertex3f(v1.x, v1.y, v1.z);
+		glVertex3f(v2.x + moveStep, v2.y, v2.z);
+		glEnd();
+	}
+	glLineWidth(1.0f);
+
+}
+
+void ZjwOpenGL::drawBestMatchLine(double moveStep)
+{
+#ifdef ZJW_DEBUG
+	cout << "draw Best Match Line!" << endl;
+#endif	//zjw_debug
+
+	Frame * frame1 = fm.frameList[showFrameIdx];
+	Frame * frame2 = fm.frameList[showFrameIdx2];
+
+	//遍历所有稀疏的匹配
+	glLineWidth(1.5f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	for (int i = 0; i < fm.f1nIdxList.size(); i++)
+	{
+		Vec3 v1 = (*frame1->pcsOct->ctLeaf->midVList)[fm.f1nIdxList[i]];
+		Vec3 v2 = (*frame2->pcsOct->ctLeaf->midVList)[fm.f2nIdxList[i]];
+
+		glBegin(GL_LINES);
+		glVertex3f(v1.x, v1.y, v1.z);
+		glVertex3f(v2.x + moveStep, v2.y, v2.z);
+		glEnd();
+	}
+	glLineWidth(1.0f);
 }
 
 void ZjwOpenGL::keyPressEvent(QKeyEvent * event)

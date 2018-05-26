@@ -169,14 +169,19 @@ void pcsCompress::trainMatP()
 void pcsCompress::getSparseMatch()
 {
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
-		&f1SparseIdxList, &f2SparseIdxList, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+
+	ui.openGLWidget->renderState = 2;
+	ui.openGLWidget->updateGL();
 }
 
 void pcsCompress::getMotionVector()
 {
 	//测试数据，拿到motion vector
 	VectorXd Vt;
-	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, &f1SparseIdxList, &f2SparseIdxList, Vt);
+	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, 
+		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
 }
 
 void pcsCompress::test()
@@ -187,11 +192,13 @@ void pcsCompress::test()
 
 	//测试数据，拿到稀疏最佳匹配
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
-		&f1SparseIdxList, &f2SparseIdxList, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;
-	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, &f1SparseIdxList, &f2SparseIdxList, Vt);
+	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, 
+		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
 }
 
 pcsCompress::pcsCompress(QWidget *parent)

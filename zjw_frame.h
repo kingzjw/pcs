@@ -46,6 +46,15 @@ public:
 	//常量 u,用于计算motion vector的一个参数。
 	double u;
 
+	//存储所有的最佳匹配
+	vector<int> f1nIdxList;
+	vector<int> f2nIdxList;
+	vector<double> maDist;
+
+	//测试数据，拿到稀疏最佳匹配
+	vector<int> f1SparseIdxList;
+	vector<int> f2SparseIdxList;
+
 private:
 	//标记是否调用过batchLoadObj接口
 	bool batchLoad;

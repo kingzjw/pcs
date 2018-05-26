@@ -53,9 +53,6 @@ private:
 
 	string dirPath;
 	string filePath;
-	//测试数据，拿到稀疏最佳匹配
-	vector<int> f1SparseIdxList;
-	vector<int> f2SparseIdxList;
 };
 
 #endif // PCSCOMPRESS_H

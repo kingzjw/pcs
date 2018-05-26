@@ -534,9 +534,6 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<int>* f1SparseIdxList_out,
 	vector<int>* f2SparseIdxList_out, FileNameForMat type, string fileNameFormat, string path, bool changeData)
 {
-	vector<int> f1nIdxList;
-	vector<int> f2nIdxList;
-	vector<double> maDist;
 	
 	//训练数据
 	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path, changeData);

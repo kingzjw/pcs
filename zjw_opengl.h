@@ -86,6 +86,10 @@ public:
 	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
 	//draw 长方体的框
 	void drawWireCube(Vec3 min, Vec3 max);
+	//画线
+	void drawSparseMatchLine(double moveStep);
+	//画两帧之间所有对称的线
+	void drawBestMatchLine(double moveStep);
 };
 
 #endif
