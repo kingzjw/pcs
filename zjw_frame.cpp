@@ -26,7 +26,7 @@ bool Frame::loadObj(string path)
 	return objMesh->loadObjMesh(path);
 }
 
-bool Frame::octSgwt()
+bool Frame::octSgwt(Vec3 cellSize)
 {
 #ifdef ZJW_TIMER
 	ZjwTimer timer2;
@@ -38,7 +38,7 @@ bool Frame::octSgwt()
 	/*Vec3 minPos(objMesh.rangeMin);
 	Vec3 maxPos((objMesh.rangeMax + Epsilon));*/
 
-	Vec3 cellSize(0.1);
+	//Vec3 cellSize(0.1);
 	//设置参数，并构建八叉树
 	pcsOct->setParam(minPos, maxPos, cellSize);
 	//pcsOct->buildPcsOctFrmPC(objMesh);
@@ -178,7 +178,7 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 		timer.Stop();
 		timer.printTimeInMs("load obj time: ");
 
-		frameList[f_it]->octSgwt();
+		frameList[f_it]->octSgwt(cellSize);
 		//frameList[f_it-1].octSgwt();
 
 #ifdef ZJW_DEBUG
@@ -218,7 +218,7 @@ bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMa
 		timer.Stop();
 		timer.printTimeInMs("load obj time: ");
 
-		frameList[frameId1]->octSgwt();
+		frameList[frameId1]->octSgwt(cellSize);
 	}
 
 	ZjwTimer timer3;
@@ -231,7 +231,7 @@ bool FrameManage::loadContinuousFrames(int frameId1, int frameId2, FileNameForMa
 		timer3.Stop();
 		timer3.printTimeInMs("load obj time: ");
 
-		frameList[frameId2]->octSgwt();
+		frameList[frameId2]->octSgwt(cellSize);
 	}
 	return true;
 }
@@ -546,10 +546,6 @@ bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<
 
 bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, string fileNameFormat, string path)
 {
-	vector<int> f1nIdxList;
-	vector<int> f2nIdxList;
-	//训练数据，得到矩阵P
-	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
 #ifdef ZJW_DEBUG
 	cout << "start to traie data for mat P ..." << endl;
 #ifdef ZJW_TIMER
@@ -557,8 +553,11 @@ bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, str
 	test.Start();
 #endif //ZJW_TIMER
 #endif // ZJW_DEBUG
-	matchNode(frameId1, frameId2, &f1nIdxList, &f2nIdxList);
-	getMatrixP(frameId1, frameId2, &f1nIdxList, &f2nIdxList, P);
+	//训练数据，得到矩阵P
+	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
+	//得到匹配关系
+	matchNode(frameId1, frameId2, &f1TrainList, &f2TrainList);
+	getMatrixP(frameId1, frameId2, &f1TrainList, &f2TrainList, P);
 
 #ifdef ZJW_DEBUG
 #ifdef ZJW_TIMER

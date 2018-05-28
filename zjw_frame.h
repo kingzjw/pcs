@@ -22,7 +22,7 @@ public:
 	Frame(const int frameId);
 	~Frame();
 	bool loadObj(string path);
-	bool octSgwt();
+	bool octSgwt(Vec3 cellSize);
 };
 
 //序列管理器
@@ -46,7 +46,11 @@ public:
 	//常量 u,用于计算motion vector的一个参数。
 	double u;
 
-	//存储所有的最佳匹配
+	//训练数据,保存最后的匹配关系
+	vector<int> f1TrainList;
+	vector<int> f2TrainList;
+
+	//测试数据，存储所有的最佳匹配
 	vector<int> f1nIdxList;
 	vector<int> f2nIdxList;
 	vector<double> maDist;

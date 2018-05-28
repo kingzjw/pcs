@@ -90,6 +90,9 @@ public:
 	void drawSparseMatchLine(double moveStep);
 	//画两帧之间所有对称的线
 	void drawBestMatchLine(double moveStep);
+
+	//对训练数据之间的data进行学习
+	void drawTrainMatchLine(double moveStep);
 };
 
 #endif

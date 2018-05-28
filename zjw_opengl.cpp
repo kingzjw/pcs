@@ -129,7 +129,7 @@ void ZjwOpenGL::render()
 		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
 		//drawPointCloudOctree(objMesh, pcsOct);
 	}
-	else if (renderState = 3)
+	else if (renderState == 3)
 	{
 		//drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
 		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
@@ -144,6 +144,21 @@ void ZjwOpenGL::render()
 		//画匹配线
 		//drawSparseMatchLine(movestep);
 		drawBestMatchLine(movestep);
+	}
+	else if (renderState == 4)
+	{
+		//--------------画训练数据的对应关系------------------------
+
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
+
+		glPushMatrix();
+		double movestep = -0.5;
+		glTranslated(-0.5, 0, 0);
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx2]->objMesh), *(fm.frameList[showFrameIdx2]->pcsOct));
+		glPopMatrix();
+
+		//画匹配线
+		drawTrainMatchLine(movestep);
 	}
 
 	glPopMatrix();
@@ -254,7 +269,7 @@ void ZjwOpenGL::drawSparseMatchLine(double moveStep)
 void ZjwOpenGL::drawBestMatchLine(double moveStep)
 {
 #ifdef ZJW_DEBUG
-	cout << "draw Best Match Line!" << endl;
+	//cout << "draw Best Match Line!" << endl;
 #endif	//zjw_debug
 
 	Frame * frame1 = fm.frameList[showFrameIdx];
@@ -267,6 +282,31 @@ void ZjwOpenGL::drawBestMatchLine(double moveStep)
 	{
 		Vec3 v1 = (*frame1->pcsOct->ctLeaf->midVList)[fm.f1nIdxList[i]];
 		Vec3 v2 = (*frame2->pcsOct->ctLeaf->midVList)[fm.f2nIdxList[i]];
+
+		glBegin(GL_LINES);
+		glVertex3f(v1.x, v1.y, v1.z);
+		glVertex3f(v2.x + moveStep, v2.y, v2.z);
+		glEnd();
+	}
+	glLineWidth(1.0f);
+}
+
+void ZjwOpenGL::drawTrainMatchLine(double moveStep)
+{
+#ifdef ZJW_DEBUG
+	//cout << "draw Best Match Line!" << endl;
+#endif	//zjw_debug
+
+	Frame * frame1 = fm.frameList[showFrameIdx];
+	Frame * frame2 = fm.frameList[showFrameIdx2];
+
+	//遍历所有稀疏的匹配
+	glLineWidth(1.5f);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	for (int i = 0; i < fm.f1TrainList.size(); i++)
+	{
+		Vec3 v1 = (*frame1->pcsOct->ctLeaf->midVList)[fm.f1TrainList[i]];
+		Vec3 v2 = (*frame2->pcsOct->ctLeaf->midVList)[fm.f2TrainList[i]];
 
 		glBegin(GL_LINES);
 		glVertex3f(v1.x, v1.y, v1.z);

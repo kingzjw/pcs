@@ -130,7 +130,7 @@ void pcsCompress::changeClusterNum()
 
 	if (temp > 1 )
 	{
-		ui.openGLWidget->fm.u = temp;
+		ui.openGLWidget->fm.clusterNum = temp;
 #ifdef ZJW_DEBUG
 		cout << "cluster num  set to " << temp << endl;
 #endif // ZJW_DEBUG
@@ -159,6 +159,13 @@ void pcsCompress::trainMatP()
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
 		"walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+
+	//展现测试的匹配的状态
+	ui.openGLWidget->showFrameIdx = 0;
+	ui.openGLWidget->showFrameIdx2 = 1;
+
+	ui.openGLWidget->renderState = 4;
+	ui.openGLWidget->updateGL();
 
 #ifdef ZJW_DEBUG
 	cout << "train path: " << ".//testData//walk" << endl;
