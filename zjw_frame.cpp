@@ -294,7 +294,7 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 
 //对f1nIdxList中记录的所有的对应关系的误差向量都进行了计算
 //返回向量是P
-bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList, MatrixXd * p)
+bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList, vector<int>* f2nIdxList, MatrixXd * p_out)
 {
 	//判断是连续的两帧
 	assert(abs(frameId1 - frameId2) == 1);
@@ -302,8 +302,8 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId2];
-
-	assert(frame1->pcsOct->ctLeaf->nodeList.size() == f1nIdxList->size());
+	//原来是== ,但是会出现匹配失败的情况
+	assert(frame1->pcsOct->ctLeaf->nodeList.size() >= f1nIdxList->size());
 
 	//------------------计算每对对应Node之间的误差向量，并保存矩阵sample中-------------------
 	int totalScale = 5;
@@ -353,7 +353,7 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	//---------------对协方差矩阵进行求逆，得到P----------------------
 #ifdef ZJW_DEBUG
-	double size = 1.00001;
+	double size = 1.000001;
 	cout << "对covMat的矩阵对角线上元素放大了： " << size << " 倍 " << endl;
 	assert(covMat.rows() == covMat.cols());
 	if (size > 1)
@@ -381,7 +381,7 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 	}
 	else
 	{
-		*p = covMat.inverse();
+		*p_out = covMat.inverse();
 
 #ifdef ZJW_DEBUG
 		cout << "cov mat 矩阵可逆!!" << endl;
@@ -553,10 +553,12 @@ bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, str
 	test.Start();
 #endif //ZJW_TIMER
 #endif // ZJW_DEBUG
-	//训练数据，得到矩阵P
+	
+	//价值训练数据
 	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path);
 	//得到匹配关系
 	matchNode(frameId1, frameId2, &f1TrainList, &f2TrainList);
+	//得到矩阵P
 	getMatrixP(frameId1, frameId2, &f1TrainList, &f2TrainList, P);
 
 #ifdef ZJW_DEBUG
@@ -637,9 +639,9 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 		getMnMat(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
 
 		//把Mn赋值到Q中对应的位置上
-		for (int col_it; col_it < MnMat_out.cols(); col_it++)
+		for (int col_it = 0; col_it < MnMat_out.cols(); col_it++)
 		{
-			for (int row_it; row_it < MnMat_out.rows(); row_it++)
+			for (int row_it=0; row_it < MnMat_out.rows(); row_it++)
 			{
 				Q_out(Mn * 3+ row_it , Mn * 3 + col_it) = MnMat_out(row_it, col_it);
 			}
@@ -670,7 +672,7 @@ void FrameManage::getV0(int frameId1, vector<int>* f1SparseIdxList, vector<int>*
 		Vector3d pDif(pMn.x - pN.x, pMn.y - pN.y, pMn.z - pN.z);
 
 		//把 v(m) 赋值到V0中对应的位置上
-		for (int row_it; row_it < pDif.rows(); row_it++)
+		for (int row_it=0; row_it < pDif.rows(); row_it++)
 		{
 			V0_out(Mn * 3 + row_it) = pDif(row_it);
 		}
