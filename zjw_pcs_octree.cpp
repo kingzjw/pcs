@@ -185,15 +185,17 @@ void PcsOctree::getGraphMat()
 	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
 
 #ifdef ZJW_PRINT_INFO
-
+  //打印的是非0元素
 	cout << "****************************" << endl;
 	cout << "sparse mat lap: " << endl;
 	for (int k = 0; k < spLaplacian->outerSize(); ++k)
 	{
 		for (SpMat::InnerIterator it(*spLaplacian, k); it; ++it)
 		{
-			cout << it.value() << " " << it.row() << " " << it.col() << " " << it.index() << endl;   // row index
+			//cout << it.value() << " " << it.row() << " " << it.col() << " " << it.index() << endl;   // row index
+			cout << it.value() << " ";   // row index
 		}
+		cout << endl;
 	}
 #endif //ZJW_PRINT_INFO
 #endif //  USE_SPARSE

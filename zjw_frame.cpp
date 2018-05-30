@@ -592,6 +592,7 @@ void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_o
 
 	//得到frame1 点 Mn为中心，two hop之间的顶点序号
 	set<int>  MTwoHopList;
+
 	frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
 
 	//遍历所有的two hop上的顶点，计算平均的Mn矩阵
