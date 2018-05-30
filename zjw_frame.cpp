@@ -353,7 +353,7 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	//---------------对协方差矩阵进行求逆，得到P----------------------
 #ifdef ZJW_DEBUG
-	double size = 1.000001;
+	double size = 1.00001;
 	cout << "对covMat的矩阵对角线上元素放大了： " << size << " 倍 " << endl;
 	assert(covMat.rows() == covMat.cols());
 	if (size > 1)
@@ -436,7 +436,13 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2,
 			//得到frame1中叶子节点的 fearture vector
 			frame1->pcsOct->getFeatureVector2(node1_it, &featureVec1);
 			//计算node2 和node1两个feature vector的马氏距离
+			
+			//use P 
 			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);
+			
+			//do not use P
+			//double maha = (featureVec1 - featureVec2).transpose() * (featureVec1 - featureVec2);
+
 			//正定矩阵P
 			assert(maha > 0);
 			mahalanobisDist.push_back(maha);
