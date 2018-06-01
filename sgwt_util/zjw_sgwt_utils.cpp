@@ -240,7 +240,16 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 			double theta = 3.1415926 * (i - 0.5) / N;
 			//  2/M_PI    *    cos(k_it*theta) * g(a1 * cos((theta) + a2) * (M_PI-0)/N 化简得到下面的式子
 			//  tn的尺度信息，在g函数内部了
-			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta)+a2));
+			coeff[j](m_it) += 2.0 / N * cos(m_it*theta) * g(a1 * cos((theta)) + a2);
+
+			//test
+			//cout << i << endl;
+			//cout << i << " tempCos: " << cos(m_it * theta) << endl;
+			//cout << "tempGparam: " << a1 * cos((theta)) + a2 << endl;
+			//cout << "tempGparamParam: " << theta << endl;
+			//cout << coeff[j](m_it) << " " << endl;
+			//int dsfg = 0;
+			//end test
 		}
 	}
 }
@@ -606,6 +615,15 @@ void SgwtCheby::sgwtDoChebyPrepare()
 		sgwt->sgwt_cheby_coeff(j, sgwt->g[j]);
 	}
 	sgwt->sgwt_cheby_coeff(sgwt->Nscales, *(sgwt->h0));
+
+	//test
+	//cout << "0: " <<endl<< sgwt->coeff[0] << endl;
+	//cout << "1: " << endl << sgwt->coeff[1] << endl;
+	//cout << "2: " << endl << sgwt->coeff[2] << endl;
+	//cout << "3: " << endl << sgwt->coeff[3] << endl;
+	//cout << "4: " << endl << sgwt->coeff[4] << endl;
+
+	//end test
 }
 
 //传输一个信号

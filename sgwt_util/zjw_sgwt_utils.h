@@ -111,7 +111,7 @@ public:
 	//类型为GN的的数组的指针，每个里面藏着scale
 	//保存的是scales 列表（t1.t2.t3.,,,,.tl）
 	VectorXd t;
-	//g函数总共从t1一直到  tn (Nscales),在加上前面还有个h
+	//g函数总共从t1一直到  tn (Nscales)
 	//g0 表示的是 scale t1的g函数 ，g1表示 scale t2函数
 	GN *g;
 	int Nscales;
@@ -166,7 +166,7 @@ public:
 	//ok  设置h(x)，并设置好相关的参数
 	void sgwt_filter_design(double lmax, Varargin varargin);
 
-	//计算Chebyshev的系数  g函数的近视系数C(k,g)  g 函数(g函数里面包含了尺度信息)
+	//ok 计算Chebyshev的系数  g函数的近视系数C(k,g)  g 函数(g函数里面包含了尺度信息)
 	//参数说明： j表示的第几个尺度，范围从(0 - nscale-1),g表示第j的尺度下的g函数，内含尺度信息。
 	//函数作用： 计算在tj尺度下面，从0-m阶的系数  c(j,0), c(j,1), c(j,2)的系数
 	template<class T>

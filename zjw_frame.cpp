@@ -442,6 +442,7 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2,
 			//计算node2 和node1两个feature vector的马氏距离
 			
 			//use P 
+			assert(P->rows() > 0 && P->cols() > 0);
 			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);
 			
 			//do not use P
