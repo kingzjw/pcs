@@ -157,7 +157,7 @@ public:
 	//ok 利用spectra, 计算得到Laplacian 中最大的特征值 lmax
 	double sgwt_rough_lmax();
 
-	//把 Laplace 的最大特征值设置好  Lamda
+	//ok 把 Laplace 的最大特征值设置好  Lamda
 	void setArange(double lmin, double lmax);
 
 	//ok 设置kernel g 的scales
@@ -177,7 +177,7 @@ public:
 	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
 	vector<VectorXd> sgwt_cheby_op(VectorXd f, vector<VectorXd> c);
 
-	//chebushev的不等式求解信号
+	//ok chebushev的不等式求解信号
 	//传入的信号 f(f是包括所有节点上的信号的) ,以及计算好的多项式的近似系数
 	//返回：vector包含是各个scale和h尺度下面的针对信号f的sgwt系数
 	bool sgwt_cheby_op(VectorXd f, vector<VectorXd> c, vector<VectorXd>& sgwt_out);

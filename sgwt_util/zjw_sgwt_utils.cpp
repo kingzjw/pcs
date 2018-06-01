@@ -364,11 +364,16 @@ bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt
 			maxM = M[i];
 	}
 
-	double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;
+	/*double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;*/
 	//zjw
-	/*double a1 = (arange[1]) / 2;
-	double a2 = a1;*/
+	double a1 = (arange[1]) / 2;
+	double a2 = a1;
+
+	//test
+	/*cout << "row: "<< f.rows()<<"col: " << f.cols() << endl;
+	cout << f << endl;*/
+	//end test
 
 	//Twf_old：保存原有的信号 f
 	VectorXd Twf_old(f);
