@@ -6,10 +6,10 @@
 //	pcsOct = new PcsOctree();
 //}
 
-Frame::Frame(const int frameId)
+Frame::Frame(const int frameId, int _m, int _Nscales)
 {
 	objMesh = new ObjMesh();
-	pcsOct = new PcsOctree();
+	pcsOct = new PcsOctree(_m, _Nscales);
 }
 
 Frame::~Frame()
@@ -74,6 +74,10 @@ FrameManage::FrameManage()
 	P = new MatrixXd;
 
 	u = 1;
+	m=10;
+	//sclae的个数，不包括h
+	Nscales=4;
+
 }
 
 FrameManage::~FrameManage()
@@ -125,7 +129,7 @@ void FrameManage::getAllFilesPath(FileNameForMat type, string fileNameFormat, st
 		fileBatch->files.push_back(totalFilePath);
 
 		//拿到所有的frameList
-		Frame * frame = new Frame(f_it);
+		Frame * frame = new Frame(f_it,m,Nscales);
 		frameList.push_back(frame);
 	}
 }
@@ -164,7 +168,7 @@ void FrameManage::batchLoadObj(FileNameForMat type, string fileNameFormat, strin
 		//按照需要从小到大，保存所有的文件路径
 		fileBatch->files.push_back(totalFilePath);
 
-		Frame * frame = new Frame(f_it);
+		Frame * frame = new Frame(f_it, m, Nscales);
 		frameList.push_back(frame);
 
 		//-----------对每个路径，都进行读取，和sgw操作------------

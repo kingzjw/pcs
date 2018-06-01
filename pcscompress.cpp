@@ -24,13 +24,7 @@ void pcsCompress::clickedOpenFileAction()
 
 	std::cout << "you choose the file: " << std::endl << stt << endl;
 	std::cout << "you choose the path: " << std::endl << path << endl;
-
 	
-
-	
-
-	
-
 	//render
 	ui.openGLWidget->updateGL();
 }
@@ -154,6 +148,46 @@ void pcsCompress::changeU()
 #endif // ZJW_DEBUG
 }
 
+void pcsCompress::changeMDegreeCheby()
+{
+	//string to doubel
+	istringstream iss(ui.m_ChebyshevLineEdit->text().toStdString());
+	double temp;
+	iss >> temp;
+
+	if (temp > 0)
+	{
+		ui.openGLWidget->fm.m = temp;
+#ifdef ZJW_DEBUG
+		cout << "m_Chebyshev set to " << temp << endl;
+#endif // ZJW_DEBUG
+	}
+	else
+	{
+		cout << "error input,please input range [1,+inf) !" << endl;
+	}
+}
+
+void pcsCompress::changeNscales()
+{
+	//string to doubel
+	istringstream iss(ui.num_scalesLineEdit->text().toStdString());
+	double temp;
+	iss >> temp;
+
+	if (temp > 1)
+	{
+		ui.openGLWidget->fm.Nscales = temp;
+#ifdef ZJW_DEBUG
+		cout << "sgw n scales  set to " << temp << endl;
+#endif // ZJW_DEBUG
+	}
+	else
+	{
+		cout << "error input,please input range [2,+inf) !" << endl;
+	}
+}
+
 void pcsCompress::trainMatP()
 {
 	//训练数据，得到矩阵P
@@ -230,6 +264,11 @@ pcsCompress::pcsCompress(QWidget *parent)
 	connect(ui.clusterNumLineEdit, SIGNAL(returnPressed()), this, SLOT(changeClusterNum()));
 	//change motion vector u
 	connect(ui.u_motionVecLineEdit, SIGNAL(returnPressed()), this, SLOT(changeU()));
+	//改变算法中的值
+	connect(ui.m_ChebyshevLineEdit, SIGNAL(returnPressed()), this, SLOT(changeMDegreeCheby()));
+	connect(ui.num_scalesLineEdit, SIGNAL(returnPressed()), this, SLOT(changeNscales()));
+
+	
 
 	//核心算法步骤
 	connect(ui.actionTrainMatP, SIGNAL(triggered()), this, SLOT(trainMatP()));

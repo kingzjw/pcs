@@ -1,8 +1,10 @@
 #pragma once
 #include "zjw_pcs_octree.h"
 
-PcsOctree::PcsOctree()
+PcsOctree::PcsOctree(int _m, int _Nscales)
 {
+	m = _m;
+	Nscales = _Nscales;
 	//	this->objMesh = objMesh;
 
 	minPos = Vec3(0.0f, 0.0f, 0.0f);
@@ -495,9 +497,13 @@ vector<VectorXd> PcsOctree::getSignalF(SignalType sType)
 
 bool PcsOctree::getAllSignalAndSaveSGWTCoeff()
 {
+
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
-		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	{
+		assert(m > 0 && Nscales > 0);
+		fastSgwt = new SgwtCheby(m, Nscales, *spLaplacian);
+	}
 
 #ifdef ZJW_TIMER
 	ZjwTimer test;
@@ -630,7 +636,10 @@ vector<VectorXd> PcsOctree::getSgwtCoeffWS(SignalType type, int quadrant)
 
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
-		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	{
+		assert(m > 0 && Nscales > 0);
+		fastSgwt = new SgwtCheby(m, Nscales, *spLaplacian);
+	}
 	//得到指定象限的，这个信号的 sgwt的系数
 
 	/*ZjwTimer test;
@@ -654,7 +663,10 @@ bool PcsOctree::getFeatureVector(int nodeIdx, VectorXd *featureVector)
 {
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
-		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	{
+		assert(m > 0 && Nscales > 0);
+		fastSgwt = new SgwtCheby(m, Nscales, *spLaplacian);
+	}
 
 #ifdef ZJW_TIMER
 	/*ZjwTimer test;
@@ -715,7 +727,10 @@ bool PcsOctree::getFeatureVector2(int nodeIdx, VectorXd * featureVector)
 {
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
-		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	{
+		assert(m > 0 && Nscales > 0);
+		fastSgwt = new SgwtCheby(m, Nscales, *spLaplacian);
+	}
 
 	//#ifdef ZJW_TIMER
 	//	ZjwTimer test;
@@ -777,7 +792,10 @@ void PcsOctree::getSgwtCoeffWS()
 
 #ifdef SGWT_DEBUG
 	if (!fastSgwt)
-		fastSgwt = new SgwtCheby(10, 4, *spLaplacian);
+	{
+		assert(m > 0 && Nscales > 0);
+		fastSgwt = new SgwtCheby(m, Nscales, *spLaplacian);
+	}
 #endif //SGWT_DEBUG
 
 	//得到信号X 在8个象限中的信号

@@ -19,7 +19,7 @@ public:
 	PcsOctree *pcsOct;
 public:
 	//Frame();
-	Frame(const int frameId);
+	Frame(const int frameId, int _m, int _Nscales);
 	~Frame();
 	bool loadObj(string path);
 	bool octSgwt(Vec3 cellSize);
@@ -45,6 +45,12 @@ public:
 
 	//常量 u,用于计算motion vector的一个参数。
 	double u;
+	
+	//sgwt 中的参数,要传递给每个pcs中。
+	//Chebyshev的系数，近似的M阶的相数
+	int m;
+	//sclae的个数，不包括h
+	int Nscales;
 
 	//训练数据,保存最后的匹配关系
 	vector<int> f1TrainList;

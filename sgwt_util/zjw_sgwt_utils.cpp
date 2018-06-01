@@ -108,13 +108,17 @@ double Sgwt::sgwt_kernel_abspline3(double x)
 		0, 1, 2 * t1, 3 * t1*t1,
 		0, 1, 2 * t2, 3 * t2*t2;
 	Vector4d v;
-	v << 1, 1, pow(t1, -alpha)*alpha*pow(t1, alpha - 1), -beta*pow(t2, -beta - 1)*pow(t2, beta);
+	v << 1, 1, pow(t1, -alpha) * alpha*pow(t1, alpha - 1), -beta*pow(t2, -beta - 1)*pow(t2, beta);
 	Vector4d a;
 	a = M.inverse()*v;
 	if (x >= 0 && x < t1)
-		return pow(x, alpha)*pow(t1, -alpha);
+		return pow(x, alpha) * pow(t1, -alpha);
 	else if (x >= t1&&x < t2)
 		return a(0) + a(1)*x + a(2)*x*x + a(3)*x*x*x;
+	//modify by zjw
+	else if (x < 0)
+		return 0;
+	//end 
 	else
 		return pow(x, -beta)*pow(t2, beta);
 }
@@ -124,7 +128,7 @@ double Sgwt::_sgwt_kernel_abspline3(double x)
 	return -sgwt_kernel_abspline3(x);
 }
 
-//设置kernel g 的scales，并返回vector
+//ok 设置kernel g 的scales，并返回vector
 VectorXd Sgwt::sgwt_setscales(double lmin, double lmax)
 {
 	int t1 = 1;
@@ -195,6 +199,7 @@ void Sgwt::sgwt_filter_design(double lmax, Varargin varargin)
 		double gamma_l = -(f(xstar));
 		//表示: λmin * 0.6
 		double lminfac = 0.6*lmin;
+		//h函数
 		h0 = new HX(hx, lminfac, gamma_l);
 		//cout << xstar << endl;   !!!
 		//cout << gamma_l << endl; !!!
@@ -214,12 +219,12 @@ void Sgwt::sgwt_cheby_coeff(int j, T g)
 	//N 表示积分用多少次迭代代替
 	int N = m + 1;
 
-	double a1 = (arange[1] - arange[0]) / 2;
-	double a2 = (arange[1] + arange[0]) / 2;
+	/*double a1 = (arange[1] - arange[0]) / 2;
+	double a2 = (arange[1] + arange[0]) / 2;*/
 
 	//zjw  根据论文上来的
-	/*double a1 = (arange[1]) / 2;
-	double a2 = a1;*/
+	double a1 = (arange[1]) / 2;
+	double a2 = a1;
 
 	//cout << c[k] << endl;
 	//cout << c[k].size() << endl;

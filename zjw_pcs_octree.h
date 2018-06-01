@@ -179,6 +179,12 @@ public:
 	//对八叉树的叶子节点进行k-means聚类
 	KMeans * kmeans;
 
+	//sgwt 中的参数
+	//Chebyshev的系数，近似的M阶的相数
+	int m;
+	//sclae的个数，不包括h
+	int Nscales;
+
 	//邻接权重矩阵，以及D矩阵，求解特征值和特征向量的存储矩阵。
 	int nodeNum;
 
@@ -209,7 +215,7 @@ public:
 #endif // use_arpa
 
 public:
-	PcsOctree();
+	PcsOctree(int _m, int _Nscales);
 	~PcsOctree();
 	//设置参数，重新初始化八叉树
 	void setParam(Vec3 min, Vec3 max, Vec3 cellSize);

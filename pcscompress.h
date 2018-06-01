@@ -38,6 +38,10 @@ public slots:
 	//change motion vector u
 	void changeU();
 
+	//改变sgwt中的 scale M阶两个参数
+	void changeMDegreeCheby();
+	void changeNscales();
+
 	//算法核心步骤
 	void trainMatP();
 	void getSparseMatch();

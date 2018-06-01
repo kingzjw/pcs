@@ -30,7 +30,7 @@ typedef Eigen::SparseMatrix<double> SpMat;
 typedef double(*G)(double x);
 class Sgwt;
 
-//g和h实际使用的参数，可以在这里进行设置
+//ok  g和h实际使用的参数，可以在这里进行设置
 struct Varargin
 {
 	string designtype;
@@ -104,7 +104,7 @@ public:
 	vector<VectorXd> coeff;
 
 	//Chebyshev的系数，近似的M阶的相数
-	const int m;
+	int m;
 
 	//提供默认的g和h的参数设置
 	Varargin va;
@@ -114,7 +114,7 @@ public:
 	//g函数总共从t1一直到  tn (Nscales),在加上前面还有个h
 	//g0 表示的是 scale t1的g函数 ，g1表示 scale t2函数
 	GN *g;
-	const int Nscales;
+	int Nscales;
 
 	//kernel  h(x)
 	HX *h0;
@@ -154,16 +154,16 @@ public:
 		return coeff;
 	}
 
-	//利用spectra, 计算得到Laplacian 中最大的特征值 lmax
+	//ok 利用spectra, 计算得到Laplacian 中最大的特征值 lmax
 	double sgwt_rough_lmax();
 
 	//把 Laplace 的最大特征值设置好  Lamda
 	void setArange(double lmin, double lmax);
 
-	//设置kernel g 的scales
+	//ok 设置kernel g 的scales
 	VectorXd sgwt_setscales(const double lmin, const double lmax);
 
-	//设置h(x)，并设置好相关的参数
+	//ok  设置h(x)，并设置好相关的参数
 	void sgwt_filter_design(double lmax, Varargin varargin);
 
 	//计算Chebyshev的系数  g函数的近视系数C(k,g)  g 函数(g函数里面包含了尺度信息)
@@ -188,9 +188,9 @@ public:
 	//通过信号的类型，象限的类型，指定的node idx 返回这个node在的信号(5*1 因为scale 和 h是五维的)
 	bool sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd* sgwt_out);
 
-	//给定参数x,返回的是g(x)的值
+	//ok(修改了一些)  给定参数x,返回的是g(x)的值
 	static double sgwt_kernel_abspline3(double x);
-	//对sgwt_kernel_abspline3接口的返回值取相反数
+	//ok 对sgwt_kernel_abspline3接口的返回值取相反数
 	static double _sgwt_kernel_abspline3(double x);
 
 	VectorXd sgwt_adjoint(vector<VectorXd> y);
