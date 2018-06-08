@@ -57,6 +57,20 @@ void pcsCompress::clickTwoFrameButton()
 	ui.openGLWidget->updateGL();
 }
 
+void pcsCompress::clickTwoFrameSparseMatchButton()
+{
+#ifdef ZJW_DEBUG
+	cout << "clickPointCloudButton: render mode change to 5" << endl;
+#endif // ZJW_DEBUG
+	ui.openGLWidget->renderState = 5;
+	ui.openGLWidget->updateGL();
+}
+
+void pcsCompress::clickOthers()
+{
+	cout << "clicked others (need to add something)!" << endl;
+}
+
 void pcsCompress::changeRefFrameId()
 {
 	//string to doubel
@@ -190,6 +204,9 @@ void pcsCompress::changeNscales()
 
 void pcsCompress::trainMatP()
 {
+#ifdef ZJW_DEBUG
+	cout<<endl<<endl << "####################################  traing   ##########################################" << endl;
+#endif //zjw_debug
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
 		"walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
@@ -204,14 +221,23 @@ void pcsCompress::trainMatP()
 #ifdef ZJW_DEBUG
 	cout << "train path: " << ".//testData//walk" << endl;
 	cout << "train frame id :  0 and 1"<< endl;
+	cout <<"######################################################################################" << endl;
 #endif // ZJW_DEBUG
 }
 
 void pcsCompress::getSparseMatch()
 {
+#ifdef ZJW_DEBUG
+	cout << endl << endl << "####################################  getSparseMatch   ##########################################" << endl;
+#endif //zjw_debug
+
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
 		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+
+#ifdef ZJW_DEBUG
+	cout << "#######################################################################################" << endl;
+#endif //zjw_debug
 
 	ui.openGLWidget->renderState = 2;
 	ui.openGLWidget->updateGL();
@@ -219,14 +245,41 @@ void pcsCompress::getSparseMatch()
 
 void pcsCompress::getMotionVector()
 {
+#ifdef ZJW_DEBUG
+	cout << endl << endl << "####################################  getMotionVector   ##########################################" << endl;
+#endif //zjw_debug
+
 	//测试数据，拿到motion vector
 	VectorXd Vt;
 	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, 
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
+
+#ifdef ZJW_DEBUG
+	cout << "#######################################################################################" << endl;
+#endif //zjw_debug
+
 }
 
 void pcsCompress::test()
 {
+	//chagne leaf node
+	double temp = 0.01;
+	ui.openGLWidget->fm.cellSize.x = temp;
+	ui.openGLWidget->fm.cellSize.y = temp;
+	ui.openGLWidget->fm.cellSize.z = temp;
+
+	//changeClusterNum 
+	temp = 10;
+	ui.openGLWidget->fm.clusterNum = temp;
+
+	//change M 
+	temp = 30;
+	ui.openGLWidget->fm.m = temp;
+
+	//chagne u
+	temp = 0.5;
+	ui.openGLWidget->fm.u = temp;
+	
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_",
 		"E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
@@ -234,7 +287,7 @@ void pcsCompress::test()
 	//测试数据，拿到稀疏最佳匹配
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
-		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk", true);
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;
@@ -252,8 +305,11 @@ pcsCompress::pcsCompress(QWidget *parent)
 	//改变render mode
 	connect(ui.pc_radioButtion, SIGNAL(clicked()), this, SLOT(clickPointCloudButton()));
 	connect(ui.oct_radioButton, SIGNAL(clicked()), this, SLOT(clickPCOctTreeButton()));
+	
 	connect(ui.twoframe_radioButton, SIGNAL(clicked()), this, SLOT(clickTwoFrameButton()));
-
+	connect(ui.sparseMatchRadioButton, SIGNAL(clicked()), this, SLOT(clickTwoFrameSparseMatchButton()));
+	connect(ui.otherRadioButton, SIGNAL(clicked()), this, SLOT(clickOthers()));
+	
 	//改frame id
 	connect(ui.refFrameLineEdit, SIGNAL(returnPressed()), this, SLOT(changeRefFrameId()));
 	connect(ui.targetFrameLineEdit, SIGNAL(returnPressed()), this, SLOT(changeTargetFrameId()));

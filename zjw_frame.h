@@ -2,6 +2,7 @@
 #include <sstream>
 #include <assert.h>
 #include <algorithm>
+#include<assert.h>
 
 #include "zjw_macro.h"
 #include "zjw_pcs_octree.h"
@@ -21,7 +22,9 @@ public:
 	//Frame();
 	Frame(const int frameId, int _m, int _Nscales);
 	~Frame();
+	//导入point cloud
 	bool loadObj(string path);
+	//建立八叉树，并进行基本操作，并计算得到所有sgwt系数
 	bool octSgwt(Vec3 cellSize);
 };
 
@@ -100,6 +103,10 @@ public:
 	//测试数据：拿到frame2中每个node idx在 frame1中的最佳匹配。最佳匹配关系，从两个vector中返回。
 	bool getBestMatchPoint(int frameId1, int frameId2, MatrixXd * P, vector<int>* f1nIdxList,
 		vector<int>* f2nIdxList, vector<double>* maDist);
+
+	//测试数据：getBestMatchPoint函数的加速版，利用几何距离快速拒绝匹配。这里用的是绝对距离，可能产生错误！！！
+	bool getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd * P, 
+		vector<int>* f1nIdxList_out,vector<int>* f2nIdxList_out, vector<double>* maDist_out);
 
 	//测试数据：根据K-mean保存的结果，来保存稀疏的最佳匹配
 	bool doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,

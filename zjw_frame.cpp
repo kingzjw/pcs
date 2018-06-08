@@ -491,6 +491,147 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2,
 	return true;
 }
 
+//这个方法可能是存在问题的。测试数据：getBestMatchPoint函数的加速版，利用几何距离快速拒绝匹配
+bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd * P, 
+	vector<int>* f1nIdxList_out, vector<int>* f2nIdxList_out, vector<double>* maDist_out)
+{
+	//如果不使用加速，可以把这个宏，去掉
+#define SPPED_UP
+
+#ifdef SPPED_UP
+	//几何距离的阈值。
+	//node的位置在(0-1之间)
+	double disThreshold = cellSize.x * 3;
+	if (disThreshold > 1)
+		disThreshold = 1;
+
+	cout << "getBestMatchPointSpeedUp: disThreshold is " << disThreshold <<"  this function maybe error becasuse of absolute distance!!!"<< endl;
+#endif // SPPED_UP
+
+#ifdef ZJW_DEBUG
+	ZjwTimer timer;
+	timer.Start();
+
+	//进度条记录进展。
+	bool process = false;
+#endif // ZJW_DEBUG
+
+	//判断是连续的两帧
+	assert(abs(frameId1 - frameId2) == 1);
+	f1nIdxList_out->clear();
+	f2nIdxList_out->clear();
+	maDist_out->clear();
+
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId2];
+
+	//遍历target frame （frame2）中所有Node,找对最佳匹配的node
+	for (int node2_it = 0; node2_it < frame2->pcsOct->ctLeaf->nodeList.size(); node2_it++)
+	{
+		//计算当前frame2 中的feature vector
+		VectorXd featureVec2;
+		frame2->pcsOct->getFeatureVector2(node2_it, &featureVec2);
+
+#ifdef SPPED_UP
+		//计算当前这个node 绝对距离
+		Vec3 pos2 = (*frame2->pcsOct->ctLeaf->midVList)[node2_it];
+#endif // SPPED_UP
+
+		//--------------遍历frame1中所有的叶子节点,---------
+		VectorXd featureVec1;
+		vector<double> mahalanobisDist;
+		mahalanobisDist.clear();
+
+#ifdef SPPED_UP
+		vector<int> validFrameNodeIdxList;
+		validFrameNodeIdxList.clear();
+#endif // SPPED_UP
+
+		for (int node1_it = 0; node1_it < frame1->pcsOct->ctLeaf->nodeList.size(); node1_it++)
+		{
+
+#ifdef SPPED_UP
+			Vec3 pos1 = (*frame1->pcsOct->ctLeaf->midVList)[node1_it];
+			if (pos1.Distance(pos2) >= disThreshold)
+				continue;
+#endif // SPPED_UP
+
+			//得到frame1中叶子节点的 fearture vector
+			frame1->pcsOct->getFeatureVector2(node1_it, &featureVec1);
+			//计算node2 和node1两个feature vector的马氏距离
+
+			//use P 
+			assert(P->rows() > 0 && P->cols() > 0);
+			double maha = (featureVec1 - featureVec2).transpose() * (*P) * (featureVec1 - featureVec2);
+
+			//do not use P
+			//double maha = (featureVec1 - featureVec2).transpose() * (featureVec1 - featureVec2);
+
+			//正定矩阵P
+			assert(maha > 0);
+			mahalanobisDist.push_back(maha);
+
+#ifdef SPPED_UP
+			validFrameNodeIdxList.push_back(node1_it);
+#endif // SPPED_UP
+		}
+
+
+
+		//---------------找到node2对应到frame1上所有节点的马氏距离，找到最佳匹配（最小）-------------
+		std::vector<double>::iterator smallest = std::min_element(std::begin(mahalanobisDist), std::end(mahalanobisDist));
+		int indexNode1 = std::distance(std::begin(mahalanobisDist), smallest);
+
+		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
+
+		//--------------保存最佳对应关系,及最佳对应关系下面的马氏距离-----------
+
+#ifdef SPPED_UP
+		assert(!validFrameNodeIdxList.empty());
+		////忽略这个点
+		//if (validFrameNodeIdxList.empty())
+		//	continue;
+
+		f2nIdxList_out->push_back(node2_it);
+		f1nIdxList_out->push_back(validFrameNodeIdxList[indexNode1]);
+#else
+		//不试用加速的时候
+		f2nIdxList_out->push_back(node2_it);
+		f1nIdxList_out->push_back(indexNode1);
+#endif // SPPED_UP
+
+		maDist_out->push_back(*smallest);
+
+#ifdef ZJW_DEBUG
+		//显示这个函数进度
+		if (process)
+		{
+			printf("\b\b\b\b\b\b");
+			cout.width(5);
+			cout.precision(2);
+			cout << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() << "%";
+		}
+		else
+		{
+			cout.width(5);
+			cout.precision(2);
+			cout << "match process:  " << ((node2_it + 1) * 100.0) / frame2->pcsOct->ctLeaf->nodeList.size() << "%";
+			process = true;
+		}
+#endif // ZJW_DEBUG
+
+	}
+
+#ifdef ZJW_DEBUG
+	timer.Stop();
+	cout << endl;
+	timer.printTimeInMs("best match timer : ");
+	cout << endl;
+#endif // ZJW_DEBUG
+
+	return true;
+}
+
 //传入的frameId： 是target frame的id
 //f1nIdxList f2nIdxList 是传入的最佳匹配参数
 //maDist保存的是最佳匹配的距离
@@ -506,8 +647,8 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 
 	Frame* frame = frameList[frameId];
 	KMeans * kmeans = frame->pcsOct->kmeans;
-	//frame2(target frame) 内容，进行do kmeans,取出结果
 
+	//frame2(target frame) 所有的叶子节点，进行do kmeans,取出结果
 	frame->pcsOct->doKmeans(clusterNum);
 	//遍历每个cluster集的node
 	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
@@ -519,7 +660,24 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		{
 			//nodeIdx的范围，就是当前frame 中叶子结点的序号范围  0 - (nodeSize-1)
 			int nodeIdx = kmeans->clusterRes[c_it][n_it];
-
+			
+			//判断这个target frame 2中的Nodeidx 是否在最佳匹配的列表中(后面这个操作只要最佳匹配的列表不是连续的，就会产生消耗)
+			/*int tpIdx = nodeIdx;
+			assert(tpIdx == nodeIdx);
+			while ((*f2nIdxList)[tpIdx] >= nodeIdx)
+			{
+				if ((*f2nIdxList)[tpIdx] == nodeIdx)
+				{
+					if ((*maDist)[tpIdx] < minDis || minDis == -1)
+					{
+						bestNodeId = tpIdx;
+						minDis = (*maDist)[tpIdx];
+					}
+				}
+				tpIdx--;
+			}*/
+			
+			//old way
 			if ((*maDist)[nodeIdx] < minDis || minDis == -1)
 			{
 				bestNodeId = nodeIdx;
@@ -545,11 +703,18 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 bool FrameManage::getTwoFrameBestSparseMatch(int frameId1, int frameId2, vector<int>* f1SparseIdxList_out,
 	vector<int>* f2SparseIdxList_out, FileNameForMat type, string fileNameFormat, string path, bool changeData)
 {
-	
-	//训练数据
+	//path必须被指定
+	assert(!path.empty());
+	//if (path.empty())
+	//{
+	//	cout << "you need to choose a file path!!!!!!!!!" << endl;
+	//	return false;
+	//}
+
 	loadContinuousFrames(frameId1, frameId2, type, fileNameFormat, path, changeData);
 	//拿到frame2中每个node idx在 frame1中的最佳匹配
-	getBestMatchPoint(frameId1, frameId2, P, &f1nIdxList, &f2nIdxList, &maDist);
+	//getBestMatchPoint(frameId1, frameId2, P, &f1nIdxList, &f2nIdxList, &maDist);
+	getBestMatchPointSpeedUp(frameId1, frameId2, P, &f1nIdxList, &f2nIdxList, &maDist);
 	//对target frame上的帧进行k-means
 	doKmeansGetSparseBestMatch(frameId2, &f1nIdxList, &f2nIdxList, &maDist, f1SparseIdxList_out, f2SparseIdxList_out);
 	return true;
@@ -588,7 +753,7 @@ bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, str
 void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out)
 {
 	//判断是连续的两帧
-	assert(frameId1>0);
+	assert(frameId1>=0);
 
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId1 + 1];
@@ -663,7 +828,7 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 
 void FrameManage::getV0(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & V0_out)
 {
-	assert(frameId1>0);
+	assert(frameId1>=0);
 	Frame* frame1 = frameList[frameId1];
 	Frame* frame2 = frameList[frameId1 + 1];
 
@@ -739,7 +904,7 @@ void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
 #ifdef ZJW_DEBUG
 	//test
 	cout << "Q: " << endl;
-	cout << Q << endl;
+	//cout << Q << endl;
 	cout << endl << endl;
 	cout << "V0: " << endl;
 	cout << V0 << endl;

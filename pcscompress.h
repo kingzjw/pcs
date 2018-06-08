@@ -26,6 +26,9 @@ public slots:
 	void clickPointCloudButton();
 	void clickPCOctTreeButton();
 	void clickTwoFrameButton();
+	void clickTwoFrameSparseMatchButton();
+	void clickOthers();
+
 
 	//frame id change. 改变连续两帧之间的
 	void changeRefFrameId();

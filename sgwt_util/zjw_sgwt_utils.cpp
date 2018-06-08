@@ -371,8 +371,8 @@ bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt
 	double a2 = a1;
 
 	//test
-	/*cout << "row: "<< f.rows()<<"col: " << f.cols() << endl;
-	cout << f << endl;*/
+	//cout << "row: "<< f.rows()<<"col: " << f.cols() << endl;
+	//cout << f << endl;
 	//end test
 
 	//Twf_old：保存原有的信号 f
@@ -386,7 +386,7 @@ bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt
 	for (int j = 0; j < cur_nscales; j++)
 	{
 		// t[i]  n * 1
-		sgwt_out[j] = 0.5*coeff[j](0)*Twf_old + coeff[j](1)*Twf_cur;
+		sgwt_out[j] = 0.5 * coeff[j](0) * Twf_old + coeff[j](1)*Twf_cur;
 	}
 
 	//----------------------计算展开中的每一项，累加到系数sgwtCoeff_W上-------------------------
@@ -413,6 +413,16 @@ bool Sgwt::sgwt_cheby_op(VectorXd  f, vector<VectorXd> c, vector<VectorXd> &sgwt
 		Twf_old = Twf_cur;
 		Twf_cur = Twf_new;
 	}
+
+	//test
+	//for (int j = 0; j < cur_nscales; j++)
+	//{
+	//	//累加到sgwt的系数上  r[j]表示尺度第j项的系数
+	//	cout << "==========================================================" << endl;
+	//	cout << "sgwt: "<<j << endl;
+	//	cout << sgwt_out[j] << endl;
+	//}
+	//end test
 
 #ifdef  ZJW_TIMER
 	// time
@@ -451,7 +461,6 @@ bool Sgwt::sgwt_cheby_op(int nodeIdx, int signalType, int quadrantType, VectorXd
 	{
 		(*sgwt_out)(i) = sgwtCoeff_WS[index][i](nodeIdx);
 	}
-
 	return true;
 }
 

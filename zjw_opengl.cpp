@@ -143,7 +143,27 @@ void ZjwOpenGL::render()
 
 		//画匹配线
 		//drawSparseMatchLine(movestep);
+
+		//所有的线
 		drawBestMatchLine(movestep);
+	}
+	else if (renderState == 5)
+	{
+		//drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx]->objMesh), *(fm.frameList[showFrameIdx]->pcsOct));
+
+		glPushMatrix();
+		double movestep = -0.5;
+		glTranslated(-0.5, 0, 0);
+		//drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh));
+		drawPointCloudOctree(*(fm.frameList[showFrameIdx2]->objMesh), *(fm.frameList[showFrameIdx2]->pcsOct));
+		glPopMatrix();
+
+		//画匹配线
+		drawSparseMatchLine(movestep);
+
+		//所有的线
+		//drawBestMatchLine(movestep);
 	}
 	else if (renderState == 4)
 	{

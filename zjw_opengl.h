@@ -71,7 +71,9 @@ public:
 	//PcsOctree pcsOct;
 	FrameManage fm;
 
-	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树 3:表示渲染的两个连续帧之间的点云
+	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树 
+	//3:表示渲染的两个连续帧之间的点云(所有匹配线). 5. 画训练数据的对应关系
+	//4: sparse match之间的点云
 	int renderState;
 	//reference frame
 	int showFrameIdx;

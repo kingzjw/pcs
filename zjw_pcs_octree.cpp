@@ -184,6 +184,7 @@ void PcsOctree::getGraphMat()
 #endif //zjw_debug
 
 	//Éú³ÉÏ¡ÊèµÄLaplacianMat
+	assert(coefficients->size() > 0);
 	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
 
 #ifdef ZJW_PRINT_INFO
