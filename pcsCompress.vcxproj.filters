@@ -101,6 +101,9 @@
     <ClCompile Include="util\zjw_kmeans.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="PngLoad.cpp">
+      <Filter>Source Files\util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -162,10 +165,16 @@
     <ClInclude Include="signalType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="zjw_pngLoad.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="util\zjw_macro.h">
       <Filter>Header Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="PPro_MR_Male.png" />
   </ItemGroup>
 </Project>

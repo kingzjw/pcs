@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <Eigen/Dense>
 
-
 #include "zjw_macro.h"
 
 #ifdef SGWT_DEBUG

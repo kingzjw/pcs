@@ -576,14 +576,11 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 #endif // SPPED_UP
 		}
 
-
-
 		//---------------找到node2对应到frame1上所有节点的马氏距离，找到最佳匹配（最小）-------------
 		std::vector<double>::iterator smallest = std::min_element(std::begin(mahalanobisDist), std::end(mahalanobisDist));
 		int indexNode1 = std::distance(std::begin(mahalanobisDist), smallest);
 
 		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
-
 		//--------------保存最佳对应关系,及最佳对应关系下面的马氏距离-----------
 
 #ifdef SPPED_UP

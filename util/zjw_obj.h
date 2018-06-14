@@ -17,6 +17,7 @@
 #include "zjw_math.h"
 #include "zjw_material.h"
 #include "zjw_macro.h"
+#include "zjw_pngLoad.h"
 
 using namespace std;
 
@@ -131,6 +132,8 @@ public:
 
 public:
 	ObjMesh();
+	//qt read png图片
+	bool loadPng(string & pngPath);
 	//读入obj，这个接口比较全面，适应面比较广。支持各种f类型的参数
 	bool loadObjMesh(string & path);
 	//loadObjMesh，上简化出来的，针对特殊格式的objmesh   f: v//vn

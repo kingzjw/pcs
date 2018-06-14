@@ -209,7 +209,7 @@ void pcsCompress::trainMatP()
 #endif //zjw_debug
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
-		"walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+		"walkTexture_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
 
 	//展现测试的匹配的状态
 	ui.openGLWidget->showFrameIdx = 0;
@@ -233,7 +233,7 @@ void pcsCompress::getSparseMatch()
 
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
-		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", dirPath, true);
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_", dirPath, true);
 
 #ifdef ZJW_DEBUG
 	cout << "#######################################################################################" << endl;

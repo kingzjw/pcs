@@ -694,6 +694,12 @@ ObjMesh::ObjMesh()
 {
 }
 
+bool ObjMesh::loadPng(string & pngPath)
+{
+
+	return false;
+}
+
 bool ObjMesh::loadObjMesh(string & path)
 {
 	// --------------------check--------------------------
@@ -1067,11 +1073,25 @@ bool ObjMesh::loadObjMeshSpeedUp(string & path)
 
 bool ObjMesh::loadObjMeshSimply(string & path)
 {
+#define LOAD_MTL_PNG
+
+#ifdef LOAD_MTL_PNG
+	//get path
+	//path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk/walkTexture_0_0.obj"
+	size_t lastXiegang = path.rfind("/");
+	string pngPath = path.substr(0, lastXiegang);
+	pngPath.append("//walkTexture.png");
+	PngLoad png(pngPath);
+
+	png.loadPngPic();
+#endif // LOAD_MTL_PNG
+
 	fstream objFile;
 	objFile.open(path, fstream::in | fstream::out | fstream::app);
 
 	if (!objFile.is_open()) {
 		cout << "open file  " << path << " failed!" << endl;
+		assert(objFile.is_open());
 		return false;
 	}
 
@@ -1117,10 +1137,10 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 		{
 			//现在不需要，需要的时候把下面的注释符号去掉就行
 
-			/*Texture vt;
+			Texture vt;
 			objFile >> vt.x;
 			objFile >> vt.y;
-			texList.push_back(vt);*/
+			texList.push_back(vt);
 		}
 		else if (type == "f")
 		{
@@ -1243,7 +1263,30 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 	}
 	objFile.close();
 
+#ifdef LOAD_MTL_PNG
+	//处理颜色问题
+	assert(texList.size() > 0);
+	//遍历所有的温柔里，从png中的信息的像素的颜色，并复制给color
+	for (int t = 0; t < texList.size(); t++)
+	{
+		Texture tmp = texList[t];
+		Color color;
+		//传参y,x
+		int x = tmp.x * png.getImg().cols + 0.5;
+		int y = tmp.y * png.getImg().rows + 0.5;
+		cv::Vec3b tmpColor = png.getPixel(y, x);
+		//r
+		color.x = tmpColor[2];
+		//g
+		color.y = tmpColor[1];
+		//b
+		color.z = tmpColor[0];
+		colorList.push_back(color);
+	}
+#else
+	//这种做法是错误的
 	fillColorInfo();
+#endif // LOAD_MTL_PNG
 
 #ifdef ZJW_DEBUG
 	cout << "finish load the obj!" << endl;
