@@ -1113,6 +1113,9 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 		normalList.clear();
 	if (texList.size())
 		texList.clear();
+	//针对应用的参数，没用的时候可以删除
+	if (colorTexList.size())
+		colorTexList.clear();
 
 	string type;
 	while (objFile >> type)
@@ -1144,121 +1147,178 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 		}
 		else if (type == "f")
 		{
-			Point3 faceVerIdx;
-			objFile >> faceVerIdx.x;
-			objFile >> faceVerIdx.y;
-			objFile >> faceVerIdx.z;
-			Point3 verIdx = faceVerIdx - 1.0;
-			mesh.facePoslist.push_back(verIdx);
+			std::string curline;
+			std::getline(objFile, curline);
 
-			////只保留了顶点的信息
+			//因为这里的face不一定是三角形面片，先把顶点，纹理，法向量索引分开
+			std::vector<int> verIndexList;
+			std::vector<int> texIndexList;
+			std::vector<int> normalIndexList;
+
+			std::vector<std::string> sface, svert;
+			algorithm::split(curline, sface, " ");
+
+			bool noNormal = false;
+
+			// For every given vertex do this
+			for (int i = 0; i < int(sface.size()); i++)
+			{
+				// See What type the vertex is.
+				int vtype = 0;
+
+				algorithm::split(sface[i], svert, "/");
+
+				// Check for just position - v1
+				if (svert.size() == 1)
+				{
+					// Only position
+					vtype = 1;
+				}else if (svert.size() == 2)
+				{
+					// Check for position & texture - v1/vt1
+					// Position & Texture
+					vtype = 2;
+				}else if (svert.size() == 3)
+				{
+				// Check for Position, Texture and Normal - v1/vt1/vn1
+				// or if Position and Normal - v1//vn1
+				//v1//vn 根据 /分成了三个部分，第二个部分为空
+					if (svert[1] != "")
+					{
+						// Position, Texture, and Normal
+						vtype = 4;
+					}
+					else
+					{
+						// P//N
+
+						// Position & Normal
+						vtype = 3;
+					}
+				}
+
+				// Calculate and store the vertex
+				switch (vtype)
+				{
+				case 1: // P
+				{
+					verIndexList.push_back(std::stoi(svert[0]) - 1);
+					break;
+				}
+				case 2: // P/T
+				{
+					verIndexList.push_back(std::stoi(svert[0]) - 1);
+					texIndexList.push_back(std::stoi(svert[1]) - 1);
+					break;
+				}
+				case 3: // P//N
+				{
+					//序号统一需要减一处理，因为在数组中是从0开始的
+					verIndexList.push_back(std::stoi(svert[0]) - 1);
+					normalIndexList.push_back(std::stoi(svert[2]) - 1);
+					break;
+				}
+				case 4: // P/T/N
+				{
+					//序号统一需要减一处理，因为在数组中是从0开始的
+					verIndexList.push_back(std::stoi(svert[0]) - 1);
+					texIndexList.push_back(std::stoi(svert[1]) - 1);
+					normalIndexList.push_back(std::stoi(svert[2]) - 1);
+					break;
+				}
+				default:
+				{
+					break;
+				}
+				}
+			}
+
+			//如果不是三角面片，那么采用三角化的方法
+			Point3 tempPIndx;
+			Point3 tempTextureIndx;
+			Normal tempNIndx;
+
+			if (verIndexList.size() == 3)
+			{
+				//保存三角面片信息到mesh中
+				if (!verIndexList.empty())
+				{
+					tempPIndx.x = verIndexList[0];
+					tempPIndx.y = verIndexList[1];
+					tempPIndx.z = verIndexList[2];
+
+					mesh.facePoslist.push_back(tempPIndx);
+				}
+
+				if (!texIndexList.empty())
+				{
+					tempTextureIndx.x = texIndexList[0];
+					tempTextureIndx.y = texIndexList[1];
+					tempTextureIndx.z = texIndexList[2];
+					mesh.faceTexturelist.push_back(tempTextureIndx);
+				}
+
+				if (!normalIndexList.empty())
+				{
+					tempNIndx.x = normalIndexList[0];
+					tempNIndx.y = normalIndexList[1];
+					tempNIndx.z = normalIndexList[2];
+					mesh.faceNormallist.push_back(tempNIndx);
+				}
+			}
+			else if (verIndexList.size() < 3)
+			{
+				cout << "the f read error!!" << endl;
+			}
+			else {
+				//进行三角化
+
+				//每一个Point 存储序号
+				vector<Point3> indexList;
+				trianglation(verIndexList.size(), indexList);
+
+				for (int i = 0; i < indexList.size(); i++)
+				{
+					if (!verIndexList.empty())
+					{
+						//保存信息到mesh中
+						tempPIndx.x = verIndexList[indexList[i].x];
+						tempPIndx.y = verIndexList[indexList[i].y];
+						tempPIndx.z = verIndexList[indexList[i].z];
+
+						mesh.facePoslist.push_back(tempPIndx);
+					}
+
+					if (!texIndexList.empty())
+					{
+						tempTextureIndx.x = texIndexList[indexList[i].x];
+						tempTextureIndx.y = texIndexList[indexList[i].y];
+						tempTextureIndx.z = texIndexList[indexList[i].z];
+						mesh.faceTexturelist.push_back(tempTextureIndx);
+					}
+
+					if (!normalIndexList.empty())
+					{
+						tempNIndx.x = normalIndexList[indexList[i].x];
+						tempNIndx.y = normalIndexList[indexList[i].y];
+						tempNIndx.z = normalIndexList[indexList[i].z];
+
+						mesh.faceNormallist.push_back(tempNIndx);
+					}
+				}
+			}
+			
+			//------------------------------------------------------------------
+			////v1/vt1/vn1
 			//Point3 faceVerIdx;
-			//Point3 verIdx;
-			//double temp;
-			//char ch;
-
-			//int type = -1;
-			////确定 type
-			//while (true)
-			//{
-			//	char ch = objFile.get();
-			//	if (ch == ' ')
-			//		continue;
-			//	else if (ch == '\n' || ch == EOF)
-			//		break;
-			//	else
-			//		objFile.putback(ch);
-
-			//	double x;
-			//	objFile >> faceVerIdx.x;
-			//	char splitter = objFile.get();
-			//	//如果是双斜杠，说明只有 vertex normal,如果是单斜杠
-			//	//说明是 vertex texture normal.如果是空格或者其他只有vertex
-			//	if (splitter == '/')
-			//	{
-			//		splitter = objFile.get();
-			//		if (splitter == '/')
-			//		{
-			//			// f n1//n2
-			//			type = 2;
-			//			break;
-			//		}
-			//		else
-			//		{
-			//			// f n1/n2/n3
-			//			type = 3;
-			//			objFile.putback(ch);
-			//			break;
-			//		}
-			//	}
-			//	else
-			//	{
-			//		//f n1
-			//		type = 1;
-			//		objFile.putback(ch);
-			//		break;
-			//	}
-			//}
-
-			//
-			//switch (type)
-			//{
-			//case -1:
-			//	cout << "loadObjMeshSimply: no this type of f" << endl;
-			//	break;
-			//case 1:
-			//	//Point3 faceVerIdx;
-			//	//objFile >> faceVerIdx.x;
-			//	objFile >> faceVerIdx.y;
-			//	objFile >> faceVerIdx.z;
-			//	verIdx = faceVerIdx - 1.0;
-			//	mesh.facePoslist.push_back(verIdx);
-			//	break;
-			//case 2:
-			//	//objFile >> faceVerIdx.x;
-			//	//ch = objFile.get();
-			//	//ch = objFile.get();
-			//	objFile >> temp;
-
-			//	objFile >> faceVerIdx.y;
-			//	ch = objFile.get();
-			//	ch = objFile.get();
-			//	objFile >> temp;
-
-			//	objFile >> faceVerIdx.z;
-			//	ch = objFile.get();
-			//	ch = objFile.get();
-			//	objFile >> temp;
-
-			//	verIdx = faceVerIdx - 1.0;
-			//	mesh.facePoslist.push_back(verIdx);
-
-			//	break;
-			//case 3:
-			//	//objFile >> faceVerIdx.x;
-			//	//ch = objFile.get();
-			//	objFile >> temp;
-			//	ch = objFile.get();
-			//	objFile >> temp;
-
-			//	objFile >> faceVerIdx.y;
-			//	ch = objFile.get();
-			//	objFile >> temp;
-			//	ch = objFile.get();
-			//	objFile >> temp;
-
-			//	objFile >> faceVerIdx.z;
-			//	ch = objFile.get();
-			//	objFile >> temp;
-			//	ch = objFile.get();
-			//	objFile >> temp;
-
-			//	verIdx = faceVerIdx - 1.0;
-			//	mesh.facePoslist.push_back(verIdx);
-			//	break;
-			//default:
-			//	break;
-			//}
+			//char c;
+			//objFile >> faceVerIdx.x;
+			//objFile >> c;
+			//objFile >> faceVerIdx.y;
+			//objFile >> c;
+			//objFile >> faceVerIdx.z;
+			//Point3 verIdx = faceVerIdx - 1.0;
+			//mesh.facePoslist.push_back(verIdx);
 		}
 	}
 	objFile.close();
@@ -1281,8 +1341,9 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 		color.y = tmpColor[1];
 		//b
 		color.z = tmpColor[0];
-		colorList.push_back(color);
+		colorTexList.push_back(color);
 	}
+	getMapVerColor();
 #else
 	//这种做法是错误的
 	fillColorInfo();
@@ -1324,7 +1385,53 @@ bool ObjMesh::fillColorInfo()
 	}
 #ifdef  ZJW_DEBUG
 	cout << "=====================" << endl;
-#endif //  zjw_debu
+#endif //  zjw_debug
+}
+
+void ObjMesh::getMapVerColor()
+{
+	//每个点上计算是多少颜色。
+	vector<int> countVerList;
+	colorList.clear();
+	
+	//init
+	Color tempColor(0, 0, 0);
+	for (int i = 0; i < vertexList.size();i++)
+	{
+		colorList.push_back(tempColor);
+		countVerList.push_back(0);
+	}
+
+	//根据face中关于纹理的信息，求出每个点的颜色之和
+	for (int f_it = 0; f_it < mesh.facePoslist.size(); f_it++)
+	{
+		//处理第一个点
+		int index = mesh.facePoslist[f_it].x;
+		tempColor = colorTexList[mesh.faceTexturelist[f_it].x];
+		colorList[index] += tempColor;
+		countVerList[index] ++;
+
+		//处理第二个点
+		index = mesh.facePoslist[f_it].y;
+		tempColor = colorTexList[mesh.faceTexturelist[f_it].y];
+		colorList[index] += tempColor;
+		countVerList[index] ++;
+
+		//处理第三个点
+		index = mesh.facePoslist[f_it].z;
+		tempColor = colorTexList[mesh.faceTexturelist[f_it].z];
+		colorList[index] += tempColor;
+		countVerList[index] ++;
+	}
+
+	//求出平均颜色
+	for (int i = 0; i < vertexList.size(); i++)
+	{
+		colorList[i] = colorList[i] / countVerList[i];
+	}
+	
+	//test
+	//int i = 10;
 }
 
 bool ObjMesh::trianglation(int size, vector<Vec3> &triangleFaceList)

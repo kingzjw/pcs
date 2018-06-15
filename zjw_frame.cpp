@@ -357,7 +357,8 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	//---------------对协方差矩阵进行求逆，得到P----------------------
 #ifdef ZJW_DEBUG
-	double size = 1.00001;
+	//double size = 1.00001;
+	double size = 1;
 	cout << "对covMat的矩阵对角线上元素放大了： " << size << " 倍 " << endl;
 	assert(covMat.rows() == covMat.cols());
 	if (size > 1)
