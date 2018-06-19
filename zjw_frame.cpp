@@ -45,6 +45,11 @@ bool Frame::octSgwt(Vec3 cellSize)
 	pcsOct->buildPcsOctFrmPC(objMesh);
 	//得到叶子节点的边界，并保存相关的信息
 	pcsOct->getLeafboundary();
+
+#ifdef RELATIVE_DIS_SIGNAL
+	pcsOct->changeNodePointsToRelativeDis();
+#endif // RELATIVE_DIS_SIGNAL
+
 	pcsOct->getGraphMat();
 	pcsOct->getMatEigenVerValue();
 
@@ -261,7 +266,13 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 		//遍历这个叶子节点上所有的点
 		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
 		{
+#ifdef RELATIVE_DIS_SIGNAL
+			//利用相对距离
+			tempW = 1 / (node1->pointPosList[p_it]+ frame1->pcsOct->ctLeaf->minVList[leaf_it]).Distance(midPoint);
+#else
+			//绝对距离
 			tempW = 1 / node1->pointPosList[p_it].Distance(midPoint);
+#endif //relative dis signal
 			totalWight += tempW;
 			wightList.push_back(tempW);
 		}
@@ -357,8 +368,8 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 
 	//---------------对协方差矩阵进行求逆，得到P----------------------
 #ifdef ZJW_DEBUG
-	//double size = 1.00001;
-	double size = 1;
+	double size = 1.00001;
+	//double size = 1;
 	cout << "对covMat的矩阵对角线上元素放大了： " << size << " 倍 " << endl;
 	assert(covMat.rows() == covMat.cols());
 	if (size > 1)
@@ -382,7 +393,20 @@ bool FrameManage::getMatrixP(int frameId1, int frameId2, vector<int>* f1nIdxList
 		//cout << "cov mat: " << endl;
 		//cout << covMat << endl << endl;
 		//cout << covMat.diagonal() << endl;
+		//cout << covMat.colwise().maxCoeff() << endl;
+		//cout << covMat.colwise().minCoeff() << endl;
+
+		/*for (int i = 0; i < covMat.cols(); i++)
+		{
+			cout << "=======================================================" << endl;
+			cout << i << endl;
+			cout << "=======================================================" << endl;
+			cout << covMat.col(i)<< endl;
+		}*/
 #endif // zjw_debug
+
+		//不可逆不需要继续执行了。
+		assert(0);
 	}
 	else
 	{

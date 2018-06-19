@@ -126,6 +126,32 @@ void PcsOctree::getLeafboundary()
 #endif // ZJW_DEUG
 }
 
+#ifdef RELATIVE_DIS_SIGNAL
+void PcsOctree::changeNodePointsToRelativeDis()
+{
+	//遍历所有的叶子结点
+	for (int leaf_it = 0; leaf_it < ctLeaf->nodeList.size(); leaf_it++)
+	{
+		//遍历这个叶子结点中的所有points
+		Octree<Node>::OctreeNode * tempNode = ctLeaf->nodeList[leaf_it];
+		
+		for (int p_it = 0; p_it < tempNode->nodeData.pointPosList.size(); p_it++)
+		{
+			//减去这个Node边界上的最小值，就得到这个Point 在这个node中的相对位置。
+#ifdef RELATIVE_DIS_SIGNAL
+			//利用相对距离
+			//减去这个Node边界上的最小值，就得到这个Point 在这个node中的相对位置。
+			tempNode->nodeData.pointPosList[p_it] = tempNode->nodeData.pointPosList[p_it];
+#elif
+			//绝对距离
+			//减去这个Node边界上的最小值，就得到这个Point 在这个node中的相对位置。
+			tempNode->nodeData.pointPosList[p_it] = tempNode->nodeData.pointPosList[p_it] - tempNode->min;
+#endif //relative dis signal
+		}
+	}
+}
+#endif //relative dis signal
+
 void PcsOctree::initMat()
 {
 #ifdef ZJW_DEBUG
@@ -374,8 +400,16 @@ void PcsOctree::setPointTo8Areas()
 		//遍历该叶子节点上所有的点
 		for (int p_it = 0; p_it < octNode->nodeData.pointPosList.size(); p_it++)
 		{
+#ifdef RELATIVE_DIS_SIGNAL
+			//判断出该节点所属的象限
+			int index = judege8Aeros(mid, octNode->nodeData.pointPosList[p_it] + octNode->min);
+
+#else
+			//绝对距离
 			//判断出该节点所属的象限
 			int index = judege8Aeros(mid, octNode->nodeData.pointPosList[p_it]);
+#endif //relative dis signal
+			//绝对距离的时候，放到是聚堆距离的信号。相对位置的时候，放的相对位置的信号。
 			octNode->nodeData.leafNodePos8Areas[index].push_back((Vec3 *)(&octNode->nodeData.pointPosList[p_it]));
 			octNode->nodeData.leafNodeColor8Areas[index].push_back((Vec3 *)(&octNode->nodeData.colorList[p_it]));
 		}

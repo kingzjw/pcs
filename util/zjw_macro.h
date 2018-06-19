@@ -7,21 +7,18 @@
 //打印信息专用
 //#define ZJW_PRINT_INFO
 
+//打印信息
+//#define PRINT_CHEBY_COEFF
+
 //是否打开计时器
 #define ZJW_TIMER
 
-//计时器
-/*
-用法：
-	TIME_START
-	TIME_END("mesh  load time")
-*/
-//static innoreal::InnoRealTimer timer_zjw;
-//#define TIME_START timer_zjw.TimeRestart();timer_zjw.TimeStart();
-//#define TIME_END(str) 		 timer_zjw.TimeEnd();timer_zjw.TimeGap_in_ms();\
-//		std::printf("%s: %f ms\n", str,timer_zjw.Time_in_ms());
 
 //------------------针对这个应用--------------------------
+
+//信号的类型。 不定义就是绝对距离。定义了就是相对距离
+//#define RELATIVE_DIS_SIGNAL
+
 
 //下面三个只能选一个，因为CallTGetGraph 的构造函数问题
 
@@ -37,6 +34,6 @@
 #define USE_SPARSE
 #define SGWT_DEBUG
 
-//打印信息
 
-//#define PRINT_CHEBY_COEFF
+
+

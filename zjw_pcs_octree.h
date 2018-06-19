@@ -222,8 +222,14 @@ public:
 	void buildPcsOctFrmPC(ObjMesh * objeMesh);
 	//拿到叶子节点的Boundary，设置叶子节点的信息
 	void getLeafboundary();
-	//拿到graph的两个矩阵
 
+#ifdef RELATIVE_DIS_SIGNAL
+	void changeNodePointsToRelativeDis();
+#endif // RELATIVE_DIS_SIGNAL
+
+	//把八叉树node中的关于这个node所有点的坐标改成相对坐标。
+
+	//拿到graph的两个矩阵
 	//初始化矩阵等信息，在getGraphMat之前调用
 	void initMat();
 	//得到矩阵

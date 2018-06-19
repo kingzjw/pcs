@@ -263,7 +263,7 @@ void pcsCompress::getMotionVector()
 void pcsCompress::test()
 {
 	//chagne leaf node
-	double temp = 0.01;
+	double temp = 0.1;
 	ui.openGLWidget->fm.cellSize.x = temp;
 	ui.openGLWidget->fm.cellSize.y = temp;
 	ui.openGLWidget->fm.cellSize.z = temp;
@@ -273,7 +273,8 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.clusterNum = temp;
 
 	//change M 
-	temp = 30;
+	//paper use 30
+	temp = 50;
 	ui.openGLWidget->fm.m = temp;
 
 	//chagne u
@@ -281,13 +282,13 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.u = temp;
 	
 	//训练数据，得到矩阵P
-	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_",
+	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_",
 		"E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
 
 	//测试数据，拿到稀疏最佳匹配
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
-		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walk_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk", true);
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk", true);
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;

@@ -33,7 +33,7 @@ public:
 	class OctreeNode
 	{
 	public:
-		//这个节点的数据，以及指向八个孩子的结点指针
+		//这个节点的数据
 		N nodeData;
 		//非叶子节点是-1，其他的从0,1,2,3一次编号
 		int leafFlag;

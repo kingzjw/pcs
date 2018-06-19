@@ -1341,7 +1341,7 @@ bool ObjMesh::loadObjMeshSimply(string & path)
 		color.y = tmpColor[1];
 		//b
 		color.z = tmpColor[0];
-		colorTexList.push_back(color);
+		colorTexList.push_back(color/255);
 	}
 	getMapVerColor();
 #else
