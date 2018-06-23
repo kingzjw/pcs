@@ -611,12 +611,13 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 		//--------------保存最佳对应关系,及最佳对应关系下面的马氏距离-----------
 
 #ifdef SPPED_UP
-		if (!validFrameNodeIdxList.empty())
+		if (validFrameNodeIdxList.empty())
 		{
 			////忽略这个点
 			f2nIdxList_out->push_back(node2_it);
 			f1nIdxList_out->push_back(-1);
 			maDist_out->push_back((numeric_limits<double>::max)());
+			cout << "info: target frame node " << node2_it << " do not get best match in refren frame (不影响后面的程序)" << endl;
 		}
 		else
 		{
