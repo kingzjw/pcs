@@ -110,7 +110,7 @@ public:
 
 	//测试数据：根据K-mean保存的结果，来保存稀疏的最佳匹配
 	bool doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
-		vector<double>* maDist, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList);
+		vector<double>* maDist, vector<int>* f1SparseIdxList_out, vector<int>* f2SparseIdxList_out);
 
 	//训练得到矩阵P的总接口
 	bool trainGetP(int frameId1, int frameId2, FileNameForMat type = NUM_FRONT,

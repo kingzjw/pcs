@@ -82,7 +82,6 @@ FrameManage::FrameManage()
 	m=10;
 	//sclae的个数，不包括h
 	Nscales=4;
-
 }
 
 FrameManage::~FrameManage()
@@ -517,6 +516,7 @@ bool FrameManage::getBestMatchPoint(int frameId1, int frameId2,
 }
 
 //这个方法可能是存在问题的。测试数据：getBestMatchPoint函数的加速版，利用几何距离快速拒绝匹配
+//f1nIdxList_out中-1表示，没有找到最佳匹配。这个时候maDis_out是double的最大值。
 bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd * P, 
 	vector<int>* f1nIdxList_out, vector<int>* f2nIdxList_out, vector<double>* maDist_out)
 {
@@ -526,7 +526,7 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 #ifdef SPPED_UP
 	//几何距离的阈值。
 	//node的位置在(0-1之间)
-	double disThreshold = cellSize.x * 3;
+	double disThreshold = cellSize.x * 10;
 	if (disThreshold > 1)
 		disThreshold = 1;
 
@@ -558,7 +558,7 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 		frame2->pcsOct->getFeatureVector2(node2_it, &featureVec2);
 
 #ifdef SPPED_UP
-		//计算当前这个node 绝对距离
+		//计算当前这个node 中心的绝对距离
 		Vec3 pos2 = (*frame2->pcsOct->ctLeaf->midVList)[node2_it];
 #endif // SPPED_UP
 
@@ -592,7 +592,7 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 			//do not use P
 			//double maha = (featureVec1 - featureVec2).transpose() * (featureVec1 - featureVec2);
 
-			//正定矩阵P
+			//正定矩阵P。mahalanobisDist记录这个node2所对应的node1中的maha
 			assert(maha > 0);
 			mahalanobisDist.push_back(maha);
 
@@ -602,27 +602,36 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 		}
 
 		//---------------找到node2对应到frame1上所有节点的马氏距离，找到最佳匹配（最小）-------------
+
+		//indexNode1 表示的所有的node2在frame1上所对应的最小的下标
 		std::vector<double>::iterator smallest = std::min_element(std::begin(mahalanobisDist), std::end(mahalanobisDist));
 		int indexNode1 = std::distance(std::begin(mahalanobisDist), smallest);
-
 		//std::cout << "min element is " << *smallest << " at position " << std::distance(std::begin(mahalanobisDist), smallest) << std::endl;
+		
 		//--------------保存最佳对应关系,及最佳对应关系下面的马氏距离-----------
 
 #ifdef SPPED_UP
-		assert(!validFrameNodeIdxList.empty());
-		////忽略这个点
-		//if (validFrameNodeIdxList.empty())
-		//	continue;
+		if (!validFrameNodeIdxList.empty())
+		{
+			////忽略这个点
+			f2nIdxList_out->push_back(node2_it);
+			f1nIdxList_out->push_back(-1);
+			maDist_out->push_back((numeric_limits<double>::max)());
+		}
+		else
+		{
+			f2nIdxList_out->push_back(node2_it);
+			f1nIdxList_out->push_back(validFrameNodeIdxList[indexNode1]);
+			maDist_out->push_back(*smallest);
 
-		f2nIdxList_out->push_back(node2_it);
-		f1nIdxList_out->push_back(validFrameNodeIdxList[indexNode1]);
+		}
 #else
 		//不试用加速的时候
 		f2nIdxList_out->push_back(node2_it);
 		f1nIdxList_out->push_back(indexNode1);
+		maDist_out->push_back(*smallest);
 #endif // SPPED_UP
 
-		maDist_out->push_back(*smallest);
 
 #ifdef ZJW_DEBUG
 		//显示这个函数进度
@@ -655,7 +664,7 @@ bool FrameManage::getBestMatchPointSpeedUp(int frameId1, int frameId2, MatrixXd 
 }
 
 //传入的frameId： 是target frame的id
-//f1nIdxList f2nIdxList 是传入的最佳匹配参数
+//f1nIdxList f2nIdxList 是传入的最佳匹配参数。f1nIdxList的传入是可能存在无效值的。
 //maDist保存的是最佳匹配的距离
 //返回值：f1SparseIdxList  f2SparseIdxList   稀疏的最佳匹配
 bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxList, vector<int>* f2nIdxList,
@@ -672,6 +681,7 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 
 	//frame2(target frame) 所有的叶子节点，进行do kmeans,取出结果
 	frame->pcsOct->doKmeans(clusterNum);
+
 	//遍历每个cluster集的node
 	for (int c_it = 0; c_it < kmeans->clusterRes.size(); c_it++)
 	{
@@ -680,10 +690,11 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		double minDis = -1;
 		for (int n_it = 0; n_it < kmeans->clusterRes[c_it].size(); n_it++)
 		{
-			//nodeIdx的范围，就是当前frame 中叶子结点的序号范围  0 - (nodeSize-1)
+			//nodeIdx的范围，就是当前frame2 中叶子结点的序号范围  0 - (nodeSize-1)
 			int nodeIdx = kmeans->clusterRes[c_it][n_it];
 			
 			//判断这个target frame 2中的Nodeidx 是否在最佳匹配的列表中(后面这个操作只要最佳匹配的列表不是连续的，就会产生消耗)
+			//new way
 			/*int tpIdx = nodeIdx;
 			assert(tpIdx == nodeIdx);
 			while ((*f2nIdxList)[tpIdx] >= nodeIdx)
@@ -706,6 +717,7 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 				minDis = (*maDist)[nodeIdx];
 			}
 		}
+
 #ifdef  ZJW_DEBUG
 		//因为getBestMatchPoint中得到的f2应该序号是从低到高排序的
 		assert(bestNodeId == (*f2nIdxList)[bestNodeId]);
@@ -713,6 +725,10 @@ bool FrameManage::doKmeansGetSparseBestMatch(int frameId, vector<int>* f1nIdxLis
 		cout << "sparse match : " << (*f1nIdxList)[bestNodeId] << " " << (*f2nIdxList)[bestNodeId] << endl;
 		//end test
 #endif //  zjw_debug
+
+		//排除getBestMatchPoint函数中，没有找到对应最佳匹配的情况。
+		if ((*f1nIdxList)[bestNodeId] == -1)
+			continue;
 
 		//保存对应关系到sparse ver idx中
 		f1SparseIdxList_out->push_back((*f1nIdxList)[bestNodeId]);

@@ -208,8 +208,11 @@ void pcsCompress::trainMatP()
 	cout<<endl<<endl << "####################################  traing   ##########################################" << endl;
 #endif //zjw_debug
 	//训练数据，得到矩阵P
+	//ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
+		//"walkTexture_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+	assert(!dirPath.empty());
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, 
-		"walkTexture_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+		"walkTexture_0_", dirPath);
 
 	//展现测试的匹配的状态
 	ui.openGLWidget->showFrameIdx = 0;
