@@ -236,15 +236,15 @@ public:
         label_2->setText(QApplication::translate("pcsCompressClass", "algorithm", Q_NULLPTR));
         u_motionVec->setText(QApplication::translate("pcsCompressClass", " u", Q_NULLPTR));
         clusterNumLineEdit->setInputMask(QString());
-        clusterNumLineEdit->setText(QApplication::translate("pcsCompressClass", "5", Q_NULLPTR));
+        clusterNumLineEdit->setText(QApplication::translate("pcsCompressClass", "10", Q_NULLPTR));
         oct->setText(QApplication::translate("pcsCompressClass", "octTree leaf", Q_NULLPTR));
         cluster->setText(QApplication::translate("pcsCompressClass", "cluster num", Q_NULLPTR));
         u_motionVecLineEdit->setInputMask(QString());
         u_motionVecLineEdit->setText(QApplication::translate("pcsCompressClass", "1", Q_NULLPTR));
         octTreeLeafineEdit->setInputMask(QString());
-        octTreeLeafineEdit->setText(QApplication::translate("pcsCompressClass", "0.1", Q_NULLPTR));
+        octTreeLeafineEdit->setText(QApplication::translate("pcsCompressClass", "0.05", Q_NULLPTR));
         m_ChebyshevLineEdit->setInputMask(QString());
-        m_ChebyshevLineEdit->setText(QApplication::translate("pcsCompressClass", "10", Q_NULLPTR));
+        m_ChebyshevLineEdit->setText(QApplication::translate("pcsCompressClass", "50", Q_NULLPTR));
         m_Chebyshev->setText(QApplication::translate("pcsCompressClass", "Chebyshev M", Q_NULLPTR));
         num_scalesLineEdit->setInputMask(QString());
         num_scalesLineEdit->setText(QApplication::translate("pcsCompressClass", "4", Q_NULLPTR));

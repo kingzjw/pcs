@@ -74,12 +74,12 @@ FrameManage::FrameManage()
 
 	fileBatch = nullptr;
 	//oct 中用到的参数
-	cellSize.x = cellSize.y = cellSize.z = 0.1;
-	clusterNum = 5;
+	cellSize.x = cellSize.y = cellSize.z = 0.05;
+	clusterNum = 10;
 	P = new MatrixXd;
 
 	u = 1;
-	m=10;
+	m=50;
 	//sclae的个数，不包括h
 	Nscales=4;
 }
@@ -295,7 +295,10 @@ bool FrameManage::matchNode(int frameId1, int frameId2, vector<int>* f1nIdxList,
 
 		if (macthNodeIdx < 0)
 		{
-			cout << "frame1 node " << leaf_it << " match faied!!" << endl;
+			//因为匹配失败了，所以可以不作为训练矩阵的P的样本值。
+#ifdef ZJW_PRINT_INFO
+			cout << "info: matchNode function: frame1 node " << leaf_it << " match faied!!" << endl;
+#endif
 		}
 		else
 		{
