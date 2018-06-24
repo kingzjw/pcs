@@ -833,7 +833,55 @@ void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_o
 		Vector3d pDif(pM.x - pMn.x, pM.y - pMn.y, pM.z - pMn.z);
 
 		//求和 sqrt
-		MnMat_out += (pDif * pDif.transpose()) / sqrtf(maDis_M_N - maDis_Mn_N);
+		MnMat_out += (pDif * pDif.transpose()) / (maDis_M_N - maDis_Mn_N);
+	}
+
+	MnMat_out /= MTwoHopList.size();
+}
+
+void FrameManage::getMnMatSpeedUP(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out)
+{
+	//判断是连续的两帧
+	assert(frameId1 >= 0);
+
+	Frame* frame1 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId1 + 1];
+	MnMat_out.resize(3, 3);
+	MnMat_out.setZero();
+
+	//得到frame1 点 Mn为中心，two hop之间的顶点序号
+	set<int>  MTwoHopList;
+
+	frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
+
+	//遍历所有的two hop上的顶点，计算平均的Mn矩阵
+	set<int>::iterator it = MTwoHopList.begin();
+	VectorXd featureVectorMn;
+	VectorXd featureVectorM;
+	VectorXd featureVectorN;
+	
+	//σ(mn, n)的计算
+	frame1->pcsOct->getFeatureVector2(MnIdx, &featureVectorMn);
+	frame2->pcsOct->getFeatureVector2(NIdx, &featureVectorN);
+	double maDis_Mn_N = (featureVectorMn - featureVectorN).transpose() * (*P) * (featureVectorMn - featureVectorN);
+
+	Vec3 pMn = (*(frame1->pcsOct->ctLeaf->midVList))[MnIdx];
+
+	for (; it != MTwoHopList.end(); it++)
+	{
+		//two hop node m
+		int M = *it;
+		
+		//σ(m, n) 
+		frame1->pcsOct->getFeatureVector2(M, &featureVectorM);
+		double maDis_M_N = (featureVectorM - featureVectorN).transpose() * (*P) * (featureVectorM - featureVectorN);
+
+		//(pt(m) − pt(mn))
+		Vec3 pM = (*(frame1->pcsOct->ctLeaf->midVList))[M];
+		Vector3d pDif(pM.x - pMn.x, pM.y - pMn.y, pM.z - pMn.z);
+
+		//求和 sqrt
+		MnMat_out += (pDif * pDif.transpose()) / (maDis_M_N - maDis_Mn_N);
 	}
 
 	MnMat_out /= MTwoHopList.size();
@@ -855,7 +903,8 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 		// 拿到应该拿的Mn
 		MatrixXd MnMat_out;
 		int Mn = (*f1SparseIdxList)[node_it];
-		getMnMat(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
+		getMnMatSpeedUP(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
+		//可能需要对MnMat_out进行归一化？？？？？？？？？？？？？？？
 
 		//把Mn赋值到Q中对应的位置上
 		for (int col_it = 0; col_it < MnMat_out.cols(); col_it++)

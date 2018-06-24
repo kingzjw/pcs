@@ -125,6 +125,7 @@ public:
 
 	//对稀疏的最佳匹配中的Mn 和n对应关系，得到在frame1上的3*3 mat 
 	void getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out);
+	void getMnMatSpeedUP(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_out);
 
 	//利用Mn Mat, 得到Q矩阵
 	void getQ(int frameId1, vector<int>* f1SparseIdxList ,vector<int>* f2SparseIdxList, MatrixXd & Q_out);
