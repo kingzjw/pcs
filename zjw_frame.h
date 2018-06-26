@@ -8,6 +8,7 @@
 #include "zjw_pcs_octree.h"
 #include "zjw_fileBatch.h"
 #include "zjw_timer.h"
+#include "zjw_minresQLP.h"
 
 using namespace std;
 
@@ -139,4 +140,8 @@ public:
 	//计算最后的motion vector
 	void computeMotinVector(int frameId1, vector<int>* f1SparseIdxList, 
 		vector<int>* f2SparseIdxList,VectorXd & Vt_out);
+
+	//利用minresQLP计算最后的motion vector
+	void computeMotinVectorMinresQLP(int frameId1, vector<int>* f1SparseIdxList,
+		vector<int>* f2SparseIdxList, VectorXd & Vt_out);
 };

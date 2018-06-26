@@ -104,6 +104,9 @@
     <ClCompile Include="PngLoad.cpp">
       <Filter>Source Files\util</Filter>
     </ClCompile>
+    <ClCompile Include="zjw_minresQLP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -166,6 +169,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zjw_pngLoad.h">
+      <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="zjw_minresQLP.h">
       <Filter>Header Files\util</Filter>
     </ClInclude>
   </ItemGroup>

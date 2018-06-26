@@ -254,7 +254,7 @@ void pcsCompress::getMotionVector()
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;
-	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, 
+	ui.openGLWidget->fm.computeMotinVectorMinresQLP(ui.openGLWidget->showFrameIdx,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
 
 #ifdef ZJW_DEBUG
@@ -266,7 +266,7 @@ void pcsCompress::getMotionVector()
 void pcsCompress::test()
 {
 	//chagne leaf node
-	double temp = 0.1;
+	double temp = 0.05;
 	ui.openGLWidget->fm.cellSize.x = temp;
 	ui.openGLWidget->fm.cellSize.y = temp;
 	ui.openGLWidget->fm.cellSize.z = temp;
@@ -295,7 +295,7 @@ void pcsCompress::test()
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;
-	ui.openGLWidget->fm.computeMotinVector(ui.openGLWidget->showFrameIdx, 
+	ui.openGLWidget->fm.computeMotinVectorMinresQLP(ui.openGLWidget->showFrameIdx,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
 }
 
