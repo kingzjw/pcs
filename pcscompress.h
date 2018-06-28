@@ -50,6 +50,7 @@ public slots:
 	void getSparseMatch();
 	void getMotionVector();
 	void test();
+	void testLapMat();
 
 public:
 	pcsCompress(QWidget *parent = 0);

@@ -272,7 +272,7 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.cellSize.z = temp;
 
 	//changeClusterNum 
-	temp = 10;
+	temp = 100;
 	ui.openGLWidget->fm.clusterNum = temp;
 
 	//change M 
@@ -281,7 +281,7 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.m = temp;
 
 	//chagne u
-	temp = 0.5;
+	temp = 0.05;
 	ui.openGLWidget->fm.u = temp;
 	
 	//训练数据，得到矩阵P
@@ -297,6 +297,46 @@ void pcsCompress::test()
 	VectorXd Vt;
 	ui.openGLWidget->fm.computeMotinVectorMinresQLP(ui.openGLWidget->showFrameIdx,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
+}
+
+void pcsCompress::testLapMat()
+{
+	//chagne leaf node
+	double temp = 0.1;
+	ui.openGLWidget->fm.cellSize.x = temp;
+	ui.openGLWidget->fm.cellSize.y = temp;
+	ui.openGLWidget->fm.cellSize.z = temp;
+
+	//changeClusterNum 
+	temp = 10;
+	ui.openGLWidget->fm.clusterNum = temp;
+
+	//change M 
+	//paper use 30
+	temp = 50;
+	ui.openGLWidget->fm.m = temp;
+
+	//chagne u
+	temp = 0.05;
+	ui.openGLWidget->fm.u = temp;
+
+	//训练数据，得到矩阵P
+	string path = dirPath;
+	string fileNameFormat = "walkTexture_0_";
+	string totalFilePath;
+	totalFilePath.assign(path).append("/").append(fileNameFormat).append("0").append(".obj");
+		
+	Frame * frame = new Frame(0, 50, 4);
+	if (frame->objMesh->loadObjMeshSimply(totalFilePath))
+	{
+		frame->octSgwt(ui.openGLWidget->fm.cellSize);
+	}
+
+	ui.openGLWidget->fm.frameList.push_back(frame);
+	//展现测试的匹配的状态
+	ui.openGLWidget->showFrameIdx = 0;
+	ui.openGLWidget->renderState = 2;
+	ui.openGLWidget->updateGL();
 }
 
 pcsCompress::pcsCompress(QWidget *parent)
@@ -334,7 +374,8 @@ pcsCompress::pcsCompress(QWidget *parent)
 	connect(ui.actionTrainMatP, SIGNAL(triggered()), this, SLOT(trainMatP()));
 	connect(ui.actionGetSparseMatch, SIGNAL(triggered()), this, SLOT(getSparseMatch()));
 	connect(ui.actionGetMotionVector, SIGNAL(triggered()), this, SLOT(getMotionVector()));
-	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(test()));
+	//connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(test()));
+	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(testLapMat()));
 
 }
 

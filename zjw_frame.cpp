@@ -767,6 +767,7 @@ bool FrameManage::trainGetP(int frameId1, int frameId2, FileNameForMat type, str
 #ifdef ZJW_DEBUG
 	cout << "start to traie data for mat P ..." << endl;
 #ifdef ZJW_TIMER
+
 	ZjwTimer test;
 	test.Start();
 #endif //ZJW_TIMER
@@ -805,7 +806,7 @@ void FrameManage::getMnMat(int frameId1, int MnIdx, int NIdx, MatrixXd & MnMat_o
 	//得到frame1 点 Mn为中心，two hop之间的顶点序号
 	set<int>  MTwoHopList;
 
-	frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
+	frame1->pcsOct->getTwoHopNeighborhoodWithOneStep(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
 
 	//遍历所有的two hop上的顶点，计算平均的Mn矩阵
 	set<int>::iterator it = MTwoHopList.begin();
@@ -852,7 +853,8 @@ void FrameManage::getMnMatSpeedUP(int frameId1, int MnIdx, int NIdx, MatrixXd & 
 	//得到frame1 点 Mn为中心，two hop之间的顶点序号
 	set<int>  MTwoHopList;
 
-	frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
+	frame1->pcsOct->getTwoHopNeighborhoodWithOneStep(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
+	//frame1->pcsOct->getTwoHopNeighborhood(MnIdx, &MTwoHopList, frame1->pcsOct->spLaplacian);
 
 	//遍历所有的two hop上的顶点，计算平均的Mn矩阵
 	set<int>::iterator it = MTwoHopList.begin();
@@ -884,6 +886,12 @@ void FrameManage::getMnMatSpeedUP(int frameId1, int MnIdx, int NIdx, MatrixXd & 
 		MnMat_out += (pDif * pDif.transpose()) / (maDis_M_N - maDis_Mn_N);
 	}
 
+	if (MTwoHopList.size()==0)
+	{
+		cout << "getMnMatSpeedUP:  MnIdx " << MnIdx << " NIdx " << NIdx << endl;
+		cout << "this MnIdx do not have any MTwoHopList.size()" << endl;
+	}
+
 	MnMat_out /= MTwoHopList.size();
 }
 
@@ -906,21 +914,22 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 		getMnMatSpeedUP(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
 		
 #ifdef ZJW_DEBUG
-		//test
-		cout << "Mn first:" << endl;
-		cout << MnMat_out << endl;
-		//end test
-		//test
-		cout << "Mn first inverse:" << endl;
-		cout << MnMat_out.inverse() << endl;
+		////test
+		//cout << "Mn first:" << endl;
+		//cout << MnMat_out << endl;
+		////end test
+		////test
+		//cout << "Mn first inverse:" << endl;
+		//cout << MnMat_out.inverse() << endl;
 		//end test
 
 		//可能需要对MnMat_out进行归一化？？？？？？？？？？？？？？？
 		MnMat_out.normalize();
 		cout << "getQ: Mn Mat 矩阵这里进行了归一化" << endl;
+
 		//test
-		cout << "normal:" << endl;
-		cout << MnMat_out << endl;
+		/*cout << "normal:" << endl;
+		cout << MnMat_out << endl;*/
 		//end test
 
 #endif //zje_debug
@@ -932,8 +941,8 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 			cout << "this Mn mat 是奇异的，不能求逆。但是求逆了。(求逆之后的结果)";
 		}
 		//test
-		cout << "inverse:" << endl;
-		cout << MnMat_out << endl;
+		/*cout << "inverse:" << endl;
+		cout << MnMat_out << endl;*/
 		//end test
 
 		//把Mn赋值到Q中对应的位置上

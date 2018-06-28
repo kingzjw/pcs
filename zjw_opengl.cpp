@@ -220,6 +220,23 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 
 	for (int i = 0; i < pcsOct.ctLeaf->minVList.size(); i++)
 	{
+		glColor3f(0.0f, 0.0f, 1.0f);
+		glLineWidth(1);
+
+		//test 
+		if (i == 233)
+		{
+			glColor3f(0.0f, 1.0f, 0.0f);
+			glLineWidth(3);
+		}
+		else if ( i == 243 || i == 244 || i == 245 || i == 246 
+			||( i >=226 && i<=234))
+		{
+			//黄色
+			glColor3f(1.0f, 1.0f, 0.0f);
+			glLineWidth(3);
+		}
+		//end test
 		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
 #ifdef ZJW_DEBUG
@@ -228,7 +245,7 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 
 void ZjwOpenGL::drawWireCube(Vec3 min, Vec3 max)
 {
-	glColor3f(0.0f, 0.0f, 1.0f);
+	
 
 	glBegin(GL_QUAD_STRIP);
 	glVertex3f(min.x, min.y, min.z);

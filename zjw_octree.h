@@ -67,7 +67,12 @@ public:
 	OctreeNode* root;
 
 public:
-	Octree(Vec3 min, Vec3 max, Vec3 cellSize) : min(min), max(max), cellSize(cellSize), root(0) {}
+	Octree(Vec3 min, Vec3 max, Vec3 cellSize) : min(min), max(max), cellSize(cellSize){
+		root = new OctreeNode();
+		//min的顶点和Max的顶点确定 节点的空间范围
+		root->min = min;
+		root->min = max;			
+	}
 	virtual ~Octree() { delete root; }
 
 	//遍历所有的Octree中做操作的一个类。

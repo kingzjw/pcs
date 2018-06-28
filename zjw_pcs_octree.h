@@ -113,6 +113,7 @@ public:
 	//得到该节点周围邻居，及其权重，并保存到weight矩阵中。
 	int leafIdx;
 	Vec3 leafMidPoint;
+	//不应该存储的预先设置的值，而应该是实际cell的宽度。
 	Vec3 octCellSize;
 #ifdef USE_EIGEN
 	MatrixXd  * dMatPtr;
@@ -280,6 +281,9 @@ public:
 	//拿到nodeidx这个点的two hop。拿到的点不包括自己，因为是无向图，所以这里的two hop包括一步的
 	void getTwoHopNeighborhood(int nodeIdx, set<int> * nodeList_out, SpMat * spLaplacian);
 
+	//two hop包括一步的，上面的接口是不包括一步的。
+	void getTwoHopNeighborhoodWithOneStep(int nodeIdx, set<int> * nodeList_out, SpMat * spLaplacian);
+	
 	//对外的接口
 	//void
 	//=============== test ====================

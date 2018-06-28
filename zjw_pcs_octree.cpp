@@ -190,10 +190,18 @@ void PcsOctree::getGraphMat()
 	timer.Start();
 	cout << "start get the D & weight matriex...." << endl;
 #endif
-
+	//设置实际的cell size 到ctGraph中
+	ctGraph->initParam(ctLeaf->nodeList[0]->max - ctLeaf->nodeList[0]->min);
+	//assert(ctGraph->octCellSize.x == ctGraph->octCellSize.y == ctGraph->octCellSize.z);
 	//遍历所有的叶子节点，找到每个叶子节点的相连的节点,并得到权重
 	for (int i = 0; i < ctLeaf->nodeList.size(); i++)
 	{
+		//test
+		if (i == 233)
+		{
+			int iasdf = 100;
+		}
+		//end test
 		ctGraph->leafIdx = ctLeaf->nodeList[i]->leafFlag;
 		//保存叶子节点中中心节点
 		ctGraph->leafMidPoint = (ctLeaf->nodeList[i]->max + ctLeaf->nodeList[i]->min) / 2;
@@ -212,6 +220,23 @@ void PcsOctree::getGraphMat()
 	//生成稀疏的LaplacianMat
 	assert(coefficients->size() > 0);
 	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
+
+	//test
+	cout << "****************************************************" << endl;
+	cout << "print LapLacian :" << endl;
+
+	for (int k = 0; k < spLaplacian->outerSize(); ++k)
+	{
+		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, k); it; ++it)
+		{
+			if (it.row() == 233 || it.col() == 233)
+			{
+				cout <<"row: "<< it.row() << " col: " << it.col() << " value: " << it.value() << endl;			
+			}
+		}
+	}
+	cout << "****************************************************" << endl;
+	//end test
 
 #ifdef ZJW_PRINT_INFO
   //打印的是非0元素
@@ -293,7 +318,7 @@ void PcsOctree::getMatEigenVerValue()
 #endif //use_arpack
 }
 
-//拿到nodeidx这个点的two hop。拿到的点不包括自己，因为是无向图，所以这里的two hop包括一步的
+//拿到nodeidx这个点的two hop。拿到的点不包括自己，因为是无向图，所以这里的two hop不包括一步的
 void PcsOctree::getTwoHopNeighborhood(int nodeIdx, set<int>* nodeList_out, SpMat * spLaplacian)
 {
 	assert(nodeIdx > -1 && nodeIdx < ctLeaf->nodeList.size());
@@ -316,6 +341,41 @@ void PcsOctree::getTwoHopNeighborhood(int nodeIdx, set<int>* nodeList_out, SpMat
 	nodeList_out->clear();
 	for (int node_it = 0; node_it < tempList.size(); node_it++)
 	{
+		int index = tempList[node_it];
+		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, index); it; ++it)
+		{
+			if (it.value() != 0)
+			{
+				nodeList_out->insert(it.row());
+			}
+		}
+	}
+	//移除自己
+	nodeList_out->erase(nodeIdx);
+}
+
+void PcsOctree::getTwoHopNeighborhoodWithOneStep(int nodeIdx, set<int>* nodeList_out, SpMat * spLaplacian)
+{
+	assert(!spLaplacian->IsRowMajor);
+	assert(nodeList_out);
+
+	//保存第一跳的结果
+	vector<int> tempList;
+	//遍历这一列的所有非0元素
+	for (SparseMatrix<double>::InnerIterator it(*spLaplacian, nodeIdx); it; ++it)
+	{
+		if (it.value() != 0)
+		{
+			tempList.push_back(it.row());
+		}
+	}
+
+	//set<int> nodeList_out;
+	nodeList_out->clear();
+	for (int node_it = 0; node_it < tempList.size(); node_it++)
+	{
+		nodeList_out->insert(tempList[node_it]);
+
 		int index = tempList[node_it];
 		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, index); it; ++it)
 		{
@@ -1070,7 +1130,17 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 
 #ifdef USE_SPARSE
 	//L  = D-W 下面直接保存为L了
-
+	//test
+	if (idx == 233 || leafIdx == 233)
+	{
+		if (idx == 233)
+			cout << "node " << leafIdx;
+		else
+			cout << "node " << idx;
+		//cout << "cellsize(斜对角 0.1*sgrt(3))： " << Length(octCellSize) << endl;
+		cout << "相邻结点中点之间的距离：" << Length(delta) << endl;
+	}
+	//end test
 	coeff->push_back(T(idx, leafIdx, -1 / Length(delta)));
 	coeff->push_back(T(leafIdx, idx, -1 / Length(delta)));
 	coeff->push_back(T(leafIdx, leafIdx, 1 / Length(delta)));
