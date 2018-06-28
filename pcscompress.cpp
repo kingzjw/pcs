@@ -375,7 +375,7 @@ pcsCompress::pcsCompress(QWidget *parent)
 	connect(ui.actionGetSparseMatch, SIGNAL(triggered()), this, SLOT(getSparseMatch()));
 	connect(ui.actionGetMotionVector, SIGNAL(triggered()), this, SLOT(getMotionVector()));
 	//connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(test()));
-	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(testLapMat()));
+	connect(ui.actionTest, SIGNAL(triggered()), this, SLOT(test()));
 
 }
 

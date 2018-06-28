@@ -192,15 +192,16 @@ void PcsOctree::getGraphMat()
 #endif
 	//设置实际的cell size 到ctGraph中
 	ctGraph->initParam(ctLeaf->nodeList[0]->max - ctLeaf->nodeList[0]->min);
-	//assert(ctGraph->octCellSize.x == ctGraph->octCellSize.y == ctGraph->octCellSize.z);
+	cout << "real cell size :" << ctGraph->octCellSize.x << "  " <<ctGraph->octCellSize.y << "  " <<ctGraph->octCellSize.z<< endl;
+
 	//遍历所有的叶子节点，找到每个叶子节点的相连的节点,并得到权重
 	for (int i = 0; i < ctLeaf->nodeList.size(); i++)
 	{
 		//test
-		if (i == 233)
+		/*if (i == 233)
 		{
 			int iasdf = 100;
-		}
+		}*/
 		//end test
 		ctGraph->leafIdx = ctLeaf->nodeList[i]->leafFlag;
 		//保存叶子节点中中心节点
@@ -222,20 +223,20 @@ void PcsOctree::getGraphMat()
 	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
 
 	//test
-	cout << "****************************************************" << endl;
-	cout << "print LapLacian :" << endl;
+	//cout << "****************************************************" << endl;
+	//cout << "print LapLacian :" << endl;
 
-	for (int k = 0; k < spLaplacian->outerSize(); ++k)
-	{
-		for (SparseMatrix<double>::InnerIterator it(*spLaplacian, k); it; ++it)
-		{
-			if (it.row() == 233 || it.col() == 233)
-			{
-				cout <<"row: "<< it.row() << " col: " << it.col() << " value: " << it.value() << endl;			
-			}
-		}
-	}
-	cout << "****************************************************" << endl;
+	//for (int k = 0; k < spLaplacian->outerSize(); ++k)
+	//{
+	//	for (SparseMatrix<double>::InnerIterator it(*spLaplacian, k); it; ++it)
+	//	{
+	//		/*if (it.row() == 233 || it.col() == 233)
+	//		{
+	//			cout <<"row: "<< it.row() << " col: " << it.col() << " value: " << it.value() << endl;			
+	//		}*/
+	//	}
+	//}
+	//cout << "****************************************************" << endl;
 	//end test
 
 #ifdef ZJW_PRINT_INFO
@@ -1131,15 +1132,15 @@ bool CallTGetGraph::operator()(const Vec3 min, const Vec3 max, Octree<Node>::Oct
 #ifdef USE_SPARSE
 	//L  = D-W 下面直接保存为L了
 	//test
-	if (idx == 233 || leafIdx == 233)
-	{
-		if (idx == 233)
-			cout << "node " << leafIdx;
-		else
-			cout << "node " << idx;
-		//cout << "cellsize(斜对角 0.1*sgrt(3))： " << Length(octCellSize) << endl;
-		cout << "相邻结点中点之间的距离：" << Length(delta) << endl;
-	}
+	//if (idx == 233 || leafIdx == 233)
+	//{
+	//	if (idx == 233)
+	//		cout << "node " << leafIdx;
+	//	else
+	//		cout << "node " << idx;
+	//	//cout << "cellsize(斜对角 0.1*sgrt(3))： " << Length(octCellSize) << endl;
+	//	cout << "相邻结点中点之间的距离：" << Length(delta) << endl;
+	//}
 	//end test
 	coeff->push_back(T(idx, leafIdx, -1 / Length(delta)));
 	coeff->push_back(T(leafIdx, idx, -1 / Length(delta)));
