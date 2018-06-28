@@ -183,4 +183,7 @@
   <ItemGroup>
     <Image Include="PPro_MR_Male.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="1outMotionVec.txt" />
+  </ItemGroup>
 </Project>

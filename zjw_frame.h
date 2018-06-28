@@ -4,6 +4,8 @@
 #include <algorithm>
 #include<assert.h>
 
+#include <fstream>
+
 #include "zjw_macro.h"
 #include "zjw_pcs_octree.h"
 #include "zjw_fileBatch.h"
@@ -143,5 +145,9 @@ public:
 
 	//利用minresQLP计算最后的motion vector
 	void computeMotinVectorMinresQLP(int frameId1, vector<int>* f1SparseIdxList,
+		vector<int>* f2SparseIdxList, VectorXd & Vt_out);
+	
+	//利用稀疏矩阵
+	void computeMotinVectorMinresQLPSpaMat(int frameId1, vector<int>* f1SparseIdxList,
 		vector<int>* f2SparseIdxList, VectorXd & Vt_out);
 };

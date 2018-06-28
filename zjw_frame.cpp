@@ -906,10 +906,35 @@ void FrameManage::getQ(int frameId1, vector<int>* f1SparseIdxList, vector<int>* 
 		getMnMatSpeedUP(frameId1, Mn, (*f2SparseIdxList)[node_it], MnMat_out);
 		
 #ifdef ZJW_DEBUG
+		//test
+		cout << "Mn first:" << endl;
+		cout << MnMat_out << endl;
+		//end test
+		//test
+		cout << "Mn first inverse:" << endl;
+		cout << MnMat_out.inverse() << endl;
+		//end test
+
 		//可能需要对MnMat_out进行归一化？？？？？？？？？？？？？？？
 		MnMat_out.normalize();
 		cout << "getQ: Mn Mat 矩阵这里进行了归一化" << endl;
+		//test
+		cout << "normal:" << endl;
+		cout << MnMat_out << endl;
+		//end test
+
 #endif //zje_debug
+
+		//Mn 矩阵求逆
+		MnMat_out = MnMat_out.inverse();
+		if (MnMat_out.determinant() == 0)
+		{
+			cout << "this Mn mat 是奇异的，不能求逆。但是求逆了。(求逆之后的结果)";
+		}
+		//test
+		cout << "inverse:" << endl;
+		cout << MnMat_out << endl;
+		//end test
 
 		//把Mn赋值到Q中对应的位置上
 		for (int col_it = 0; col_it < MnMat_out.cols(); col_it++)
@@ -994,8 +1019,8 @@ void FrameManage::computeMotinVector(int frameId1, vector<int>* f1SparseIdxList,
 	selectionMatrix(frameId1, 3, S);
 	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
 
-	//Vt_out = (Q + u * totalS).inverse() * Q * V0;
-	MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
+	Vt_out = (Q + u * totalS).inverse() * Q * V0;
+	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
 
 #ifdef ZJW_DEBUG
 	//test
@@ -1041,7 +1066,93 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 	selectionMatrix(frameId1, 3, S);
 	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
 
+	//Vt_out = (Q + u * totalS).inverse() * Q * V0;
+	cout << "对角线元素扩大了...." << endl;
+	VectorXd v;
+	v.resize(Q.rows());
+	v.fill(0.00001);
+	MatrixXd enLargeMat(v.asDiagonal());
+	
+	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
+	MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS + enLargeMat, Q*V0);
+
+#ifdef ZJW_DEBUG
+	
+	//test
+//#define SAVE_FILE
+#ifdef SAVE_FILE
+	ofstream out("1outMotionVec.txt");
+	if (out.is_open())
+	{
+		cout << "save motion vector info to 1outMotionVec.txt !!!" << endl;
+		out << "total S : " << endl;
+		out << totalS << endl;
+		out << "******************************************************************************************************" << endl;
+		out << endl << endl;
+
+		out << "Q: " << endl;
+		out << Q << endl;
+		out << "******************************************************************************************************" << endl;
+		out << endl << endl;
+
+		out << "V0: " << endl;
+		out << V0 << endl;
+		out << "******************************************************************************************************" << endl;
+		out << endl << endl;
+
+		out << "motion vector:" << endl;
+		out << Vt_out << endl;
+		out.close();
+	}
+	//end test
+#endif // SAVE_FILE
+	
+	//test
+	FullPivLU<MatrixXd> lu2((*frame1->pcsOct->spLaplacian));
+	cout << "laplacian: " << totalS.rows() << " " << totalS.cols() << endl;
+	cout << "laplacian rank: " << lu2.rank() << endl;
+
+	//test
+	FullPivLU<MatrixXd> lu((Q + u * totalS));
+	cout << "total S: " << totalS.rows() << " " << totalS.cols() << endl;
+	cout << "total s rank: " << lu.rank() << endl;
+
+	//test
+	FullPivLU<MatrixXd> lu_decomp((Q + u * totalS));
+	cout << "mat: " << (Q + u * totalS).rows() << " " << (Q + u * totalS).cols() << endl;
+	cout << "mat rank: " << lu_decomp.rank() << endl;
+	cout << "motion vector: " << endl;
+	cout << Vt_out << endl;
+	//end test
+
+	cout << "end compute MotinVector !!" << endl;
+#endif //zjw_debug
+}
+
+void FrameManage::computeMotinVectorMinresQLPSpaMat(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & Vt_out)
+{
+#ifdef ZJW_DEBUG
+	cout << "start compute MotinVector ..." << endl;
+#endif //zjw_debug
+	assert(frameId1 > -1);
+	Frame* frame1 = frameList[frameId1];
+
+	MatrixXd  Q;
+	VectorXd V0;
+	getQ(frameId1, f1SparseIdxList, f2SparseIdxList, Q);
+	getV0(frameId1, f1SparseIdxList, f2SparseIdxList, V0);
+
+	MatrixXd totalS;
+	MatrixXd S;
+	selectionMatrix(frameId1, 1, S);
+	totalS = S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+	selectionMatrix(frameId1, 2, S);
+	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+	selectionMatrix(frameId1, 3, S);
+	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+		
 	Vt_out = (Q + u * totalS).inverse() * Q * V0;
+	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
 
 #ifdef ZJW_DEBUG
 	//test
@@ -1049,11 +1160,15 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 	//cout << Q << endl;
 	cout << endl << endl;
 	cout << "V0: " << endl;
-	cout << V0 << endl;
+	//cout << V0 << endl;
 	cout << endl << endl;
 	//end test
 
 	//test
+	FullPivLU<MatrixXd> lu((Q + u * totalS));
+	cout << "total S: " << totalS.rows() << " " << totalS.cols() << endl;
+	cout << "total s rank: " << lu.rank() << endl;
+
 	FullPivLU<MatrixXd> lu_decomp((Q + u * totalS));
 	cout << "mat: " << (Q + u * totalS).rows() << " " << (Q + u * totalS).cols() << endl;
 	cout << "mat rank: " << lu_decomp.rank() << endl;

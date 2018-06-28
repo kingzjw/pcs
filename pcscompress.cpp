@@ -286,12 +286,12 @@ void pcsCompress::test()
 	
 	//训练数据，得到矩阵P
 	ui.openGLWidget->fm.trainGetP(0, 1, ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_",
-		"E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk");
+		dirPath);
 
 	//测试数据，拿到稀疏最佳匹配
 	ui.openGLWidget->fm.getTwoFrameBestSparseMatch(ui.openGLWidget->showFrameIdx, ui.openGLWidget->showFrameIdx2,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList,
-		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_", "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk", true);
+		ui.openGLWidget->fm.FileNameForMat::NUM_TAIL, "walkTexture_0_", dirPath, true);
 
 	//测试数据，拿到motion vector
 	VectorXd Vt;
