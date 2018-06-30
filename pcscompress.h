@@ -27,7 +27,7 @@ public slots:
 	void clickPCOctTreeButton();
 	void clickTwoFrameButton();
 	void clickTwoFrameSparseMatchButton();
-	void clickOthers();
+	void clickPredictTargetRadioButton();
 
 
 	//frame id change. 改变连续两帧之间的
@@ -44,6 +44,9 @@ public slots:
 	//改变sgwt中的 scale M阶两个参数
 	void changeMDegreeCheby();
 	void changeNscales();
+
+	//改变render mode
+	void changeRenderMode();
 
 	//算法核心步骤
 	void trainMatP();

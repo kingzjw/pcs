@@ -89,7 +89,7 @@ public:
 	//叶子节点的中间位置，用于kmeans
 	vector<Vec3> *midVList;
 
-	//保存也子节点的list,并给叶子节点编号
+	//保存叶子节点的list,并给叶子节点编号
 	vector<Octree<Node>::OctreeNode*> nodeList;
 	//叶子节点的编号器
 	int leafIncr;

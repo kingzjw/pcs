@@ -147,7 +147,8 @@ public:
 	void computeMotinVectorMinresQLP(int frameId1, vector<int>* f1SparseIdxList,
 		vector<int>* f2SparseIdxList, VectorXd & Vt_out);
 	
-	//利用稀疏矩阵
-	void computeMotinVectorMinresQLPSpaMat(int frameId1, vector<int>* f1SparseIdxList,
-		vector<int>* f2SparseIdxList, VectorXd & Vt_out);
+	//通过motion vectotr和refrece frame 计算出预测的target的frame ver.预测结果保存到objmesh对象中的 vertexPredictTargetList
+	void pridicTargetFrameVertex(int frameId1,  VectorXd  Vt); //
+	
+	
 };

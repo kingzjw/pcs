@@ -972,17 +972,21 @@ void FrameManage::getV0(int frameId1, vector<int>* f1SparseIdxList, vector<int>*
 		// 拿到应该拿的Mn
 		VectorXd MnMat_out;
 		int Mn = (*f1SparseIdxList)[node_it];
-		
 		//拿到对应点的motion vector
 		Vec3 pMn = (*(frame1->pcsOct->ctLeaf->midVList))[(*f1SparseIdxList)[node_it]];
 		Vec3 pN = (*(frame2->pcsOct->ctLeaf->midVList))[(*f2SparseIdxList)[node_it]];
-		Vector3d pDif(pMn.x - pN.x, pMn.y - pN.y, pMn.z - pN.z);
+		//Vector3d pDif(pMn.x - pN.x, pMn.y - pN.y, pMn.z - pN.z);
+		Vector3d pDif(pN.x - pMn.x, pN.y -pMn.y, pN.z- pMn.z);
 
 		//把 v(m) 赋值到V0中对应的位置上
 		for (int row_it=0; row_it < pDif.rows(); row_it++)
 		{
 			V0_out(Mn * 3 + row_it) = pDif(row_it);
 		}
+		
+		//test
+		cout << "getV0:  node idx " << Mn << "posDif " << pDif[0] << " "<<pDif[1] << " " << pDif[2] << endl;
+		//end
 	}
 
 }
@@ -1076,18 +1080,18 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
 
 	//Vt_out = (Q + u * totalS).inverse() * Q * V0;
-	cout << "对角线元素扩大了...." << endl;
-	VectorXd v;
+	//放大对角元素
+	//cout << "没有放大对角线元素...." << endl;
+	/*VectorXd v;
 	v.resize(Q.rows());
 	v.fill(0.00001);
-	MatrixXd enLargeMat(v.asDiagonal());
+	MatrixXd enLargeMat(v.asDiagonal());*/
 	
-	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
-	MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS + enLargeMat, Q*V0);
+	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS + enLargeMat, Q*V0);
+	MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
 
 #ifdef ZJW_DEBUG
-	
-	//test
+//test
 //#define SAVE_FILE
 #ifdef SAVE_FILE
 	ofstream out("1outMotionVec.txt");
@@ -1116,15 +1120,15 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 	//end test
 #endif // SAVE_FILE
 	
-	//test
-	FullPivLU<MatrixXd> lu2((*frame1->pcsOct->spLaplacian));
-	cout << "laplacian: " << totalS.rows() << " " << totalS.cols() << endl;
-	cout << "laplacian rank: " << lu2.rank() << endl;
+	////test
+	//FullPivLU<MatrixXd> lu2((*frame1->pcsOct->spLaplacian));
+	//cout << "laplacian: " << totalS.rows() << " " << totalS.cols() << endl;
+	//cout << "laplacian rank: " << lu2.rank() << endl;
 
 	//test
-	FullPivLU<MatrixXd> lu((Q + u * totalS));
+	/*FullPivLU<MatrixXd> lu((Q + u * totalS));
 	cout << "total S: " << totalS.rows() << " " << totalS.cols() << endl;
-	cout << "total s rank: " << lu.rank() << endl;
+	cout << "total s rank: " << lu.rank() << endl;*/
 
 	//test
 	FullPivLU<MatrixXd> lu_decomp((Q + u * totalS));
@@ -1138,53 +1142,42 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 #endif //zjw_debug
 }
 
-void FrameManage::computeMotinVectorMinresQLPSpaMat(int frameId1, vector<int>* f1SparseIdxList, vector<int>* f2SparseIdxList, VectorXd & Vt_out)
+void FrameManage::pridicTargetFrameVertex(int frameId1, VectorXd Vt)
 {
 #ifdef ZJW_DEBUG
-	cout << "start compute MotinVector ..." << endl;
-#endif //zjw_debug
+	cout << "start compute pridic TargetFrame Vertex postion ...." << endl;
+#endif //debug
 	assert(frameId1 > -1);
 	Frame* frame1 = frameList[frameId1];
+	ObjMesh * objMesh = frame1->objMesh;
 
-	MatrixXd  Q;
-	VectorXd V0;
-	getQ(frameId1, f1SparseIdxList, f2SparseIdxList, Q);
-	getV0(frameId1, f1SparseIdxList, f2SparseIdxList, V0);
+	//初始化,分配空间
+	objMesh->vertexPredictTargetList.clear();
+	objMesh->vertexPredictTargetList.resize(objMesh->vertexList.size());
 
-	MatrixXd totalS;
-	MatrixXd S;
-	selectionMatrix(frameId1, 1, S);
-	totalS = S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
-	selectionMatrix(frameId1, 2, S);
-	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
-	selectionMatrix(frameId1, 3, S);
-	totalS += S.transpose() * (*frame1->pcsOct->spLaplacian) * S;
+	//int count = 0;
+	//遍历八叉树中的每个叶子节点，根据这个叶子节点的 motion vector 对该叶子节点中所有的点，进行偏移
+	for (int node_it = 0; node_it < frame1->pcsOct->ctLeaf->nodeList.size(); node_it++)
+	{
+		Vec3 mv = Vec3(Vt(3 * node_it), Vt(3 * node_it + 1), Vt(3 * node_it + 2));
 		
-	Vt_out = (Q + u * totalS).inverse() * Q * V0;
-	//MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
+		//遍历这个叶子节点中的所有的点
+		Node * node1 = &(frame1->pcsOct->ctLeaf->nodeList[node_it]->nodeData);
+		for (int p_it = 0; p_it < node1->pointIdxList.size(); p_it++)
+		{
+			objMesh->vertexPredictTargetList[node1->pointIdxList[p_it]] = objMesh->vertexList[node1->pointIdxList[p_it]] + mv;
+		}
+	}
 
 #ifdef ZJW_DEBUG
 	//test
-	cout << "Q: " << endl;
-	//cout << Q << endl;
-	cout << endl << endl;
-	cout << "V0: " << endl;
-	//cout << V0 << endl;
-	cout << endl << endl;
-	//end test
+	//cout << "count : " << count << endl;
+	//cout << "point number: "<<objMesh->vertexList.size() << endl;
+	////end test
 
-	//test
-	FullPivLU<MatrixXd> lu((Q + u * totalS));
-	cout << "total S: " << totalS.rows() << " " << totalS.cols() << endl;
-	cout << "total s rank: " << lu.rank() << endl;
-
-	FullPivLU<MatrixXd> lu_decomp((Q + u * totalS));
-	cout << "mat: " << (Q + u * totalS).rows() << " " << (Q + u * totalS).cols() << endl;
-	cout << "mat rank: " << lu_decomp.rank() << endl;
-	cout << "motion vector: " << endl;
-	cout << Vt_out << endl;
-	//end test
-
-	cout << "end compute MotinVector !!" << endl;
-#endif //zjw_debug
+	cout << "end compute pridic TargetFrame Vertex postion !!!" << endl;
+#endif //debug
 }
+
+
+

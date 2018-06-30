@@ -66,9 +66,11 @@ void pcsCompress::clickTwoFrameSparseMatchButton()
 	ui.openGLWidget->updateGL();
 }
 
-void pcsCompress::clickOthers()
+void pcsCompress::clickPredictTargetRadioButton()
 {
-	cout << "clicked others (need to add something)!" << endl;
+	cout << "clicked click Predict Target frame RadioButton." << endl;
+	ui.openGLWidget->renderState = 6;
+	ui.openGLWidget->updateGL();
 }
 
 void pcsCompress::changeRefFrameId()
@@ -202,6 +204,20 @@ void pcsCompress::changeNscales()
 	}
 }
 
+void pcsCompress::changeRenderMode()
+{
+	//string to doubel
+	istringstream iss(ui.renderModeLineEdit->text().toStdString());
+	double temp;
+	iss >> temp;
+		
+	ui.openGLWidget->renderState= temp;
+#ifdef ZJW_DEBUG
+	cout << "render state   set to " << temp << endl;
+#endif // ZJW_DEBUG
+	ui.openGLWidget->updateGL();
+}
+
 void pcsCompress::trainMatP()
 {
 #ifdef ZJW_DEBUG
@@ -257,6 +273,12 @@ void pcsCompress::getMotionVector()
 	ui.openGLWidget->fm.computeMotinVectorMinresQLP(ui.openGLWidget->showFrameIdx,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
 
+	//计算target预测出来的点云
+	ui.openGLWidget->fm.pridicTargetFrameVertex(ui.openGLWidget->showFrameIdx, Vt);
+
+	ui.openGLWidget->renderState = 7;
+	ui.openGLWidget->updateGL();
+
 #ifdef ZJW_DEBUG
 	cout << "#######################################################################################" << endl;
 #endif //zjw_debug
@@ -272,7 +294,7 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.cellSize.z = temp;
 
 	//changeClusterNum 
-	temp = 100;
+	temp = 10;
 	ui.openGLWidget->fm.clusterNum = temp;
 
 	//change M 
@@ -281,7 +303,7 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.m = temp;
 
 	//chagne u
-	temp = 0.05;
+	temp = 0.5;
 	ui.openGLWidget->fm.u = temp;
 	
 	//训练数据，得到矩阵P
@@ -297,6 +319,8 @@ void pcsCompress::test()
 	VectorXd Vt;
 	ui.openGLWidget->fm.computeMotinVectorMinresQLP(ui.openGLWidget->showFrameIdx,
 		&ui.openGLWidget->fm.f1SparseIdxList, &ui.openGLWidget->fm.f2SparseIdxList, Vt);
+	//得到预测的数据
+	ui.openGLWidget->fm.pridicTargetFrameVertex(ui.openGLWidget->showFrameIdx, Vt);
 }
 
 void pcsCompress::testLapMat()
@@ -352,7 +376,7 @@ pcsCompress::pcsCompress(QWidget *parent)
 	
 	connect(ui.twoframe_radioButton, SIGNAL(clicked()), this, SLOT(clickTwoFrameButton()));
 	connect(ui.sparseMatchRadioButton, SIGNAL(clicked()), this, SLOT(clickTwoFrameSparseMatchButton()));
-	connect(ui.otherRadioButton, SIGNAL(clicked()), this, SLOT(clickOthers()));
+	connect(ui.predictTargetRadioButton, SIGNAL(clicked()), this, SLOT(clickPredictTargetRadioButton()));
 	
 	//改frame id
 	connect(ui.refFrameLineEdit, SIGNAL(returnPressed()), this, SLOT(changeRefFrameId()));
@@ -367,8 +391,8 @@ pcsCompress::pcsCompress(QWidget *parent)
 	//改变算法中的值
 	connect(ui.m_ChebyshevLineEdit, SIGNAL(returnPressed()), this, SLOT(changeMDegreeCheby()));
 	connect(ui.num_scalesLineEdit, SIGNAL(returnPressed()), this, SLOT(changeNscales()));
-
-	
+	//改变render mode	
+	connect(ui.renderModeLineEdit, SIGNAL(returnPressed()), this, SLOT(changeRenderMode()));
 
 	//核心算法步骤
 	connect(ui.actionTrainMatP, SIGNAL(triggered()), this, SLOT(trainMatP()));

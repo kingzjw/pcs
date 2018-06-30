@@ -74,6 +74,10 @@ public:
 	//0: 表示不渲染，1: 表示渲染点云，2: 表示点云对应的八叉树 
 	//3:表示渲染的两个连续帧之间的点云(所有匹配线). 5. 画训练数据的对应关系
 	//4: sparse match之间的点云
+	//6: 渲染预测出来的taget frame 和真实的target frame
+	//7: 只渲染预测出来的target frame
+	//8: 渲染预测出来的taget frame 和真实的target frame+ referece frame
+	//9: 渲染预测出来的taget frame + referece frame
 	int renderState;
 	//reference frame
 	int showFrameIdx;
@@ -83,7 +87,8 @@ public:
 	void setShowFrameIdx(int i = 0);
 
 	//画点云
-	void drawPointCloud(ObjMesh &objMesh);
+	void drawPointCloud(ObjMesh &objMesh, Vec3 color = Vec3(1.0, 0.0, 0.0));
+	void drawPointCloudPridictTargetFrame(ObjMesh &objMesh);
 	//画点云和 八叉树的包围结构
 	void drawPointCloudOctree(ObjMesh &objMesh, PcsOctree &pcsOct);
 	//draw 长方体的框
@@ -94,7 +99,7 @@ public:
 	void drawBestMatchLine(double moveStep);
 
 	//对训练数据之间的data进行学习
-	void drawTrainMatchLine(double moveStep);
+	void drawTrainMatchLine(double moveStep, Vec3 color = Vec3(1.0, 1.0, 0.0));
 };
 
 #endif

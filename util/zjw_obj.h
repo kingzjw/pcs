@@ -115,6 +115,7 @@ class ObjMesh
 public:
 	//mesh 保存面片信息
 	Mesh mesh;
+	vector<Vertex> vertexPredictTargetList;
 	vector<Vertex> vertexList;
 	//这里保存的是每个点所对应的颜色
 	vector<Color> colorList;

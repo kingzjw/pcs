@@ -49,7 +49,9 @@ public:
     QLabel *targerFrame;
     QLineEdit *targetFrameLineEdit;
     QRadioButton *sparseMatchRadioButton;
-    QRadioButton *otherRadioButton;
+    QRadioButton *predictTargetRadioButton;
+    QLineEdit *renderModeLineEdit;
+    QLabel *refFrame_2;
     QLabel *label;
     QLabel *label_2;
     QWidget *algorithmWidget;
@@ -75,7 +77,7 @@ public:
     {
         if (pcsCompressClass->objectName().isEmpty())
             pcsCompressClass->setObjectName(QStringLiteral("pcsCompressClass"));
-        pcsCompressClass->resize(811, 554);
+        pcsCompressClass->resize(812, 547);
         actionOpen = new QAction(pcsCompressClass);
         actionOpen->setObjectName(QStringLiteral("actionOpen"));
         actionTrainMatP = new QAction(pcsCompressClass);
@@ -95,7 +97,7 @@ public:
         parameter->setObjectName(QStringLiteral("parameter"));
         renderWidget = new QWidget(parameter);
         renderWidget->setObjectName(QStringLiteral("renderWidget"));
-        renderWidget->setGeometry(QRect(0, 230, 120, 181));
+        renderWidget->setGeometry(QRect(0, 230, 120, 221));
         oct_2 = new QLabel(renderWidget);
         oct_2->setObjectName(QStringLiteral("oct_2"));
         oct_2->setGeometry(QRect(0, 10, 81, 16));
@@ -111,24 +113,31 @@ public:
         twoframe_radioButton->setGeometry(QRect(10, 70, 101, 16));
         refFrameLineEdit = new QLineEdit(renderWidget);
         refFrameLineEdit->setObjectName(QStringLiteral("refFrameLineEdit"));
-        refFrameLineEdit->setGeometry(QRect(80, 140, 31, 20));
+        refFrameLineEdit->setGeometry(QRect(80, 170, 31, 20));
         refFrameLineEdit->setDragEnabled(true);
         refFrame = new QLabel(renderWidget);
         refFrame->setObjectName(QStringLiteral("refFrame"));
-        refFrame->setGeometry(QRect(0, 140, 61, 16));
+        refFrame->setGeometry(QRect(0, 170, 61, 16));
         targerFrame = new QLabel(renderWidget);
         targerFrame->setObjectName(QStringLiteral("targerFrame"));
-        targerFrame->setGeometry(QRect(0, 160, 81, 16));
+        targerFrame->setGeometry(QRect(0, 190, 81, 16));
         targetFrameLineEdit = new QLineEdit(renderWidget);
         targetFrameLineEdit->setObjectName(QStringLiteral("targetFrameLineEdit"));
-        targetFrameLineEdit->setGeometry(QRect(80, 160, 31, 20));
+        targetFrameLineEdit->setGeometry(QRect(80, 190, 31, 20));
         targetFrameLineEdit->setDragEnabled(true);
         sparseMatchRadioButton = new QRadioButton(renderWidget);
         sparseMatchRadioButton->setObjectName(QStringLiteral("sparseMatchRadioButton"));
         sparseMatchRadioButton->setGeometry(QRect(10, 90, 101, 16));
-        otherRadioButton = new QRadioButton(renderWidget);
-        otherRadioButton->setObjectName(QStringLiteral("otherRadioButton"));
-        otherRadioButton->setGeometry(QRect(10, 110, 101, 16));
+        predictTargetRadioButton = new QRadioButton(renderWidget);
+        predictTargetRadioButton->setObjectName(QStringLiteral("predictTargetRadioButton"));
+        predictTargetRadioButton->setGeometry(QRect(10, 110, 101, 16));
+        renderModeLineEdit = new QLineEdit(renderWidget);
+        renderModeLineEdit->setObjectName(QStringLiteral("renderModeLineEdit"));
+        renderModeLineEdit->setGeometry(QRect(80, 130, 31, 20));
+        renderModeLineEdit->setDragEnabled(true);
+        refFrame_2 = new QLabel(renderWidget);
+        refFrame_2->setObjectName(QStringLiteral("refFrame_2"));
+        refFrame_2->setGeometry(QRect(30, 130, 31, 20));
         label = new QLabel(parameter);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(0, 210, 54, 12));
@@ -183,7 +192,7 @@ public:
         pcsCompressClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(pcsCompressClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 811, 23));
+        menuBar->setGeometry(QRect(0, 0, 812, 23));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuOperation = new QMenu(menuBar);
@@ -231,7 +240,10 @@ public:
         targetFrameLineEdit->setInputMask(QString());
         targetFrameLineEdit->setText(QApplication::translate("pcsCompressClass", "1", Q_NULLPTR));
         sparseMatchRadioButton->setText(QApplication::translate("pcsCompressClass", "sparse match", Q_NULLPTR));
-        otherRadioButton->setText(QApplication::translate("pcsCompressClass", "others", Q_NULLPTR));
+        predictTargetRadioButton->setText(QApplication::translate("pcsCompressClass", "predict target F", Q_NULLPTR));
+        renderModeLineEdit->setInputMask(QString());
+        renderModeLineEdit->setText(QApplication::translate("pcsCompressClass", "0", Q_NULLPTR));
+        refFrame_2->setText(QApplication::translate("pcsCompressClass", "mode", Q_NULLPTR));
         label->setText(QApplication::translate("pcsCompressClass", "render", Q_NULLPTR));
         label_2->setText(QApplication::translate("pcsCompressClass", "algorithm", Q_NULLPTR));
         u_motionVec->setText(QApplication::translate("pcsCompressClass", " u", Q_NULLPTR));

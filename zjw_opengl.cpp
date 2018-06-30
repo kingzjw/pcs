@@ -180,6 +180,37 @@ void ZjwOpenGL::render()
 		//画匹配线
 		drawTrainMatchLine(movestep);
 	}
+	else if (renderState == 6)
+	{
+		//渲染预测出来的targetframe 和真实的targetframe
+		drawPointCloudPridictTargetFrame(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh));
+	}
+	else if (renderState == 7)
+	{
+		//只渲染预测出来的额target frame
+		drawPointCloudPridictTargetFrame(*(fm.frameList[showFrameIdx]->objMesh));
+	}
+	else if (renderState == 8)
+	{
+		//只渲染预测出来的额target frame
+		drawPointCloudPridictTargetFrame(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh),Vec3(0,0,0));
+		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+
+	}
+	else if (renderState == 9)
+	{
+		//只渲染预测出来的额target frame
+		drawPointCloudPridictTargetFrame(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+	}
+	else if (renderState == 10)
+	{
+		//cout << "red is refrence , black is target" << endl;
+		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
+		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh), Vec3(0, 0, 0));
+	}
 
 	glPopMatrix();
 }
@@ -190,9 +221,9 @@ void ZjwOpenGL::setShowFrameIdx(int i)
 	showFrameIdx2 = showFrameIdx + 1;
 }
 
-void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)
+void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh,Vec3 Color)
 {
-	glColor3f(1.0f, 0.0f, 0.0f);
+	glColor3f(Color.x, Color.y, Color.z);
 	glBegin(GL_POINTS);
 	glPointSize(3);
 	for (int v_it = 0; v_it < objMesh.mesh.facePoslist.size(); v_it++)
@@ -203,6 +234,31 @@ void ZjwOpenGL::drawPointCloud(ObjMesh & objMesh)
 			objMesh.vertexList[objMesh.mesh.facePoslist[v_it].y].z);
 		glVertex3f(objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].x, objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].y,
 			objMesh.vertexList[objMesh.mesh.facePoslist[v_it].z].z);
+	}
+	glEnd();
+}
+
+void ZjwOpenGL::drawPointCloudPridictTargetFrame(ObjMesh & objMesh)
+{
+	//tips:
+	//cout << "draw predict target frame" << endl;
+	//黑色
+	glColor3f(1.0f, 1.0f, 0.0f);
+	glBegin(GL_POINTS);
+	//glPointSize(3);
+	glPointSize(6);
+	/*for (int v_it = 0; v_it < objMesh.mesh.facePoslist.size(); v_it++)
+	{
+		glVertex3f(objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].x].x, objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].x].y,
+			objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].x].z);
+		glVertex3f(objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].y].x, objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].y].y,
+			objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].y].z);
+		glVertex3f(objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].z].x, objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].z].y,
+			objMesh.vertexPredictTargetList[objMesh.mesh.facePoslist[v_it].z].z);
+	}*/
+	for (int i = 0; i < objMesh.vertexPredictTargetList.size(); i++)
+	{
+		glVertex3f(objMesh.vertexPredictTargetList[i].x, objMesh.vertexPredictTargetList[i].y,objMesh.vertexPredictTargetList[i].z);
 	}
 	glEnd();
 }
@@ -223,19 +279,19 @@ void ZjwOpenGL::drawPointCloudOctree(ObjMesh & objMesh, PcsOctree & pcsOct)
 		glColor3f(0.0f, 0.0f, 1.0f);
 		glLineWidth(1);
 
-		//test 
-		if (i == 233)
-		{
-			glColor3f(0.0f, 1.0f, 0.0f);
-			glLineWidth(3);
-		}
-		else if ( i == 243 || i == 244 || i == 245 || i == 246 
-			||( i >=226 && i<=234))
-		{
-			//黄色
-			glColor3f(1.0f, 1.0f, 0.0f);
-			glLineWidth(3);
-		}
+		////test 
+		//if (i == 233)
+		//{
+		//	glColor3f(0.0f, 1.0f, 0.0f);
+		//	glLineWidth(3);
+		//}
+		//else if ( i == 243 || i == 244 || i == 245 || i == 246 
+		//	||( i >=226 && i<=234))
+		//{
+		//	//黄色
+		//	glColor3f(1.0f, 1.0f, 0.0f);
+		//	glLineWidth(3);
+		//}
 		//end test
 		drawWireCube(pcsOct.ctLeaf->minVList[i], pcsOct.ctLeaf->maxVList[i]);
 	}
@@ -328,7 +384,7 @@ void ZjwOpenGL::drawBestMatchLine(double moveStep)
 	glLineWidth(1.0f);
 }
 
-void ZjwOpenGL::drawTrainMatchLine(double moveStep)
+void ZjwOpenGL::drawTrainMatchLine(double moveStep, Vec3 color)
 {
 #ifdef ZJW_DEBUG
 	//cout << "draw Best Match Line!" << endl;
@@ -339,7 +395,7 @@ void ZjwOpenGL::drawTrainMatchLine(double moveStep)
 
 	//遍历所有稀疏的匹配
 	glLineWidth(1.5f);
-	glColor3f(0.0f, 0.0f, 0.0f);
+	glColor3f(color.x, color.y, color.z);
 	for (int i = 0; i < fm.f1TrainList.size(); i++)
 	{
 		Vec3 v1 = (*frame1->pcsOct->ctLeaf->midVList)[fm.f1TrainList[i]];
