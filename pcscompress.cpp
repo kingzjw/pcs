@@ -303,7 +303,7 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.m = temp;
 
 	//chagne u
-	temp = 0.5;
+	temp = 0.01;
 	ui.openGLWidget->fm.u = temp;
 	
 	//训练数据，得到矩阵P

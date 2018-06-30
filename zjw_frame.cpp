@@ -78,7 +78,7 @@ FrameManage::FrameManage()
 	clusterNum = 10;
 	P = new MatrixXd;
 
-	u = 1;
+	u = 0.01;
 	m=50;
 	//sclae的个数，不包括h
 	Nscales=4;
