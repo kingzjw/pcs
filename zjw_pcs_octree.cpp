@@ -222,22 +222,34 @@ void PcsOctree::getGraphMat()
 	assert(coefficients->size() > 0);
 	spLaplacian->setFromTriplets(coefficients->begin(), coefficients->end());
 
-	//test
-	//cout << "****************************************************" << endl;
-	//cout << "print LapLacian :" << endl;
 
-	//for (int k = 0; k < spLaplacian->outerSize(); ++k)
-	//{
-	//	for (SparseMatrix<double>::InnerIterator it(*spLaplacian, k); it; ++it)
-	//	{
-	//		/*if (it.row() == 233 || it.col() == 233)
-	//		{
-	//			cout <<"row: "<< it.row() << " col: " << it.col() << " value: " << it.value() << endl;			
-	//		}*/
-	//	}
-	//}
-	//cout << "****************************************************" << endl;
-	//end test
+	//test
+	//timer.Start();
+	//cout << "start get Mat Eigen Vertor and Value...." << endl;
+
+	//EigenSolver<MatrixXd> es(*spLaplacian);
+	//MatrixXd  eigenVecMat;
+	//MatrixXd  eigenValMat;
+	////way1
+	////Matrix whose columns are the (possibly complex) eigenvectors.
+	////es.eigenvectors().col(0)
+
+	////way2
+	////Const reference to matrix whose columns are the pseudo-eigenvectors.
+	//eigenValMat = es.pseudoEigenvalueMatrix();
+	//eigenVecMat = es.pseudoEigenvectors();
+
+
+	//cout << "88888888888888888888888888888888888888888888888888888888888" << endl;
+	//cout << "L :" << endl << *spLaplacian << endl;
+	//cout << "The pseudo-eigenvalue matrix D is:" << endl << eigenValMat << endl;
+	//cout << "The pseudo-eigenvector matrix V is:" << endl << eigenVecMat << endl;
+	////cout << "Finally, V * D * V^(-1) = " << endl << eigenVecMat * eigenValMat * eigenVecMat.inverse() << endl;
+	//cout << "88888888888888888888888888888888888888888888888888888888888" << endl;
+	//cout << "getMatEigenVerValue time: " << timer.GetInMs() << " ms " << endl;
+	//cout << "end get Mat Eigen Vertor and Value !" << endl;
+	//timer.Stop();
+	////end
 
 #ifdef ZJW_PRINT_INFO
   //打印的是非0元素

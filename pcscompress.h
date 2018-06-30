@@ -55,6 +55,31 @@ public slots:
 	void test();
 	void testLapMat();
 
+	//读入保存好的motion vector 
+	bool getMotionVectorFromFile(VectorXd & vt)
+	{
+		VectorXd Vt;
+		int num;
+		ifstream in("motionVector.txt");
+		if (in.is_open())
+		{
+			cout << "start load e motion vertor from motionVector.txt ......." << endl;
+			//第一个是向量的维数
+			in >> num;
+			Vt.resize(num);
+			for (int i = 0; i < num; i++)
+			{
+				cin >> Vt(i);
+			}	
+			cout << Vt << endl;
+			cout << "finish load e motion vertor from motionVector.txt!!" << endl;
+
+			in.close();
+		}
+
+		return false;
+	}
+
 public:
 	pcsCompress(QWidget *parent = 0);
 	~pcsCompress();

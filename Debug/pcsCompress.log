@@ -1,3 +1,9 @@
-﻿  zjw_frame.cpp
+﻿  Moc'ing pcscompress.h...
+  moc_pcscompress.cpp
+  main.cpp
+  pcscompress.cpp
+  zjw_frame.cpp
+  zjw_pcs_octree.cpp
+  正在生成代码...
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

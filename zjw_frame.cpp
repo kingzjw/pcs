@@ -1091,35 +1091,6 @@ void FrameManage::computeMotinVectorMinresQLP(int frameId1, vector<int>* f1Spars
 	MinresQLP::zjw_minres_QLP(Vt_out, Q + u * totalS, Q*V0);
 
 #ifdef ZJW_DEBUG
-//test
-//#define SAVE_FILE
-#ifdef SAVE_FILE
-	ofstream out("1outMotionVec.txt");
-	if (out.is_open())
-	{
-		cout << "save motion vector info to 1outMotionVec.txt !!!" << endl;
-		out << "total S : " << endl;
-		out << totalS << endl;
-		out << "******************************************************************************************************" << endl;
-		out << endl << endl;
-
-		out << "Q: " << endl;
-		out << Q << endl;
-		out << "******************************************************************************************************" << endl;
-		out << endl << endl;
-
-		out << "V0: " << endl;
-		out << V0 << endl;
-		out << "******************************************************************************************************" << endl;
-		out << endl << endl;
-
-		out << "motion vector:" << endl;
-		out << Vt_out << endl;
-		out.close();
-	}
-	//end test
-#endif // SAVE_FILE
-	
 	////test
 	//FullPivLU<MatrixXd> lu2((*frame1->pcsOct->spLaplacian));
 	//cout << "laplacian: " << totalS.rows() << " " << totalS.cols() << endl;

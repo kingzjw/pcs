@@ -252,7 +252,7 @@ public:
         oct->setText(QApplication::translate("pcsCompressClass", "octTree leaf", Q_NULLPTR));
         cluster->setText(QApplication::translate("pcsCompressClass", "cluster num", Q_NULLPTR));
         u_motionVecLineEdit->setInputMask(QString());
-        u_motionVecLineEdit->setText(QApplication::translate("pcsCompressClass", "1", Q_NULLPTR));
+        u_motionVecLineEdit->setText(QApplication::translate("pcsCompressClass", "0.01", Q_NULLPTR));
         octTreeLeafineEdit->setInputMask(QString());
         octTreeLeafineEdit->setText(QApplication::translate("pcsCompressClass", "0.05", Q_NULLPTR));
         m_ChebyshevLineEdit->setInputMask(QString());

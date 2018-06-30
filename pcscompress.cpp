@@ -275,7 +275,29 @@ void pcsCompress::getMotionVector()
 
 	//计算target预测出来的点云
 	ui.openGLWidget->fm.pridicTargetFrameVertex(ui.openGLWidget->showFrameIdx, Vt);
+#ifdef ZJW_DEBUG
 
+	//把motion vector 保存到txt中；
+
+#define SAVE_FILE
+#ifdef SAVE_FILE
+	ofstream out("motionVector.txt");
+	if (out.is_open())
+	{
+		cout << "save the motion vertor to motionVector.txt successful" << endl;
+		//第一个是向量的维数
+		out << Vt.rows() << endl;
+		//后面是向量的内容
+		out << Vt << endl;
+		out.close();
+	}
+#endif // SAVE_FILE
+
+
+	getMotionVectorFromFile(Vt);
+
+#endif // ZJW_DEBUG
+	
 	ui.openGLWidget->renderState = 7;
 	ui.openGLWidget->updateGL();
 
