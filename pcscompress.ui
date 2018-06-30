@@ -323,7 +323,7 @@
         <string/>
        </property>
        <property name="text">
-        <string>1</string>
+        <string>0.01</string>
        </property>
        <property name="dragEnabled">
         <bool>true</bool>
