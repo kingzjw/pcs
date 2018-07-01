@@ -183,6 +183,7 @@
     <ClCompile Include="util\zjw_obj.cpp" />
     <ClCompile Include="zjw_dsaupd.cpp" />
     <ClCompile Include="zjw_frame.cpp" />
+    <ClCompile Include="zjw_GFT.cpp" />
     <ClCompile Include="zjw_minresQLP.cpp" />
     <ClCompile Include="zjw_opengl.cpp" />
     <ClCompile Include="zjw_pcs_octree.cpp" />
@@ -226,6 +227,7 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="zjw_GFT.h" />
     <ClInclude Include="zjw_minresQLP.h" />
     <ClInclude Include="zjw_pngLoad.h" />
     <ClInclude Include="sgwt_util\pcg.h" />

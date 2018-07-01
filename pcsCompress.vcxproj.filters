@@ -107,6 +107,9 @@
     <ClCompile Include="zjw_minresQLP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="zjw_GFT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -173,6 +176,9 @@
     </ClInclude>
     <ClInclude Include="zjw_minresQLP.h">
       <Filter>Header Files\util</Filter>
+    </ClInclude>
+    <ClInclude Include="zjw_GFT.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

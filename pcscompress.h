@@ -69,7 +69,7 @@ public slots:
 			Vt.resize(num);
 			for (int i = 0; i < num; i++)
 			{
-				cin >> Vt(i);
+				in >> Vt(i);
 			}	
 			cout << Vt << endl;
 			cout << "finish load e motion vertor from motionVector.txt!!" << endl;
