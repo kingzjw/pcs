@@ -75,6 +75,7 @@ public slots:
 			cout << "finish load e motion vertor from motionVector.txt!!" << endl;
 
 			in.close();
+			return true;
 		}
 
 		return false;
