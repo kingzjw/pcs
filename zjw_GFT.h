@@ -33,6 +33,10 @@ public:
 	//gft形式下的信号
 	VectorXcd  signalGFT;
 
+private:
+	void computeEigenVector();
+	void computeEigenValue();
+
 public:
 	GFT(MatrixXd & lapMat);
 	~GFT();
@@ -47,8 +51,6 @@ public:
 	MatrixXcd getEigenVector();
 	VectorXcd getEigenValues();
 
-	void computeEigenVector();
-	void computeEigenValue();
 
 	/*
 	* func: 利用拉普拉斯矩阵，以及信号，求解出信号在傅里叶域中的解   

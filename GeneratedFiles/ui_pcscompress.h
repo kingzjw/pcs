@@ -36,6 +36,7 @@ public:
     QAction *actionGetSparseMatch;
     QAction *actionGetMotionVector;
     QAction *actionTest;
+    QAction *actionRLGR_MV;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *parameter;
@@ -70,6 +71,7 @@ public:
     QMenuBar *menuBar;
     QMenu *menuFile;
     QMenu *menuOperation;
+    QMenu *menuCompress;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -88,6 +90,8 @@ public:
         actionGetMotionVector->setObjectName(QStringLiteral("actionGetMotionVector"));
         actionTest = new QAction(pcsCompressClass);
         actionTest->setObjectName(QStringLiteral("actionTest"));
+        actionRLGR_MV = new QAction(pcsCompressClass);
+        actionRLGR_MV->setObjectName(QStringLiteral("actionRLGR_MV"));
         centralWidget = new QWidget(pcsCompressClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -197,6 +201,8 @@ public:
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuOperation = new QMenu(menuBar);
         menuOperation->setObjectName(QStringLiteral("menuOperation"));
+        menuCompress = new QMenu(menuBar);
+        menuCompress->setObjectName(QStringLiteral("menuCompress"));
         pcsCompressClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(pcsCompressClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -207,11 +213,13 @@ public:
 
         menuBar->addAction(menuFile->menuAction());
         menuBar->addAction(menuOperation->menuAction());
+        menuBar->addAction(menuCompress->menuAction());
         menuFile->addAction(actionOpen);
         menuOperation->addAction(actionTrainMatP);
         menuOperation->addAction(actionGetSparseMatch);
         menuOperation->addAction(actionGetMotionVector);
         menuOperation->addAction(actionTest);
+        menuCompress->addAction(actionRLGR_MV);
 
         retranslateUi(pcsCompressClass);
 
@@ -229,6 +237,7 @@ public:
         actionGetSparseMatch->setText(QApplication::translate("pcsCompressClass", "GetSparseMatch", Q_NULLPTR));
         actionGetMotionVector->setText(QApplication::translate("pcsCompressClass", "GetMotionVector", Q_NULLPTR));
         actionTest->setText(QApplication::translate("pcsCompressClass", "Test", Q_NULLPTR));
+        actionRLGR_MV->setText(QApplication::translate("pcsCompressClass", "RLGR_MV", Q_NULLPTR));
         oct_2->setText(QApplication::translate("pcsCompressClass", "render mode", Q_NULLPTR));
         pc_radioButtion->setText(QApplication::translate("pcsCompressClass", "point cloud", Q_NULLPTR));
         oct_radioButton->setText(QApplication::translate("pcsCompressClass", "octTree and pc", Q_NULLPTR));
@@ -265,6 +274,7 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(others), QApplication::translate("pcsCompressClass", "others", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("pcsCompressClass", "File", Q_NULLPTR));
         menuOperation->setTitle(QApplication::translate("pcsCompressClass", "Operation", Q_NULLPTR));
+        menuCompress->setTitle(QApplication::translate("pcsCompressClass", "Compress", Q_NULLPTR));
     } // retranslateUi
 
 };

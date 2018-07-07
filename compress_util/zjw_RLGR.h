@@ -68,10 +68,10 @@ public:
 
 	void initParam();
 
-	//RLGR编码
+	//RLGR编码。压缩包之后，保存在压缩文件中
 	void encode();
 
-	//RLGR解码
+	//从压缩文件中，RLGR解码。保存到resData中
 	bool decode();
 
 	void setK(uint64_t k_);

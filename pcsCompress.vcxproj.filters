@@ -45,6 +45,12 @@
     <Filter Include="Header Files\sgwt">
       <UniqueIdentifier>{9e688571-c954-4f20-9c94-a10b98398ff1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\compress">
+      <UniqueIdentifier>{7b66f2f7-498f-49a9-938c-8280f1ff7615}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compress">
+      <UniqueIdentifier>{6309f35e-bdf8-4259-a0e2-6cd38f172404}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -109,6 +115,15 @@
     </ClCompile>
     <ClCompile Include="zjw_GFT.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compress_util\zjw_bitFile.cpp">
+      <Filter>Source Files\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="compress_util\zjw_golombCoder.cpp">
+      <Filter>Source Files\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="compress_util\zjw_RLGR.cpp">
+      <Filter>Source Files\compress</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +194,15 @@
     </ClInclude>
     <ClInclude Include="zjw_GFT.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_RLGR.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_golombCoder.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_bitFile.h">
+      <Filter>Header Files\compress</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

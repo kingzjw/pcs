@@ -14,6 +14,8 @@
 #include "ui_pcscompress.h"
 
 #include "util/zjw_obj.h"
+#include "zjw_GFT.h"
+#include "compress_util\zjw_RLGR.h"
 
 class pcsCompress : public QMainWindow
 {
@@ -52,9 +54,16 @@ public slots:
 	void trainMatP();
 	void getSparseMatch();
 	void getMotionVector();
+	//test: 包括  train P , sparse match , motion vector
 	void test();
-	void testLapMat();
 
+
+	//------------------compress----------------------
+
+	//单独拿到特定frame 的lap mat 矩阵
+	
+	void testLapMat(Frame * frame);
+	
 	//读入保存好的motion vector 
 	bool getMotionVectorFromFile(VectorXd & vt)
 	{
@@ -71,7 +80,7 @@ public slots:
 			{
 				in >> Vt(i);
 			}	
-			cout << Vt << endl;
+			//cout << Vt << endl;
 			cout << "finish load e motion vertor from motionVector.txt!!" << endl;
 
 			in.close();
@@ -80,6 +89,9 @@ public slots:
 
 		return false;
 	}
+
+	void rlgr_mv_compress();
+
 
 public:
 	pcsCompress(QWidget *parent = 0);

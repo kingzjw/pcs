@@ -455,8 +455,15 @@
     <addaction name="actionGetMotionVector"/>
     <addaction name="actionTest"/>
    </widget>
+   <widget class="QMenu" name="menuCompress">
+    <property name="title">
+     <string>Compress</string>
+    </property>
+    <addaction name="actionRLGR_MV"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOperation"/>
+   <addaction name="menuCompress"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -490,6 +497,11 @@
   <action name="actionTest">
    <property name="text">
     <string>Test</string>
+   </property>
+  </action>
+  <action name="actionRLGR_MV">
+   <property name="text">
+    <string>RLGR_MV</string>
    </property>
   </action>
  </widget>
