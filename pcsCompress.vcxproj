@@ -176,6 +176,7 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="pcscompress.cpp" />
+    <ClCompile Include="zjw_pcsRLGR.cpp" />
     <ClCompile Include="PngLoad.cpp" />
     <ClCompile Include="sgwt_util\zjw_sgwt_utils.cpp" />
     <ClCompile Include="util\zjw_kmeans.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="compress_util\zjw_bitFile.h" />
     <ClInclude Include="compress_util\zjw_golombCoder.h" />
     <ClInclude Include="compress_util\zjw_RLGR.h" />
+    <ClInclude Include="zjw_pcsRLGR.h" />
     <ClInclude Include="zjw_GFT.h" />
     <ClInclude Include="zjw_minresQLP.h" />
     <ClInclude Include="zjw_pngLoad.h" />

@@ -125,6 +125,9 @@
     <ClCompile Include="compress_util\zjw_RLGR.cpp">
       <Filter>Source Files\compress</Filter>
     </ClCompile>
+    <ClCompile Include="zjw_pcsRLGR.cpp">
+      <Filter>Source Files\compress</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -202,6 +205,9 @@
       <Filter>Header Files\compress</Filter>
     </ClInclude>
     <ClInclude Include="compress_util\zjw_bitFile.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="zjw_pcsRLGR.h">
       <Filter>Header Files\compress</Filter>
     </ClInclude>
   </ItemGroup>

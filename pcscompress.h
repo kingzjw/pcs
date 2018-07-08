@@ -14,8 +14,7 @@
 #include "ui_pcscompress.h"
 
 #include "util/zjw_obj.h"
-#include "zjw_GFT.h"
-#include "compress_util\zjw_RLGR.h"
+#include"zjw_pcsRLGR.h"
 
 class pcsCompress : public QMainWindow
 {
@@ -67,7 +66,7 @@ public slots:
 	//读入保存好的motion vector 
 	bool getMotionVectorFromFile(VectorXd & vt)
 	{
-		VectorXd Vt;
+		
 		int num;
 		ifstream in("motionVector.txt");
 		if (in.is_open())
@@ -75,10 +74,10 @@ public slots:
 			cout << "start load e motion vertor from motionVector.txt ......." << endl;
 			//第一个是向量的维数
 			in >> num;
-			Vt.resize(num);
+			vt.resize(num);
 			for (int i = 0; i < num; i++)
 			{
-				in >> Vt(i);
+				in >> vt(i);
 			}	
 			//cout << Vt << endl;
 			cout << "finish load e motion vertor from motionVector.txt!!" << endl;

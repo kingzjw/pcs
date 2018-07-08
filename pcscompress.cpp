@@ -385,9 +385,7 @@ void pcsCompress::testLapMat(Frame * frame)
 }
 
 void pcsCompress::rlgr_mv_compress()
-{
-	cout << "click rlgr_mv_compress !" << endl;
-
+{	
 	//得到Lap mat稀疏的。
 	Frame * frame;
 	testLapMat(frame);
@@ -395,46 +393,11 @@ void pcsCompress::rlgr_mv_compress()
 	//读入 motion vectorx信号
 	VectorXd mvSignal;
 	getMotionVectorFromFile(mvSignal);
+	//cout << mvSignal << endl;
 
 	//mv信号通过gft处理成gft信号
-	VectorXcd  signal(mvSignal);
-	VectorXcd  signalGFT;
-	MatrixXd lapMat= MatrixXd(*(frame->pcsOct->spLaplacian));
-	GFT g = GFT(lapMat);
-	g.gft(signal, signalGFT);
-
-	//----signalGFT中的内容，转化到numsList中。然后gft信号经过  rlgb处理成 压缩内容。存储在文件中----
-	vector<uint64_t> numsList;
-	vector<uint64_t> resList;
-	//
-	for (int i = 0; i < signalGFT.rows(); i++)
-	{
-		//实部和虚部都进行压缩
-		numsList.push_back(signalGFT[i].real());
-		numsList.push_back(signalGFT[i].imag());
-	}
-
-	RLGR rlgr = RLGR(&numsList, &resList);
-	rlgr.encode();
-	
-	//解压数据，恢复成gft信号。解压之后数据再resList中了
-	RLGR rlgr2 = RLGR(&numsList, &resList);
-	rlgr2.decode();
-
-
-	//解压数据，吸纳打包成规定gft signal 的形式，然后gft解析成 原始mv信号
-	VectorXcd  gftDecodeSignal;
-	gftDecodeSignal.resize(resList.size() / 2);
-	for (int i = 0; i < gftDecodeSignal.size(); i++)
-	{
-		complex<double> temp(resList[i * 2], resList[i * 2 + 1]);
-		signalGFT[i] = temp;
-	}
-	VectorXcd mvDecodeSignal;
-	g.igft(gftDecodeSignal, mvDecodeSignal);
-
-	//f_Result的result可能已经从系数变成复数的形式了
-	//可能需要进行处理。
+	PCS_RLGR pcsRLGR(&mvSignal,frame->pcsOct->spLaplacian);
+	pcsRLGR.testPCS_RLGR();
 }
 
 pcsCompress::pcsCompress(QWidget *parent)
