@@ -6,7 +6,7 @@ PCS_RLGR::PCS_RLGR(VectorXd * mvSignal, Eigen::SparseMatrix<double>* lapMat)
 	stepSize = 0.01;
 
 	this->mvSignal = mvSignal;
-	this->spLaplacian = spLaplacian;
+	this->spLaplacian = lapMat;
 }
 
 PCS_RLGR::~PCS_RLGR()
@@ -175,4 +175,25 @@ VectorXcd PCS_RLGR::testPCS_RLGR()
 
 	return mvDecodeSignal;
 	return VectorXcd();
+}
+
+bool PCS_RLGR::separateMotionVector()
+{
+	mvXSignal.resize(mvSignal->rows() / 3);
+	mvYSignal.resize(mvSignal->rows() / 3);
+	mvZSignal.resize(mvSignal->rows() / 3);
+
+	for (int i = 0; i < mvSignal->rows() / 3; i++)
+	{
+		mvXSignal(i) = (*mvSignal)(3 * i);
+		mvYSignal(i) = (*mvSignal)(3 * i + 1);;
+		mvZSignal(i) = (*mvSignal)(3 * i + 2);;
+	}
+	return false;
+}
+
+bool PCS_RLGR::combineMotionVector()
+{
+
+	return false;
 }

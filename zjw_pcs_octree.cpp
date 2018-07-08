@@ -214,9 +214,7 @@ void PcsOctree::getGraphMat()
 #endif //use eigen
 
 #ifdef  USE_SPARSE
-#ifdef ZJW_DEBUG
-	//cout << " spLaplacian size : " << spLaplacian->innerSize() << "  " << spLaplacian->outerSize() << endl;
-#endif //zjw_debug
+
 
 	//Éú³ÉÏ¡ÊèµÄLaplacianMat
 	assert(coefficients->size() > 0);

@@ -19,10 +19,16 @@ private:
 	//RLGR论文中有提到  stepSize deta from 0.01 - 1 范围。越低，保真度越高。
 	double stepSize;
 	
-	//接受外面的数据
-	VectorXd *mvSignal;
 	Eigen::SparseMatrix<double> *spLaplacian;
+	//接受外面的数据,维度 (3* Nt,1),包含x,y,z三种信息
+	VectorXd *mvSignal;
+
+	//motion vector分离成关于x,y,z的特征
+	VectorXd mvXSignal;
+	VectorXd mvYSignal;
+	VectorXd mvZSignal;
 	
+	//rlgb中会用到的
 	vector<uint64_t> inputList;
 	vector<uint64_t> resList;
 
@@ -38,4 +44,10 @@ public:
 
 	//测试部分(解压缩)
 	VectorXcd  testPCS_RLGR();
+
+private:
+	//mvSignal 分离到 mvXSignal，mvYSignal, mvZSignal;
+	bool separateMotionVector();
+
+	bool combineMotionVector();
 };

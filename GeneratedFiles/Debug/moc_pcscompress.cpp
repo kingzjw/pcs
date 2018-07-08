@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_pcsCompress_t {
-    QByteArrayData data[27];
-    char stringdata0[413];
+    QByteArrayData data[25];
+    char stringdata0[400];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -52,12 +52,10 @@ QT_MOC_LITERAL(17, 299, 14), // "getSparseMatch"
 QT_MOC_LITERAL(18, 314, 15), // "getMotionVector"
 QT_MOC_LITERAL(19, 330, 4), // "test"
 QT_MOC_LITERAL(20, 335, 10), // "testLapMat"
-QT_MOC_LITERAL(21, 346, 6), // "Frame*"
-QT_MOC_LITERAL(22, 353, 5), // "frame"
-QT_MOC_LITERAL(23, 359, 23), // "getMotionVectorFromFile"
-QT_MOC_LITERAL(24, 383, 9), // "VectorXd&"
-QT_MOC_LITERAL(25, 393, 2), // "vt"
-QT_MOC_LITERAL(26, 396, 16) // "rlgr_mv_compress"
+QT_MOC_LITERAL(21, 346, 23), // "getMotionVectorFromFile"
+QT_MOC_LITERAL(22, 370, 9), // "VectorXd&"
+QT_MOC_LITERAL(23, 380, 2), // "vt"
+QT_MOC_LITERAL(24, 383, 16) // "rlgr_mv_compress"
 
     },
     "pcsCompress\0clickedOpenFileAction\0\0"
@@ -68,9 +66,9 @@ QT_MOC_LITERAL(26, 396, 16) // "rlgr_mv_compress"
     "changeOctCellSize\0changeClusterNum\0"
     "changeU\0changeMDegreeCheby\0changeNscales\0"
     "changeRenderMode\0trainMatP\0getSparseMatch\0"
-    "getMotionVector\0test\0testLapMat\0Frame*\0"
-    "frame\0getMotionVectorFromFile\0VectorXd&\0"
-    "vt\0rlgr_mv_compress"
+    "getMotionVector\0test\0testLapMat\0"
+    "getMotionVectorFromFile\0VectorXd&\0vt\0"
+    "rlgr_mv_compress"
 };
 #undef QT_MOC_LITERAL
 
@@ -106,9 +104,9 @@ static const uint qt_meta_data_pcsCompress[] = {
       17,    0,  134,    2, 0x0a /* Public */,
       18,    0,  135,    2, 0x0a /* Public */,
       19,    0,  136,    2, 0x0a /* Public */,
-      20,    1,  137,    2, 0x0a /* Public */,
-      23,    1,  140,    2, 0x0a /* Public */,
-      26,    0,  143,    2, 0x0a /* Public */,
+      20,    0,  137,    2, 0x0a /* Public */,
+      21,    1,  138,    2, 0x0a /* Public */,
+      24,    0,  141,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void,
@@ -129,8 +127,8 @@ static const uint qt_meta_data_pcsCompress[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 21,   22,
-    QMetaType::Bool, 0x80000000 | 24,   25,
+    QMetaType::Void,
+    QMetaType::Bool, 0x80000000 | 22,   23,
     QMetaType::Void,
 
        0        // eod
@@ -160,7 +158,7 @@ void pcsCompress::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 15: _t->getSparseMatch(); break;
         case 16: _t->getMotionVector(); break;
         case 17: _t->test(); break;
-        case 18: _t->testLapMat((*reinterpret_cast< Frame*(*)>(_a[1]))); break;
+        case 18: _t->testLapMat(); break;
         case 19: { bool _r = _t->getMotionVectorFromFile((*reinterpret_cast< VectorXd(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = _r; }  break;
         case 20: _t->rlgr_mv_compress(); break;

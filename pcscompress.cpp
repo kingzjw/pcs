@@ -343,8 +343,9 @@ void pcsCompress::test()
 	ui.openGLWidget->fm.pridicTargetFrameVertex(ui.openGLWidget->showFrameIdx, Vt);
 }
 
-void pcsCompress::testLapMat(Frame * frame)
+void pcsCompress::testLapMat()
 {
+	Frame * frame;
 	//chagne leaf node
 	double temp = 0.05;
 	ui.openGLWidget->fm.cellSize.x = temp;
@@ -387,8 +388,8 @@ void pcsCompress::testLapMat(Frame * frame)
 void pcsCompress::rlgr_mv_compress()
 {	
 	//得到Lap mat稀疏的。
-	Frame * frame;
-	testLapMat(frame);
+	testLapMat();
+	Frame * frame = ui.openGLWidget->fm.frameList[0];
 
 	//读入 motion vectorx信号
 	VectorXd mvSignal;

@@ -14,7 +14,7 @@ void GFT::computeEigenValue()
 void GFT::gft(VectorXcd & signal, VectorXcd & signalGFT_out)
 {
 	//assert ( eigenVertorMat.rows() >0 );
-	assert(signal.rows() == eigenVectorMat.rows());
+	assert(signal.rows() == (eigenVectorMat.rows()*3));
 	signalGFT_out.resize(signal.rows());
 	
 	cout << "得到的特征向量没有根据特征根，从小到大排序...." << endl;

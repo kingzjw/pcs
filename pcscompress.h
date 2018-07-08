@@ -61,7 +61,7 @@ public slots:
 
 	//单独拿到特定frame 的lap mat 矩阵
 	
-	void testLapMat(Frame * frame);
+	void testLapMat();
 	
 	//读入保存好的motion vector 
 	bool getMotionVectorFromFile(VectorXd & vt)
