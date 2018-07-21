@@ -12,7 +12,6 @@
 #include <sstream>
 
 #include "ui_pcscompress.h"
-
 #include "util/zjw_obj.h"
 #include"zjw_pcsRLGR.h"
 
@@ -29,7 +28,6 @@ public slots:
 	void clickTwoFrameButton();
 	void clickTwoFrameSparseMatchButton();
 	void clickPredictTargetRadioButton();
-
 
 	//frame id change. 改变连续两帧之间的
 	void changeRefFrameId();
@@ -60,7 +58,6 @@ public slots:
 	//------------------compress----------------------
 
 	//单独拿到特定frame 的lap mat 矩阵
-	
 	void testLapMat();
 	
 	//读入保存好的motion vector 

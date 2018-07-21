@@ -71,13 +71,6 @@ void RLGR::encode()
 	//对每一个数字进行编码
 	for (int num_it = 0; num_it < codeData->size(); num_it++)
 	{
-		//test
-		if (num_it == 302)
-			int asdfa = 1234;
-
-		cout << "num: " << num_it << endl;
-		//end test
-
 		u = (*codeData)[num_it];
 		if (k == 0)
 		{
@@ -478,3 +471,4 @@ bool RLGR::rice_golombDecode(uint64_t & num)
 	
 	return true;
 }
+
