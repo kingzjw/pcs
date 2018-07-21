@@ -1,3 +1,10 @@
-﻿  zjw_GFT.cpp
+﻿  moc_pcscompress.cpp
+  main.cpp
+  zjw_pcs_double_buffer_octree.cpp
+  pcscompress.cpp
+  正在生成代码...
+e:\1.study\pointcloud\code\pcscompress\pcscompress\octree\zjw_octree_double_buffer.h(402): warning C4715: “OctreeDoubelBufferNode<DBufferNodeData>::getRefrenceFrameNodeDataPtr”: 不是所有的控件路径都返回值
+e:\1.study\pointcloud\code\pcscompress\pcscompress\octree\zjw_octree_double_buffer.h(531): warning C4700: 使用了未初始化的局部变量“b_it”
+e:\1.study\pointcloud\code\pcscompress\pcscompress\octree\zjw_octree_double_buffer.h(393): warning C4715: “OctreeDoubelBufferNode<DBufferNodeData>::getTargetFrameNodeDataPtr”: 不是所有的控件路径都返回值
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.exe
   pcsCompress.vcxproj -> E:\1.study\pointCloud\code\pcsCompress\Win32\Debug\pcsCompress.pdb (Full PDB)

@@ -62,7 +62,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>./compress_util;./eigen;./util;./sgwt_util;./spectra/include;./opencv3.3_x86_v2/include/opencv2;./opencv3.3_x86_v2/include/opencv;./opencv3.3_x86_v2/include/;$(IncludePath)</IncludePath>
+    <IncludePath>./octree;./compress_util;./eigen;./util;./sgwt_util;./spectra/include;./opencv3.3_x86_v2/include/opencv2;./opencv3.3_x86_v2/include/opencv;./opencv3.3_x86_v2/include/;$(IncludePath)</IncludePath>
     <LibraryPath>E:\1.study\pointCloud\code\pcsCompress\pcsCompress\opencv3.3_x86_v2\x86\vc14\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -175,6 +175,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="octree\zjw_pcs_double_buffer_octree.cpp" />
+    <ClCompile Include="octree\zjw_pcs_octree.cpp" />
     <ClCompile Include="pcscompress.cpp" />
     <ClCompile Include="zjw_pcsRLGR.cpp" />
     <ClCompile Include="PngLoad.cpp" />
@@ -190,7 +192,6 @@
     <ClCompile Include="zjw_GFT.cpp" />
     <ClCompile Include="zjw_minresQLP.cpp" />
     <ClCompile Include="zjw_opengl.cpp" />
-    <ClCompile Include="zjw_pcs_octree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -234,6 +235,10 @@
     <ClInclude Include="compress_util\zjw_bitFile.h" />
     <ClInclude Include="compress_util\zjw_golombCoder.h" />
     <ClInclude Include="compress_util\zjw_RLGR.h" />
+    <ClInclude Include="octree\zjw_octree.h" />
+    <ClInclude Include="octree\zjw_octree_double_buffer.h" />
+    <ClInclude Include="octree\zjw_pcs_double_buffer_octree.h" />
+    <ClInclude Include="octree\zjw_pcs_octree.h" />
     <ClInclude Include="zjw_pcsRLGR.h" />
     <ClInclude Include="zjw_GFT.h" />
     <ClInclude Include="zjw_minresQLP.h" />
@@ -251,7 +256,6 @@
     <ClInclude Include="util\zjw_obj.h" />
     <ClInclude Include="zjw_dsaupd.h" />
     <ClInclude Include="zjw_frame.h" />
-    <ClInclude Include="zjw_octree.h" />
     <CustomBuild Include="zjw_opengl.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing zjw_opengl.h...</Message>
@@ -270,7 +274,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
-    <ClInclude Include="zjw_pcs_octree.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.qrc">
@@ -293,6 +296,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitignore" />
     <None Include="util\zjw_macro.h" />
   </ItemGroup>
   <ItemGroup>

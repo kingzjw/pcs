@@ -51,6 +51,12 @@
     <Filter Include="Source Files\compress">
       <UniqueIdentifier>{6309f35e-bdf8-4259-a0e2-6cd38f172404}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\octree">
+      <UniqueIdentifier>{401519f3-743f-467a-84b3-b7db1d302f98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\octree">
+      <UniqueIdentifier>{f219cf8c-2d42-46f0-869c-906bae6e93f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -58,9 +64,6 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_pcscompress.cpp">
       <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zjw_pcs_octree.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_zjw_opengl.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -128,6 +131,12 @@
     <ClCompile Include="zjw_pcsRLGR.cpp">
       <Filter>Source Files\compress</Filter>
     </ClCompile>
+    <ClCompile Include="octree\zjw_pcs_octree.cpp">
+      <Filter>Source Files\octree</Filter>
+    </ClCompile>
+    <ClCompile Include="octree\zjw_pcs_double_buffer_octree.cpp">
+      <Filter>Source Files\octree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -144,12 +153,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="zjw_octree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zjw_pcs_octree.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="zjw_dsaupd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -210,11 +213,24 @@
     <ClInclude Include="zjw_pcsRLGR.h">
       <Filter>Header Files\compress</Filter>
     </ClInclude>
+    <ClInclude Include="octree\zjw_octree.h">
+      <Filter>Header Files\octree</Filter>
+    </ClInclude>
+    <ClInclude Include="octree\zjw_pcs_octree.h">
+      <Filter>Header Files\octree</Filter>
+    </ClInclude>
+    <ClInclude Include="octree\zjw_octree_double_buffer.h">
+      <Filter>Header Files\octree</Filter>
+    </ClInclude>
+    <ClInclude Include="octree\zjw_pcs_double_buffer_octree.h">
+      <Filter>Header Files\octree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="util\zjw_macro.h">
       <Filter>Header Files</Filter>
     </None>
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="PPro_MR_Male.png" />

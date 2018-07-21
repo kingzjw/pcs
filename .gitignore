@@ -1,0 +1,17 @@
+# 忽略所有文件
+*.log
+*.filters
+*.vcxproj
+*.gr
+
+# 忽略文件夹
+x64/
+Debug/
+
+# 不忽略目录
+#!*/
+
+# 不忽略文件.gitignore和*.foo
+#!*.h
+#!*.cpp
+#!*.txt

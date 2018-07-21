@@ -34,7 +34,7 @@ private:
 	uint64_t kP;
 
 
-	//kR是GR中的k. kR = kRP/L;
+	//kR是GR中的k. kR = kRP/L; kR不能小于0，也不能超过64位（因为uint64_t来表示）。
 	uint64_t kR;
 	//必须是2的pow
 	uint64_t L;
