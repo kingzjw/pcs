@@ -27,3 +27,441 @@ Author: king <zjwking258@163.com>
 Date:   Tue Apr 3 20:09:56 2018 +0800
 
     v0.01 load the obj and show point clound
+[33mcommit 4870c7c8e5411f5349aa2cc0b35d82608afb0e80[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m)[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jul 27 10:09:11 2018 +0800
+
+    update some error
+
+[33mcommit b788c2996abc4c547770d5f1ff6d3d9d86bbe211[m
+Author: king <zjwking258@163.com>
+Date:   Thu Jul 26 22:37:17 2018 +0800
+
+    update the point cloude compression interface
+
+[33mcommit bce299623501d0bc03ec503d6d85949f254bdc37[m
+Author: king <zjwking258@163.com>
+Date:   Thu Jul 26 21:57:54 2018 +0800
+
+    recovery the octree to get the min and max of the node
+
+[33mcommit 5dac0785dd71458fa70cd84ed2c72e442b18e495[m
+Author: king <zjwking258@163.com>
+Date:   Mon Jul 23 00:42:43 2018 +0800
+
+    modify the color point coder head file
+
+[33mcommit ad14aba88eed59768291eb174b44bf82f408e7d9[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 22 02:25:50 2018 +0800
+
+    delete the Debug files by gitignore
+
+[33mcommit a320d17743cf209c782d4876bb2997d2c610f6f5[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 22 02:22:10 2018 +0800
+
+    position compress some file added
+
+[33mcommit 0856217c4ea85f1b63f361dbc62431386a7b5d62[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jul 21 22:55:32 2018 +0800
+
+    use gitignore and rm the larger file of .gr file and modify the rlgr and
+    add double buffer pcs interface
+
+[33mcommit df1e193088f83e90877b0cf768a4f9a78f412bf1[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jul 21 20:57:34 2018 +0800
+
+    test
+
+[33mcommit 00053c6198a6e3f9b302620759a4d7cd3c547028[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 8 15:39:13 2018 +0800
+
+    fix some code error for test the RLGR coder for motion vector
+
+[33mcommit 0ba97194c36be877336f4431308135a27d3c3593[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 8 13:37:17 2018 +0800
+
+    add class of  pcs RLGR coder and fix the get motion vector from file interface error
+
+[33mcommit 1a5d5109ba4733f73e7dd8be45fb7f053f62f9fa[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jul 7 11:14:45 2018 +0800
+
+    add interface rlgr_mv_compress for comporesss the motion vector but need to test it
+
+[33mcommit fc2b800634017d5d8108148cd7f351ce445fe17f[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jul 6 20:14:34 2018 +0800
+
+    v 0.10 add RLGR good interface to the code
+
+[33mcommit f2b20343655e4de05e70531725e519fac691e546[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 1 23:21:46 2018 +0800
+
+    GFT interface is ok
+
+[33mcommit 98f97c1d205818ce1c046d9a7430c001af899fb0[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jul 1 19:13:03 2018 +0800
+
+    fix the load the file interface ,now is ok . and add GFT class first version
+
+[33mcommit 77bfccdcf23f342f4f9d1003988347fd518d5c6a[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 30 21:09:40 2018 +0800
+
+    save to motion vertor to file and the load interface for compression
+
+[33mcommit d53881473fb5b0e33879fd378d18656a9d3d7f15[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 30 14:54:42 2018 +0800
+
+    default value u
+
+[33mcommit f2b5cdf00a1db9886da80d88d33bc45be703a9fc[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 30 14:53:46 2018 +0800
+
+    modify default value u
+
+[33mcommit a4d258fb194de85b1bc6d22a05df2820d1f69636[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 30 13:56:09 2018 +0800
+
+    v0.095 motion vector success and result is may be ok (UI change, and fix getQ function )
+
+[33mcommit 66b9fbd5bf3e0b36cc37259e6dc73cda805e18ca[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 29 00:42:35 2018 +0800
+
+    remove debug info
+
+[33mcommit 955f7adfa3f50cf41dad1c969ecf839a0917c57e[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 29 00:38:20 2018 +0800
+
+    fix ctgraph class for root and cellsize param error
+
+[33mcommit 72e51bf96aa8da6dca2866f27e652719267636a9[m
+Author: king <zjwking258@163.com>
+Date:   Thu Jun 28 10:24:54 2018 +0800
+
+    fix compute motion vecto some problem
+
+[33mcommit 1c403416129e96e50daec07bd1ef1e66ac219e74[m
+Author: king <zjwking258@163.com>
+Date:   Tue Jun 26 14:21:17 2018 +0800
+
+    add minres
+
+[33mcommit 77d39ff85371a1f1557b0d490cd05700f6e9e9d6[m
+Author: king <zjwking258@163.com>
+Date:   Sun Jun 24 15:51:27 2018 +0800
+
+    get Mn Mat speed up and fix a error in get Mn Mat
+
+[33mcommit 46827531a23ba7169f406953c0b8438b39695ebd[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 23 14:32:32 2018 +0800
+
+    v0.09 start to get the motion vector before compress
+
+[33mcommit ea98777103b93ec326d1b58f2777af4d52f1c116[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 23 10:56:56 2018 +0800
+
+    success fix problem for last commit . for best match
+
+[33mcommit ab11609d72b35166b59eb5d62cb0e495f837bd46[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 23 10:39:07 2018 +0800
+
+    update the func of get best match Point solve the can not find the best match return -1
+
+[33mcommit 1ddf42203b3eae79ae7a860cfff30b99d514b49c[m
+Author: king <zjwking258@163.com>
+Date:   Tue Jun 19 21:32:12 2018 +0800
+
+    add relative distance but this way do not work out
+
+[33mcommit 8ad25d569de2c9be9da1772e631dd12b56de7fd2[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 15 18:41:02 2018 +0800
+
+    really get the color
+
+[33mcommit e4987225d16766267a4bbdcb7728147aff126031[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 15 01:06:12 2018 +0800
+
+    add opencv 32 and get color list of obj mesh
+
+[33mcommit 86d8ff22f581ea2a800891a9c0c35f7040af7e21[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 8 20:23:41 2018 +0800
+
+    v0.086 speed up the best match
+
+[33mcommit 866c5adc5d4b3c497bc2eb33c8fb50618eb5b1d2[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 2 01:29:33 2018 +0800
+
+    check the sgwt result is ok
+
+[33mcommit c93b9005eb4aeff853fe61971f28e37b28dd5113[m
+Author: king <zjwking258@163.com>
+Date:   Sat Jun 2 00:51:53 2018 +0800
+
+    fix coeff func the g param error
+
+[33mcommit 5d0fd08a7a86cb487818c6a4138d6c4e30051f6e[m
+Author: king <zjwking258@163.com>
+Date:   Fri Jun 1 21:35:15 2018 +0800
+
+    new ui about change the n scale and poly M
+
+[33mcommit 6367a3fabc953e235d2d47784ce577e052abecc3[m
+Author: king <zjwking258@163.com>
+Date:   Wed May 30 23:24:59 2018 +0800
+
+    tempe3
+
+[33mcommit 74bc33e0cc166f36f33f83c0581202d10fc5e130[m
+Author: king <zjwking258@163.com>
+Date:   Wed May 30 23:16:38 2018 +0800
+
+    temp2
+
+[33mcommit b6f7551ed835584578f1d88b86f0bd37458755b5[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 28 21:02:57 2018 +0800
+
+    temp
+
+[33mcommit 6dd03c29b1ceef52c426cb46303ac7c1bf464161[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 28 11:01:55 2018 +0800
+
+    v0.085 train match line showed
+
+[33mcommit 2c812d102619e474cec786c5aa367f1e91d474b1[m
+Author: king <zjwking258@163.com>
+Date:   Sat May 26 16:36:00 2018 +0800
+
+    v0.084 match point line added
+
+[33mcommit 05505e68cb1785f2f6b782ab0e2b27b330628fe2[m
+Author: king <zjwking258@163.com>
+Date:   Sat May 26 12:45:13 2018 +0800
+
+    v0.083 ui ver3
+
+[33mcommit ef154c8bfe7a9cc71a92b327294b3f5e1220ae18[m
+Author: king <zjwking258@163.com>
+Date:   Sat May 26 00:27:14 2018 +0800
+
+    v0.0082 ui ver2
+
+[33mcommit 6f28aaf78b1f6b78272eca3f60f9b13a26ae7e70[m
+Author: king <zjwking258@163.com>
+Date:   Fri May 25 22:40:11 2018 +0800
+
+    v0.081 ui change version 1
+
+[33mcommit df1e64e0e4f7149bfa479c92cded1b9449827f06[m
+Author: king <zjwking258@163.com>
+Date:   Thu May 24 22:23:40 2018 +0800
+
+    v 0.08 compute motion vector is ok . but need to test the result
+
+[33mcommit 4cefe1118f2e9648084c8bb0312acba6a29bbd3f[m
+Author: king <zjwking258@163.com>
+Date:   Thu May 24 20:39:11 2018 +0800
+
+    v0.0079 add motion vector interface , need to test these interface
+
+[33mcommit eddc8068225415b27ebb7df58f343f0056d706fc[m
+Author: king <zjwking258@163.com>
+Date:   Thu May 24 11:20:01 2018 +0800
+
+    v0.078 get Mn mat, we will get mat Q next
+
+[33mcommit 6c19d46ee9e115bddd7fbd478aed36b40acc9bfe[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 21 12:21:08 2018 +0800
+
+    fix some small problem
+
+[33mcommit 90a86d71f37ef99535f28b4910f9ee1e554d4508[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 21 10:23:25 2018 +0800
+
+    v0.077 speed up the agwt and getP success
+
+[33mcommit fd69d70ee8a30b9de1e7faf68941ec0a04169a80[m
+Author: king <zjwking258@163.com>
+Date:   Sun May 20 15:36:48 2018 +0800
+
+    v0.076 speed up the sgwt and getP
+
+[33mcommit 32a4627245ea523f7196c4316f9d05849b50d342[m
+Author: king <zjwking258@163.com>
+Date:   Sat May 19 16:21:41 2018 +0800
+
+    v0.075 fix the mat can not inverse by magnify it 1.00001 and add process interface
+
+[33mcommit a09486a967ecbe9085a4244f6aa8a29ca582f078[m
+Author: king <zjwking258@163.com>
+Date:   Tue May 15 20:51:59 2018 +0800
+
+    v0.074 add best matsh and get sparse best match interface ,but the conv mat is special , need to check
+
+[33mcommit 5a8152316b09375b80b5653f94ea4b61105e6dd1[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 14 11:04:54 2018 +0800
+
+    add P tranning data : map from node to node but the result is not good
+
+[33mcommit ed508760c342bf07800c9e190ae211a2580e9010[m
+Author: king <zjwking258@163.com>
+Date:   Sun May 13 22:06:40 2018 +0800
+
+    v0.073 get feature vector success and add color signal
+
+[33mcommit 3511dafd02985a523bce3feae3ab0a46f01f3646[m
+Author: king <zjwking258@163.com>
+Date:   Wed May 9 10:29:42 2018 +0800
+
+    v0.073 add kmens interface but not combine to the code
+
+[33mcommit feeb3ac3ea074207600f2b69ff8ffd9971a6b68c[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 7 16:57:31 2018 +0800
+
+    v0.072 mutil file special two frame interface added
+
+[33mcommit 730067d17e4c31841f500246389c52396131cf0d[m
+Author: king <zjwking258@163.com>
+Date:   Mon May 7 13:57:57 2018 +0800
+
+    v0.071 mutil file load success
+
+[33mcommit d466246244c3c3541deebbef9c1b361a4d13da7e[m
+Author: king <zjwking258@163.com>
+Date:   Sun May 6 18:51:03 2018 +0800
+
+    v0.07 file batch solve and obj load speed up   success
+
+[33mcommit 5e3535128322b6210ab56693df68e356c5e8daa1[m
+Author: king <zjwking258@163.com>
+Date:   Sat May 5 22:52:36 2018 +0800
+
+    add file batch step 1
+
+[33mcommit 6695f729570b6df2b2244c186886968444f72668[m
+Author: king <zjwking258@163.com>
+Date:   Thu May 3 16:27:53 2018 +0800
+
+    add some small function based on last version
+
+[33mcommit d798d1e8e0a6e1481fb39f6783de7cc5414f819a[m
+Author: king <zjwking258@163.com>
+Date:   Thu May 3 14:32:11 2018 +0800
+
+    v0.061 fix some probelm in the last version
+
+[33mcommit ece3f183bbf5bcef7e7c4e5e609418308b45573b[m
+Author: king <zjwking258@163.com>
+Date:   Wed May 2 21:05:41 2018 +0800
+
+    v0.06 get the coeff of sgwt success
+
+[33mcommit 05518b6a38563b789deb64b66c3bce7147e25a1a[m
+Author: king <zjwking258@163.com>
+Date:   Wed May 2 12:49:25 2018 +0800
+
+    v0.054 compile the sgwt chebyshv
+
+[33mcommit 64fea0422c44e37c26989bfaa296111f248da39e[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 26 21:30:18 2018 +0800
+
+    v0.053 finally finish the sgwt chebyshv ,need to test
+
+[33mcommit 49a6af81645fa222c619eb2a6ae045979e29f44b[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 25 21:43:13 2018 +0800
+
+    v0.052 add swgt code in to the original code ,the next will to connect them.
+
+[33mcommit 55909c65f79aa9bab9a925e773fcb388c2dcad43[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 25 20:04:00 2018 +0800
+
+    v0.051 sparse matrix successful
+
+[33mcommit 4f48d58c93364d5c2bc84192f31059745f95a195[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 25 16:13:45 2018 +0800
+
+    v0.05 add sparse matrix Laplace  prepare to sgwt
+
+[33mcommit 62ab4531bf9c22e70bba80e1ad9f80e1e4d473a9[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 25 16:07:54 2018 +0800
+
+    v-error  error delete one file
+
+[33mcommit ea994902686dc0c6219fb157e2849781f882587b[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 25 15:06:29 2018 +0800
+
+    add spare matrix ,but this cause fialed
+
+[33mcommit ec08b172bcb383c3bcda40e5fb2a36c8a6f632ac[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 12 22:47:34 2018 +0800
+
+    v0.04 add arpack solve the eigen vector by chooss right macro
+
+[33mcommit 53dded5f2539e19e62c1c71f20cc1704ab4f091e[m
+Author: king <zjwking258@163.com>
+Date:   Tue Apr 10 15:43:54 2018 +0800
+
+    v0.0032 change the 64 to win 32, add time count to compute the eigen vector ,and chagen the Eigen to ARPACk
+
+[33mcommit 29fd93252b90415e322c6bfa0eb0808482c21e6b[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 5 22:25:48 2018 +0800
+
+    v0.031 compute the eigen vector and value
+
+[33mcommit 6b5a8c878d6521e7abf547139d393e5003fbf5d2[m
+Author: king <zjwking258@163.com>
+Date:   Thu Apr 5 20:15:22 2018 +0800
+
+    v0.03 change the point clounr to graph
+
+[33mcommit bf0e6e9c26a29d22210281c5a045c65a948457c0[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 4 19:50:05 2018 +0800
+
+    v0.003 fix not find opneg.h filed
+
+[33mcommit d3c14f6faf0d4fa9c73fa9530aaff2d074413e89[m
+Author: king <zjwking258@163.com>
+Date:   Wed Apr 4 16:43:50 2018 +0800
+
+    v0.02 octree for point clound success
+
+[33mcommit c1e44319b5675c5d85ca6c633fab4a871d4a97c0[m
+Author: king <zjwking258@163.com>
+Date:   Tue Apr 3 20:09:56 2018 +0800
+
+    v0.01 load the obj and show point clound
