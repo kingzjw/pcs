@@ -137,6 +137,12 @@
     <ClCompile Include="octree\zjw_pcs_double_buffer_octree.cpp">
       <Filter>Source Files\octree</Filter>
     </ClCompile>
+    <ClCompile Include="compress_util\zjw_entropy_range_coder.cpp">
+      <Filter>Source Files\compress</Filter>
+    </ClCompile>
+    <ClCompile Include="compress_util\zjw_octreePointCloudCompression.cpp">
+      <Filter>Source Files\octree</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pcscompress.ui">
@@ -224,6 +230,21 @@
     </ClInclude>
     <ClInclude Include="octree\zjw_pcs_double_buffer_octree.h">
       <Filter>Header Files\octree</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_octreePointCloudCompression.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_entropy_range_coder.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_octree_compression_profiles.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_color_coding.h">
+      <Filter>Header Files\compress</Filter>
+    </ClInclude>
+    <ClInclude Include="compress_util\zjw_point_coding.h">
+      <Filter>Header Files\compress</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

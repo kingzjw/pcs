@@ -57,28 +57,50 @@ public:
 	vector<OctreeDoubelBufferNode<DBufferNodeData> *> nodeList;
 	//叶子节点的编号器
 	int leafIncr;
+	//default : true
+	bool isTarget;
 
 public:
-	TraverseGetInfoSetLeaf();
+	TraverseGetInfoSetLeaf(bool isTarget_in = true);
 	~TraverseGetInfoSetLeaf();
+
+	void setIsTarget(bool flag);
+	void initParam();
 
 	virtual bool operator()(const Vec3 min, const Vec3 max, DBufferNodeData& nodeData) {
 		return true;
 	}
-	//给叶子节点编号
+	//得到八叉树的叶子信息，把相应的信息保存到 参数中
 	virtual bool operator()(const Vec3 min, const Vec3 max, OctreeDoubelBufferNode<DBufferNodeData>* currNode);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
 //双buffer 八叉树
 ////////////////////////////////////////////////////////////////////////////////
+// define frame identifier
+
+
 
 class PcsDBufferOctree
 {
+
 public:
+	//bounding box and cell size
 	Vec3 minPos;
 	Vec3 maxPos;
 	Vec3 cellSize;
+
+	//target(p-frame) 叶子节点的个数
+	int refre_leaf_count_;
+	int target_leaf_count_;
+
+	//I frame 和P frame的指针，不用删除内容
+	vector<Vertex> * referenceMeshVerList;
+	vector<Vertex> * targetMeshVerList;
+
+	//点云帧中的Point的数量
+	int refFramePointNum;
+	int targetFramePointNum;
 
 	//当前八叉树中的具体情况
 	bool targetFrameLoaded;
@@ -89,15 +111,34 @@ public:
 	int refrenceFrameId;
 
 	DoubleBufferOctree<DBufferNodeData> *pcsDBufferOct;
+	TraverseGetInfoSetLeaf* ctLeaf;
+	//TraverseGetInfoSetLeaf *ctLeaf;
 	
 private:
 	void setTargetFrameId(int id);
 	void setReferenceFrameId(int id);
 	
 public:
-	PcsDBufferOctree(Vec3 minPos,Vec3 maxPosVec3, Vec3 cellSize);
+	PcsDBufferOctree(Vec3 minPos,Vec3 maxPos, Vec3 cellSize);
+	PcsDBufferOctree(Vec3 minPos, Vec3 maxPos, double cellSize);
+	PcsDBufferOctree();
+
 	~PcsDBufferOctree();
 
+	/**拿到frame中的点的个数*/
+	uint32_t getFramePointNum(bool isTarget = false);
+	/**拿到octree的边界区*/
+	void getBoundingBox(double &min_x, double &min_y, double &min_z, double & max_x, double & max_y, double &max_z);
+	void setBoundingBox(const double &min_x, const double &min_y, const double &min_z, 
+		const double & max_x, const double & max_y, const double &max_z);
+	void setCellSize(const double cellSize);
+	
+	///////////////////////////////////////////////////////////////////
+	//拿到叶子节点的Boundary，设置叶子节点的信息,得到叶子节点的数量
+	void getLeafboundaryAndLeafNode(bool isTarget);
+
+
+	///////////////////////////////////////////////////////////////////
 	/**在doubleBuffer中导入指定的一帧*/
 	void buildDBufferOctree(bool isTarget, ObjMesh * objMesh);
 	void buildDBufferOctree(bool isTarget, vector<Vertex> &vertexList);
@@ -114,7 +155,8 @@ public:
 	void clearOneFrame(bool isTarget);
 
 	/**利用宽度优先遍历，得到byteSteam*/
-	bool getByteSteamOfOctree(vector<char> & byteList_out);
+	bool getByteSteamOfOctreeXOR(vector<char> & byteList_out);
+	bool getByteSteamOfOctreeSigleFrame(vector<char> & byteList_out, bool isTarget);
 
 	void clearDBufferOctree();
 
@@ -122,7 +164,23 @@ public:
 	//根据ByteList 以及swap的八叉树结构，恢复出相应reference 的八叉树结构
 	/////////////////////////////
 	
-	bool recoveryDBufferOctree(vector<Vertex> &swapFrameVerList, vector<char> & byteList);
-	bool getTargetOctreeByclearReference();
+	/**根据byteStream来直接重构单帧的八叉树结构,
+	* 前提是空的八叉树,该函数先清空八叉树
+	*/
+	bool recoverySigleFrameInDBufferOctree(vector<char> & byteListForSigleFrame, bool isTarget = false);
+
+	/**根据byteStream来直接在已经建好第一帧的情况下，根据XOR byteStream来重构第二帧
+	* 前提是已经重构好一帧了，通常是refe frame已经在double buffer octree中了
+	*/
+	bool recoverySecondFrameInDBufferOctreeXOR(vector<char> & byteStreamXOR, bool isTarget = true);
+
+
+	/**根据swapFrameVerList作为reference frame 的点的信息，byteList是byteStream的信息，恢复出target frame 的八叉树的结果
+	* 前提：空的double buffer octree
+	* 方法: 根据swapFrameVerList_in，重建出单帧的八叉树结构，然后根据ByteList恢复出另外一个八叉树
+	* */
+	bool recoveryDBufferOctreeForTarget(vector<Vertex> &swapFrameVerList_in, vector<char> & byteList_in);
+
+	bool getTargetOctreeByClearReference();
 
 };

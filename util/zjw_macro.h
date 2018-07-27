@@ -1,4 +1,5 @@
 #pragma once
+#include <stdlib.h>
 //setteing the macro for zjw use
 
 //debug 时候的专用
@@ -6,7 +7,7 @@
 
 //打印信息专用
 //#define ZJW_PRINT_INFO
-
+#define ZJW_INFO(a) printf("%s\n",a);
 //打印信息
 //#define PRINT_CHEBY_COEFF
 

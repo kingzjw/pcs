@@ -58,7 +58,7 @@ private:
 	//非叶子节点是-1，其他的从0,1,2,3一次编号.这个参数要被使用，需要现给它值。
 	int leafFlag;
 	
-	//min的顶点和Max的顶点确定 节点的空间范围
+	//当前节点的边界值的最小值和最大值
 	Vec3 min;
 	Vec3 max;
 
@@ -108,8 +108,10 @@ public:
 	//判断这个node是否是叶子节点
 	bool judegeLeafNode();
 
-	//根据flag中的内容，计算出这个byte
-	char getChildByte();
+	//XOR根据flag中的内容，计算出这个byte
+	char getChildByteXOR();
+	char getChildByteSigleFrame(bool isTarget);
+
 	//清理这一帧的相关数据
 	void resetFrame(bool isTarget);
 };
@@ -146,10 +148,14 @@ public:
 	
 	//创建指定父亲节点的还是节点，并返回这个孩子节点的指针
 	OctreeDoubelBufferNode<NodeDataType>* createChildNode(bool isTarget,OctreeDoubelBufferNode<NodeDataType>* parentNode, int childIdx);
-	//decode: 根据字节，恢复这个node的孩子信息
-	bool recoveryDBufferOctreeNode(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte);
 	
+	//decode: 根据字节，恢复这个node的孩子信息。前提是db octree是空的，没有任何信息
+	bool recoveryDBufferOctreeNodeForSigleFrame(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte, bool isTarget =false);
 
+	//decode: 根据字节，恢复这个node的孩子信息。前提是已经有单帧存在这个八叉树上了，用于恢复另外一帧
+	bool recoveryDBufferOctreeNode(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byteXOR);
+
+	
 	//////////////////////////////////////////////
 	//遍历所有的Octree中做操作的一个类。
 	//////////////////////////////////////////////
@@ -165,7 +171,9 @@ public:
 	};
 
 	//根据深度遍历的方法，把特定点pos插入到八叉树的叶子节点中，直到叶子节点的size小于 cellSize.
-	/** 因为是double buffer，所以需要对target 或者是reference 进行指定*/
+	/** 因为是double buffer，所以需要对target 或者是reference 进行指定
+	* 返回的是叶子节点中的Node，可以进行叶子节点的处理
+	* */
 	NodeDataType& getCell(bool isTarget, const Vec3 ppos, Callback* callback = NULL);
 
 	//深度优先递归遍历整个树.并进行某种操作。（先操作后深入，深入是有条件判断的）
@@ -174,6 +182,7 @@ public:
 	void traverseDepthFirst(Callback* callback);
 	//广度优先遍历所有节点,得到所有列表的参数
 	void traverseBreathFirst(std::vector< OctreeDoubelBufferNode<NodeDataType>*> &allNodeList_out);
+	void traverseBreathFirstSigleFrame(std::vector< OctreeDoubelBufferNode<NodeDataType>*> &allNodeList_out,bool isTarget_in);
 
 	//删除整个树，释放所有节点的空间
 	void clear();
@@ -364,7 +373,7 @@ bool OctreeDoubelBufferNode<NodeDataType>::judegeLeafNode()
 }
 
 template<class NodeDataType>
-char OctreeDoubelBufferNode<NodeDataType>::getChildByte()
+char OctreeDoubelBufferNode<NodeDataType>::getChildByteXOR()
 {
 	bitset<8> b;
 
@@ -381,6 +390,31 @@ char OctreeDoubelBufferNode<NodeDataType>::getChildByte()
 	}
 	char ch = int(b.to_ulong());
 	return ch;
+}
+
+template<class NodeDataType>
+inline char OctreeDoubelBufferNode<NodeDataType>::getChildByteSigleFrame(bool isTarget)
+{
+	int  idx = -1;
+	if (isTarget)
+	{
+		idx = getTargetFlagIdx();
+	}
+	else
+	{
+		idx = getReferenceFlagIdx();
+	}
+
+	bitset<8> b;
+	b.reset();
+	for (int i = 0; i < 8; i++)
+	{
+		if (flag[idx][i])
+		{
+			b.set(i, 1);
+		}
+	}
+	return int(b.to_ulong());
 }
 
 template<class NodeDataType>
@@ -489,23 +523,73 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 {
 	assert(parentNode);
 	assert(childIdx > -1 && childIdx < 8);
-
-
-
+	
 	if (!parentNode->getChildren(childIdx))
 	{
-		//没有这个孩子节点
+		//没有这个孩子节点，那么创建这个节点
 		OctreeDoubelBufferNode<NodeDataType> * temp = parentNode->getChildren(childIdx);
 		temp = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
 
+		//根据父亲节点的边界，得到孩子节点的边界
+		Vec3 newMin = parentNode->getMinPos();
+		Vec3 newMax = parentNode->getMaxPos();
+		Vec3 mid = (parentNode->getMinPos() + parentNode->getMaxPos())/2;
+		switch (childIdx)
+		{
+		case 0:
+			newMax = mid;
+			break;
+		case 1:
+			newMin.x = mid.x;
+			newMax.y = mid.y;
+			newMax.z = mid.z;
+			break;
+		case 2:
+			newMin.y = mid.y;
+			newMax.x = mid.x;
+			newMax.z = mid.z;
+			break;
+		case 3:
+			newMin.x = mid.x;
+			newMin.y = mid.y;
+			newMax.z = mid.z;
+			break;
+		case 4:
+			newMin.z = mid.z;
+			newMax.x = mid.x;
+			newMax.y = mid.y;
+			break;
+		case 5:
+			newMin.x = mid.x;
+			newMin.z = mid.z;
+			newMax.y = mid.y;
+			break;
+		case 6:
+			newMin.y = mid.y;
+			newMin.z = mid.z;
+			newMax.x = mid.x;
+			break;
+		case 7:
+			newMin = mid;
+			break;
+		default:
+			cout << "do not support the child idx!" << endl;
+			break;
+		}
+
+		temp->setMinPos(newMin);
+		temp->setMaxPos(newMax);
+		//flag
 		if (isTarget)
 			parentNode->flag[targetFrameId][childIdx] = true;
 		else
 			parentNode->flag[refrenceFrameId][childIdx] = true;
+
+		return temp;
 	}
 	else
 	{
-		//已经有这个孩子节点
+		//已经有这个孩子节点，那么创建的是另一帧的情况
 		if (isTarget)
 		{
 			parentNode->flag[targetFrameId][childIdx] = true;
@@ -517,8 +601,28 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 
 		NodeDataType * temp = parentNode->getNodeData(isTarget);
 		temp = new NodeDataType();
+
+		return parentNode->getChildren(childIdx);
 	}
-	return nullptr;
+}
+
+template<class NodeDataType>
+inline bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNodeForSigleFrame(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte, bool isTarget)
+{
+	assert(parentNode);
+
+	bitset<8> bits = byte;
+	//处理当前节点的的8个孩子
+	for (int b_it; b_it < 8; b_it++)
+	{
+		//这一位是1，创建这个节点
+		if (bits[b_it])
+		{
+			//创建这个节点的，第b-it个孩子节点
+			createChildNode(isTarget, parentNode, b_it);
+		}
+	}
+	return true;
 }
 
 template<class NodeDataType>
@@ -660,6 +764,41 @@ void DoubleBufferOctree<NodeDataType>::traverseBreathFirst(std::vector<OctreeDou
 			if (allNodeList_out[i]->getChildren(child_it))
 			{
 				allNodeList_out.push_back(allNodeList_out[i]->getChildren(child_it));
+			}
+		}
+	}
+}
+
+template<class NodeDataType>
+inline void DoubleBufferOctree<NodeDataType>::traverseBreathFirstSigleFrame(std::vector<OctreeDoubelBufferNode<NodeDataType>*>& allNodeList_out, bool isTarget_in)
+{
+	//宽度优先遍历，得到所有节点的一个序列
+	if (isTarget_in)
+	{
+		allNodeList_out.push_back(root);
+		for (int i = 0; i < allNodeList_out.size(); i++)
+		{
+			for (int child_it = 0; child_it < 8; child_it++)
+			{
+				//target 上的叶子节点是OK的
+				if (allNodeList_out[i]->flag[allNodeList_out[i]->getTargetFlagIdx()][child_it])
+				{
+					allNodeList_out.push_back(allNodeList_out[i]->getChildren(child_it));
+				}
+			}
+		}
+	}
+	else
+	{
+		allNodeList_out.push_back(root);
+		for (int i = 0; i < allNodeList_out.size(); i++)
+		{
+			for (int child_it = 0; child_it < 8; child_it++)
+			{
+				if (allNodeList_out[i]->flag[allNodeList_out[i]->getReferenceFlagIdx()][child_it])
+				{
+					allNodeList_out.push_back(allNodeList_out[i]->getChildren(child_it));
+				}
 			}
 		}
 	}

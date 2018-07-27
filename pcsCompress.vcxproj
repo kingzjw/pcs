@@ -145,8 +145,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="compress_util\zjw_entropy_range_coder.cpp" />
     <ClCompile Include="compress_util\zjw_bitFile.cpp" />
     <ClCompile Include="compress_util\zjw_golombCoder.cpp" />
+    <ClCompile Include="compress_util\zjw_octreePointCloudCompression.cpp" />
     <ClCompile Include="compress_util\zjw_RLGR.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_pcscompress.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -232,8 +234,13 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -DQT_NO_DEBUG -DNDEBUG -DQT_CORE_LIB -DQT_GUI_LIB -DQT_OPENGL_LIB -DQT_WIDGETS_LIB "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(QTDIR)\include\QtOpenGL" "-I$(QTDIR)\include\QtWidgets"</Command>
     </CustomBuild>
+    <ClInclude Include="compress_util\zjw_color_coding.h" />
+    <ClInclude Include="compress_util\zjw_point_coding.h" />
+    <ClInclude Include="compress_util\zjw_entropy_range_coder.h" />
     <ClInclude Include="compress_util\zjw_bitFile.h" />
     <ClInclude Include="compress_util\zjw_golombCoder.h" />
+    <ClInclude Include="compress_util\zjw_octreePointCloudCompression.h" />
+    <ClInclude Include="compress_util\zjw_octree_compression_profiles.h" />
     <ClInclude Include="compress_util\zjw_RLGR.h" />
     <ClInclude Include="octree\zjw_octree.h" />
     <ClInclude Include="octree\zjw_octree_double_buffer.h" />
