@@ -41,6 +41,32 @@ OctreePointCloudCompression::~OctreePointCloudCompression() {
 		delete dbOctree;
 }
 
+void OctreePointCloudCompression::useCase0_Encoder()
+{
+	
+
+	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
+	if (of)
+	{
+		cout << "open the frameCompressData.pcf " << endl;
+
+	}
+	of.close();
+
+	
+}
+
+void OctreePointCloudCompression::useCase0_Decoder()
+{
+	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
+	if (of)
+	{
+		cout << "open the frameCompressData.pcf " << endl;
+
+	}
+	of.close();
+}
+
 void OctreePointCloudCompression::initialization() {
 	if (selected_profile_ != MANUAL_CONFIGURATION)
 	{

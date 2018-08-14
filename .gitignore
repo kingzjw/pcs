@@ -2,7 +2,10 @@
 *.log
 *.filters
 *.vcxproj
+
+# 忽略产生的压缩文件
 *.gr
+*.pcf
 
 # 忽略文件夹
 x64/

@@ -24,6 +24,10 @@ public:
 	virtual ~OctreePointCloudCompression();
 
 public:
+	/*²âÊÔÓÃÀı*/
+	void useCase0_Encoder();
+	void useCase0_Decoder();
+
 	void initialization();
 	/** \brief Encode point cloud to output stream
 	* \param compressed_tree_data_out_arg:  binary output stream containing compressed data
