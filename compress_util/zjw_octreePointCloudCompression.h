@@ -1,4 +1,5 @@
 #pragma once
+
 #include <stdint.h>
 #include <stdlib.h>
 #include "zjw_macro.h"
@@ -12,16 +13,16 @@
 *  \note This class enables compression and decompression of point cloud data based on octree data structures.
 *  \author Jiawei
 */
-class OctreePointCloudCompression
+class OctreePointCloudCompressionZjw
 {
 public:
-	OctreePointCloudCompression(compression_Profiles_e compressionProfile_arg = MANUAL_CONFIGURATION,
+	OctreePointCloudCompressionZjw(compression_Profiles_e compressionProfile_arg = MANUAL_CONFIGURATION,
 		bool showStatistics_arg = true, const double pointResolution_arg = 0.001,
 		const double octreeResolution_arg = 0.01,bool doVoxelGridDownDownSampling_arg = false,
 		const unsigned int iFrameRate_arg = 30,	bool doColorEncoding_arg = false,
 		const unsigned char colorBitResolution_arg = 6);
 
-	virtual ~OctreePointCloudCompression();
+	virtual ~OctreePointCloudCompressionZjw();
 
 public:
 	/*测试用例*/
@@ -106,7 +107,8 @@ protected:
 	StaticRangeCoder entropy_coder_;
 
 	// frame info
-	static const char* frame_header_identifier_;
+	//static const char* frame_header_identifier_;
+	static string frame_header_identifier_;
 	uint32_t frame_ID_;
 	//i_frame or p_frame
 	bool i_frame_;
@@ -148,5 +150,3 @@ protected:
 	//点云中所有的点的个数
 	std::size_t object_count_;
 };
-
-const char* OctreePointCloudCompression::frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";

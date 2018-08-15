@@ -401,6 +401,13 @@ void pcsCompress::rlgr_mv_compress()
 	pcsRLGR.testPCS_RLGR();
 }
 
+void pcsCompress::byteStreamTestPointsCompress()
+{
+	cout << "byte Stream Test Points Compression ! " << endl;
+
+	ui.openGLWidget->fm.testOctreePCCompress();
+}
+
 pcsCompress::pcsCompress(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -441,6 +448,7 @@ pcsCompress::pcsCompress(QWidget *parent)
 
 	//compress
 	connect(ui.actionRLGR_MV, SIGNAL(triggered()), this, SLOT(rlgr_mv_compress()));
+	connect(ui.actionPointsCompress, SIGNAL(triggered()), this, SLOT(byteStreamTestPointsCompress()));
 
 
 }

@@ -37,6 +37,7 @@ public:
     QAction *actionGetMotionVector;
     QAction *actionTest;
     QAction *actionRLGR_MV;
+    QAction *actionPointsCompress;
     QWidget *centralWidget;
     QTabWidget *tabWidget;
     QWidget *parameter;
@@ -92,6 +93,8 @@ public:
         actionTest->setObjectName(QStringLiteral("actionTest"));
         actionRLGR_MV = new QAction(pcsCompressClass);
         actionRLGR_MV->setObjectName(QStringLiteral("actionRLGR_MV"));
+        actionPointsCompress = new QAction(pcsCompressClass);
+        actionPointsCompress->setObjectName(QStringLiteral("actionPointsCompress"));
         centralWidget = new QWidget(pcsCompressClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         tabWidget = new QTabWidget(centralWidget);
@@ -220,6 +223,7 @@ public:
         menuOperation->addAction(actionGetMotionVector);
         menuOperation->addAction(actionTest);
         menuCompress->addAction(actionRLGR_MV);
+        menuCompress->addAction(actionPointsCompress);
 
         retranslateUi(pcsCompressClass);
 
@@ -238,6 +242,7 @@ public:
         actionGetMotionVector->setText(QApplication::translate("pcsCompressClass", "GetMotionVector", Q_NULLPTR));
         actionTest->setText(QApplication::translate("pcsCompressClass", "Test", Q_NULLPTR));
         actionRLGR_MV->setText(QApplication::translate("pcsCompressClass", "RLGR_MV", Q_NULLPTR));
+        actionPointsCompress->setText(QApplication::translate("pcsCompressClass", "PointsCompress", Q_NULLPTR));
         oct_2->setText(QApplication::translate("pcsCompressClass", "render mode", Q_NULLPTR));
         pc_radioButtion->setText(QApplication::translate("pcsCompressClass", "point cloud", Q_NULLPTR));
         oct_radioButton->setText(QApplication::translate("pcsCompressClass", "octTree and pc", Q_NULLPTR));

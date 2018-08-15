@@ -114,6 +114,7 @@ public:
 	TraverseGetInfoSetLeaf* ctLeaf;
 	//TraverseGetInfoSetLeaf *ctLeaf;
 	
+	
 private:
 	void setTargetFrameId(int id);
 	void setReferenceFrameId(int id);

@@ -11,6 +11,8 @@
 #include "zjw_fileBatch.h"
 #include "zjw_timer.h"
 #include "zjw_minresQLP.h"
+#include "zjw_octree_compression_profiles.h"
+#include "zjw_octreePointCloudCompression.h"
 
 using namespace std;
 
@@ -77,11 +79,14 @@ private:
 	//标记是否调用过getAllfilepath接口
 	bool getAllFilePath;
 
+	//point compression 
+	OctreePointCloudCompressionZjw * opcCompress;
+
 public:
 	FrameManage();
 	~FrameManage();
 
-	//改变原数据，必须调用的接口
+	//改变文件类型(frames的数据源)原数据，必须调用的接口
 	void switchSouceData();
 
 	//保存并处理文件夹下的所有的序列文件.并加载计算出相应的swg系数
@@ -151,4 +156,11 @@ public:
 	void pridicTargetFrameVertex(int frameId1,  VectorXd  Vt); //
 	
 	
+	/*
+	* 对frame中的点的位置，进行压缩。（利用bytestream，XOR等）
+	*/
+	
+	void testOctreePCCompress();
+
+
 };

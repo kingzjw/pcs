@@ -1034,6 +1034,7 @@ CallTraverseGetInfoSetLeaf::CallTraverseGetInfoSetLeaf()
 {
 	minVList.clear();
 	maxVList.clear();
+	midVList = new vector<Vec3>;
 	leafIncr = 0;
 }
 

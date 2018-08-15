@@ -1,6 +1,6 @@
 #include "zjw_octreePointCloudCompression.h"
 
-OctreePointCloudCompression::OctreePointCloudCompression(compression_Profiles_e compressionProfile_arg,
+OctreePointCloudCompressionZjw::OctreePointCloudCompressionZjw(compression_Profiles_e compressionProfile_arg,
 	bool showStatistics_arg, const double pointResolution_arg, const double octreeResolution_arg,
 	bool doVoxelGridDownDownSampling_arg, const unsigned int iFrameRate_arg, bool doColorEncoding_arg,
 	const unsigned char colorBitResolution_arg) :
@@ -33,41 +33,52 @@ OctreePointCloudCompression::OctreePointCloudCompression(compression_Profiles_e 
 	dbOctree = new PcsDBufferOctree();
 	setResolution(octreeResolution_arg);
 
+	frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";
+
 	initialization();
 }
 
-OctreePointCloudCompression::~OctreePointCloudCompression() {
+OctreePointCloudCompressionZjw::~OctreePointCloudCompressionZjw() {
 	if (dbOctree)
 		delete dbOctree;
 }
 
-void OctreePointCloudCompression::useCase0_Encoder()
+void OctreePointCloudCompressionZjw::useCase0_Encoder()
 {
 	
-
+	//pcf: point cloud frame byte stream 修改
 	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
 	if (of)
 	{
 		cout << "open the frameCompressData.pcf " << endl;
-
 	}
-	of.close();
-
 	
+	//reference frame
+	ObjMesh frameObj_ref;
+	string path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_0.obj";
+	frameObj_ref.loadObjMesh(path);
+
+	this->encodePointCloud(frameObj_ref, of);
+	of.close();
 }
 
-void OctreePointCloudCompression::useCase0_Decoder()
+void OctreePointCloudCompressionZjw::useCase0_Decoder()
 {
-	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
-	if (of)
+	std::ifstream in("frameCompressData.pcf", std::ios_base::binary);
+	if (in)
 	{
 		cout << "open the frameCompressData.pcf " << endl;
-
 	}
-	of.close();
+
+	//reference frame
+	ObjMesh frameObj_ref_out;
+	string path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_0.obj";
+	this->decodePointCloud(frameObj_ref_out, in);
+
+	in.close();
 }
 
-void OctreePointCloudCompression::initialization() {
+void OctreePointCloudCompressionZjw::initialization() {
 	if (selected_profile_ != MANUAL_CONFIGURATION)
 	{
 		// apply selected compression profile
@@ -97,7 +108,7 @@ void OctreePointCloudCompression::initialization() {
 
 }
 
-void OctreePointCloudCompression::encodePointCloud(ObjMesh& frameObj, std::ostream & compressed_tree_data_out_arg)
+void OctreePointCloudCompressionZjw::encodePointCloud(ObjMesh& frameObj, std::ostream & compressed_tree_data_out_arg)
 {
 
 	//init 确定是否需要编码颜色
@@ -200,7 +211,7 @@ void OctreePointCloudCompression::encodePointCloud(ObjMesh& frameObj, std::ostre
 	i_frame_ = false;
 }
 
-void OctreePointCloudCompression::decodePointCloud(ObjMesh& frameObj_out, std::istream & compressed_tree_data_in_arg)
+void OctreePointCloudCompressionZjw::decodePointCloud(ObjMesh& frameObj_out, std::istream & compressed_tree_data_in_arg)
 {
 
 	// synchronize to frame header
@@ -266,29 +277,29 @@ void OctreePointCloudCompression::decodePointCloud(ObjMesh& frameObj_out, std::i
 	}
 }
 
-void OctreePointCloudCompression::setResolution(double  octreeResolution)
+void OctreePointCloudCompressionZjw::setResolution(double  octreeResolution)
 {
 	assert(dbOctree);
 	dbOctree->setCellSize(octreeResolution);
 }
 
-double OctreePointCloudCompression::getResolution()
+double OctreePointCloudCompressionZjw::getResolution()
 {
 	assert(dbOctree->cellSize.x == dbOctree->cellSize.y && dbOctree->cellSize.x == dbOctree->cellSize.z);
 	return dbOctree->cellSize.x;
 }
 
-void OctreePointCloudCompression::getBoundingBox(double & min_x, double & min_y, double & min_z, double & max_x, double & max_y, double & max_z)
+void OctreePointCloudCompressionZjw::getBoundingBox(double & min_x, double & min_y, double & min_z, double & max_x, double & max_y, double & max_z)
 {
 	dbOctree->getBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
 }
 
-void OctreePointCloudCompression::setBoundingBox(const double & min_x, const double & min_y, const double & min_z, const double & max_x, const double & max_y, const double & max_z)
+void OctreePointCloudCompressionZjw::setBoundingBox(const double & min_x, const double & min_y, const double & min_z, const double & max_x, const double & max_y, const double & max_z)
 {
 	dbOctree->setBoundingBox(min_x, min_y, min_z, max_x, max_y, max_z);
 }
 
-std::size_t OctreePointCloudCompression::getFramePointNum(bool isTarget) const
+std::size_t OctreePointCloudCompressionZjw::getFramePointNum(bool isTarget) const
 {
 	if (isTarget)
 	{
@@ -300,10 +311,10 @@ std::size_t OctreePointCloudCompression::getFramePointNum(bool isTarget) const
 	}
 }
 
-void OctreePointCloudCompression::writeFrameHeader(std::ostream & compressed_tree_data_out_arg)
+void OctreePointCloudCompressionZjw::writeFrameHeader(std::ostream & compressed_tree_data_out_arg)
 {
 	// encode header identifier
-	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (frame_header_identifier_), strlen(frame_header_identifier_));
+	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (frame_header_identifier_.c_str()), strlen(frame_header_identifier_.c_str()));
 	// encode point cloud header id
 	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (&frame_ID_), sizeof(frame_ID_));
 	// encode frame type (I/P-frame)
@@ -372,11 +383,11 @@ void OctreePointCloudCompression::writeFrameHeader(std::ostream & compressed_tre
 	}
 }
 
-void OctreePointCloudCompression::syncToHeader(std::istream & compressed_tree_data_in_arg)
+void OctreePointCloudCompressionZjw::syncToHeader(std::istream & compressed_tree_data_in_arg)
 {
 	// sync to frame header  读出 frame_header_identifier_的内容， 先进行检测
 	unsigned int header_id_pos = 0;
-	while (header_id_pos < strlen(frame_header_identifier_))
+	while (header_id_pos < strlen(frame_header_identifier_.c_str()))
 	{
 		char readChar;
 		compressed_tree_data_in_arg.read(static_cast<char*> (&readChar), sizeof(readChar));
@@ -385,7 +396,7 @@ void OctreePointCloudCompression::syncToHeader(std::istream & compressed_tree_da
 	}
 }
 
-void OctreePointCloudCompression::readFrameHeader(std::istream & compressed_tree_data_in_arg)
+void OctreePointCloudCompressionZjw::readFrameHeader(std::istream & compressed_tree_data_in_arg)
 {
 	// read header
 	compressed_tree_data_in_arg.read(reinterpret_cast<char*> (&frame_ID_), sizeof(frame_ID_));
@@ -430,7 +441,7 @@ void OctreePointCloudCompression::readFrameHeader(std::istream & compressed_tree
 }
 
 //利用熵编码对binary_tree_data_vector_ 中的Byte stream,还有color info , pos info进行编码，存储到文件
-void OctreePointCloudCompression::entropyEncoding(std::ostream & compressed_tree_data_out_arg)
+void OctreePointCloudCompressionZjw::entropyEncoding(std::ostream & compressed_tree_data_out_arg)
 {
 	uint64_t binary_tree_data_vector_size;
 	uint64_t point_avg_color_data_vector_size;
@@ -495,7 +506,7 @@ void OctreePointCloudCompression::entropyEncoding(std::ostream & compressed_tree
 }
 
 //利用熵解码对Byte stream,color info , pos info进行解码，存储到相应的变量中
-void OctreePointCloudCompression::entropyDecoding(std::istream & compressed_tree_data_in_arg)
+void OctreePointCloudCompressionZjw::entropyDecoding(std::istream & compressed_tree_data_in_arg)
 {
 	uint64_t binary_tree_data_vector_size;
 	uint64_t point_avg_color_data_vector_size;
@@ -549,7 +560,7 @@ void OctreePointCloudCompression::entropyDecoding(std::istream & compressed_tree
 }
 
 //encoder: 使用这个函数的前提是八叉树的结构以及相应的建好，叶子节点上的信息也得到了。isTarget false表示是i_frame_
-void OctreePointCloudCompression::serializeTreeForPosAndColor(bool isTarget)
+void OctreePointCloudCompressionZjw::serializeTreeForPosAndColor(bool isTarget)
 {
 
 	//遍历所有的叶子节点
@@ -593,7 +604,7 @@ void OctreePointCloudCompression::serializeTreeForPosAndColor(bool isTarget)
 }
 
 //decoder: 根据得到的color pos and byteStream的信息，进行恢复重建八叉树，点云的位置和颜色信息
-void OctreePointCloudCompression::deserializeTreeForPosAndColor(std::vector<Vec3>& verPosList_out, bool isTarget)
+void OctreePointCloudCompressionZjw::deserializeTreeForPosAndColor(std::vector<Vec3>& verPosList_out, bool isTarget)
 {
 	verPosList_out.clear();
 	//得到叶子节点的数量
