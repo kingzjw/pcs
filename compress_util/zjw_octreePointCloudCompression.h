@@ -29,13 +29,13 @@ public:
 	void useCase0_Decoder();
 
 	void initialization();
-	/** \brief Encode point cloud to output stream
+	/** \brief 把指定的点云压缩到指定的文件中去。i_frame_ 标记是i_frame还是p_frame
 	* \param compressed_tree_data_out_arg:  binary output stream containing compressed data
 	*/
 	void encodePointCloud(ObjMesh& frameObj, std::ostream& compressed_tree_data_out_arg);
 
 	/** \brief Decode point cloud from input stream
-	* \param compressed_tree_data_in_arg: binary input stream containing compressed data
+	* \param frameObj_out: 输出的得到的frame obj
 	* \param cloud_arg: reference to decoded point cloud
 	*/
 	void decodePointCloud(ObjMesh& frameObj_out , std::istream& compressed_tree_data_in_arg);

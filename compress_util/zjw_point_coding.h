@@ -60,7 +60,7 @@ public:
 		return (pointDiffDataVector_);
 	}
 
-	/** \brief 对指定的一个叶子节点的所有的顶点，压缩的vector中
+	/** \brief 对指定的一个叶子节点的所有的顶点，压缩的diff vector中
 	  * \param indexVector_arg 是一个叶子节点中含有的Points的序号
 	  * \param referencePoint_arg 是一个叶子节点中最小的点
 	  * \param inputCloud_arg input point cloud

@@ -116,6 +116,7 @@ void OctreePointCloudCompression::encodePointCloud(ObjMesh& frameObj, std::ostre
 	{
 		//reference frame buildDBufferOctree会自己check
 		dbOctree->clearDBufferOctree();
+
 		dbOctree->buildDBufferOctree(false, &frameObj);
 		//得到当前，double buffer octree上的叶子节点上的信息
 		dbOctree->getLeafboundaryAndLeafNode(false);
@@ -142,7 +143,7 @@ void OctreePointCloudCompression::encodePointCloud(ObjMesh& frameObj, std::ostre
 	// initialize point encoding
 	point_coder_.initializeEncoding();
 
-	// serialize octree
+	// serialize octree，得到当前frame的Byte stream 
 	if (i_frame_)
 	{
 		color_coder_.setPointCount(static_cast<unsigned int> (dbOctree->refFramePointNum));
@@ -205,16 +206,13 @@ void OctreePointCloudCompression::decodePointCloud(ObjMesh& frameObj_out, std::i
 	// synchronize to frame header
 	syncToHeader(compressed_tree_data_in_arg);
 
-	// initialize octree
-	dbOctree->clearDBufferOctree();
-
 	// color info
 	cloud_with_color_ = false;
 
 	// read header from input stream
 	this->readFrameHeader(compressed_tree_data_in_arg);
 
-	// decode data vectors from stream
+	// decode data vectors from stream,然后存储在相应的变量中
 	this->entropyDecoding(compressed_tree_data_in_arg);
 
 	// initialize color and point encoding
@@ -230,12 +228,17 @@ void OctreePointCloudCompression::decodePointCloud(ObjMesh& frameObj_out, std::i
 
 	if (i_frame_)
 	{
+		// initialize octree
+		dbOctree->clearDBufferOctree();
+
 		// i-frame decoding - decode tree structure without referencing previous buffer
+		// false 表示i-frame
 		this->deserializeTreeForPosAndColor(frameObj_out.vertexList, false);
 	}
 	else
 	{
 		// p-frame decoding - decode XOR encoded tree structure
+		// ture 表示p-frame
 		this->deserializeTreeForPosAndColor(frameObj_out.vertexList, true);
 	}
 
@@ -545,26 +548,26 @@ void OctreePointCloudCompression::entropyDecoding(std::istream & compressed_tree
 	}
 }
 
-//decoder: 使用这个函数的前提是八叉树的结构以及相应的建好，叶子节点上的信息也得到了。
+//encoder: 使用这个函数的前提是八叉树的结构以及相应的建好，叶子节点上的信息也得到了。isTarget false表示是i_frame_
 void OctreePointCloudCompression::serializeTreeForPosAndColor(bool isTarget)
 {
 
 	//遍历所有的叶子节点
 	for (int leaf_it = 0; leaf_it < dbOctree->ctLeaf->nodeList.size(); leaf_it++)
 	{
-		// leafIdx一个节点中含有的Points的下标
+		// 一个叶子节点中含有的Points的下标
 		const std::vector<Vec3>& leafPoints = dbOctree->ctLeaf->nodeList[leaf_it]->getNodeData(isTarget)->pointPosList;
 
 		if (!do_voxel_grid_enDecoding_)
 		{
 
-			// encode amount of points within voxel
+			// 存储每个叶子节点中含有的points的个数 encode amount of points within voxel
 			point_count_data_vector_.push_back(static_cast<int> (leafPoints.size()));
 
 			// 叶子节点中的最小点lowerVoxelCorner
 			Vec3 lowerVoxelCorner = dbOctree->ctLeaf->minVList[leaf_it];
 
-			// differentially encode points to lower voxel corner
+			//得到point diff vector -- differentially encode points to lower voxel corner
 			point_coder_.encodePoints(dbOctree->ctLeaf->nodeList[leaf_it]->getNodeData(isTarget)->pointIdxList,
 				lowerVoxelCorner, dbOctree->ctLeaf->nodeList[leaf_it]->getNodeData(isTarget)->pointPosList);
 
@@ -589,7 +592,7 @@ void OctreePointCloudCompression::serializeTreeForPosAndColor(bool isTarget)
 	}
 }
 
-//根据得到的color pos and byteStream的信息，进行恢复重建八叉树，点云的位置和颜色信息
+//decoder: 根据得到的color pos and byteStream的信息，进行恢复重建八叉树，点云的位置和颜色信息
 void OctreePointCloudCompression::deserializeTreeForPosAndColor(std::vector<Vec3>& verPosList_out, bool isTarget)
 {
 	verPosList_out.clear();
