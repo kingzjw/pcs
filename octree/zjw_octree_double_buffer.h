@@ -62,10 +62,10 @@ private:
 	Vec3 min;
 	Vec3 max;
 
-	//元素是指针
-	OctreeDoubelBufferNode* children[8];
 
 public:
+	//元素是指针
+	OctreeDoubelBufferNode* children[8];
 	//标记
 	bool flag[2][8];
 
@@ -94,7 +94,7 @@ public:
 	NodeDataType * getNodeData(bool isTarget);
 	void setNodeData(bool isTarget);
 	void resetNodeData(bool isTarget);
-	//检测nodeData是否创建对象
+	//检测nodeData是否创建对象 true:表示Null
 	bool checkNodeDataNull(bool isTarget);
 
 	//得到孩子的指针
@@ -140,7 +140,7 @@ public:
 
 public:
 
-	DoubleBufferOctree(Vec3 min, Vec3 max, Vec3 cellSize,int targetFrameId = 0 , int refrenceFrameId = 1) ;
+	DoubleBufferOctree(Vec3 min, Vec3 max, Vec3 cellSize,int targetFrameId = 1 , int refrenceFrameId = 0) ;
 	virtual ~DoubleBufferOctree();
 
 	void setTargetFrameId(int id);
@@ -208,6 +208,10 @@ OctreeDoubelBufferNode<NodeDataType>::OctreeDoubelBufferNode(DoubleBufferOctree<
 	this->oct = oct;
 
 	leafFlag = -1;
+	//初始化两个node data
+	nodeData[0] = nullptr;
+	nodeData[1] = nullptr;
+
 	//初始化八个孩子的结点
 	for (int i = 0; i < 8; i++)
 		children[i] = 0;
@@ -319,6 +323,10 @@ bool OctreeDoubelBufferNode<NodeDataType>::checkNodeDataNull(bool isTarget)
 	}
 	else
 	{
+		//test
+		//cout << oct << endl;
+		//cout << oct->refrenceFrameId << endl;
+		//end test
 		if (nodeData[oct->refrenceFrameId])
 			return false;
 	}
@@ -334,25 +342,25 @@ OctreeDoubelBufferNode<NodeDataType> * OctreeDoubelBufferNode<NodeDataType>::get
 template<class NodeDataType>
 Vec3 OctreeDoubelBufferNode<NodeDataType>::getMinPos()
 {
-	return min;
+	return this->min;
 }
 
 template<class NodeDataType>
 Vec3 OctreeDoubelBufferNode<NodeDataType>::getMaxPos()
 {
-	return max;
+	return this->max;
 }
 
 template<class NodeDataType>
 inline void OctreeDoubelBufferNode<NodeDataType>::setMinPos(Vec3 minP)
 {
-	min = minP;
+	this->min = minP;
 }
 
 template<class NodeDataType>
 inline void OctreeDoubelBufferNode<NodeDataType>::setMaxPos(Vec3 maxP)
 {
-	max = maxP;
+	this->max = maxP;
 }
 
 template<class NodeDataType>
@@ -710,21 +718,21 @@ NodeDataType & DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Ve
 		COMPUTE_QUADRANT(index, 2, ppos.y, mid.y, newMin.y, newMax.y);
 		COMPUTE_QUADRANT(index, 4, ppos.z, mid.z, newMin.z, newMax.z);
 
-		//这个节点都没有分配的情况
+		//如果这个子节点都没有分配，那么进行分配
+		
 		if (!(currNode->getChildren(index)))
 		{
-			OctreeDoubelBufferNode<NodeDataType> * temp = currNode->getChildren(index);
-			temp = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
-
+			currNode->children[index] = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
 			//设置flag
 			currNode->setFlag(isTarget, index);
 		}
-		//如果子空间节点已经分配，那么检查特定frame的nodedata的分配情况
-		if (currNode->getChildren(index)->checkNodeDataNull(isTarget))
-			currNode->getChildren(index)->setNodeData(isTarget);
+		
+		//如果子空间节点已经分配，那么检查特定frame中的子节点的nodedata的分配情况
+		if (currNode->children[index]->checkNodeDataNull(isTarget))
+			currNode->children[index]->setNodeData(isTarget);
 
-
-		currNode = currNode->getChildren(index);
+		//currNode = currNode->getChildren(index);
+		currNode = currNode->children[index];
 		//每个节点保留自己的范围
 		currNode->setMinPos(newMin);
 		currNode->setMaxPos(newMax);
