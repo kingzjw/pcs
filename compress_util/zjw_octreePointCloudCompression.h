@@ -107,7 +107,9 @@ protected:
 	StaticRangeCoder entropy_coder_;
 
 	// frame info
-	static const char* frame_header_identifier_;
+	//static const char* frame_header_identifier_;
+	const char* frame_header_identifier_;
+
 	uint32_t frame_ID_;
 	//i_frame or p_frame
 	bool i_frame_;
@@ -150,4 +152,4 @@ protected:
 	std::size_t object_count_;
 };
 
-const char* OctreePointCloudCompressionZjw::frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";
+//const char* OctreePointCloudCompressionZjw::frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";

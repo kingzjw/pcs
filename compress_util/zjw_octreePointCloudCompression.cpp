@@ -32,7 +32,7 @@ OctreePointCloudCompressionZjw::OctreePointCloudCompressionZjw(compression_Profi
 {
 	dbOctree = new PcsDBufferOctree();
 	setResolution(octreeResolution_arg);
-
+	frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";
 	initialization();
 }
 
@@ -282,7 +282,7 @@ void OctreePointCloudCompressionZjw::setResolution(double  octreeResolution)
 
 double OctreePointCloudCompressionZjw::getResolution()
 {
-	assert(dbOctree->cellSize.x == dbOctree->cellSize.y && dbOctree->cellSize.x == dbOctree->cellSize.z);
+	assert((dbOctree->cellSize.x == dbOctree->cellSize.y )&&( dbOctree->cellSize.x == dbOctree->cellSize.z));
 	return dbOctree->cellSize.x;
 }
 

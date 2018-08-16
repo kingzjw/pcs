@@ -152,8 +152,8 @@ void PcsDBufferOctree::setBoundingBox(const double &min_x, const double &min_y, 
 void PcsDBufferOctree::setCellSize(const double cellSize)
 {
 	this->cellSize.x = cellSize;
-	this->cellSize.x = cellSize;
-	this->cellSize.x = cellSize;
+	this->cellSize.y = cellSize;
+	this->cellSize.z = cellSize;
 	pcsDBufferOct->cellSize = this->cellSize;
 }
 
