@@ -33,8 +33,6 @@ OctreePointCloudCompressionZjw::OctreePointCloudCompressionZjw(compression_Profi
 	dbOctree = new PcsDBufferOctree();
 	setResolution(octreeResolution_arg);
 
-	frame_header_identifier_ = "<PCL-OCT-COMPRESSED>";
-
 	initialization();
 }
 
@@ -45,7 +43,6 @@ OctreePointCloudCompressionZjw::~OctreePointCloudCompressionZjw() {
 
 void OctreePointCloudCompressionZjw::useCase0_Encoder()
 {
-	
 	//pcf: point cloud frame byte stream 修改
 	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
 	if (of)
@@ -314,7 +311,7 @@ std::size_t OctreePointCloudCompressionZjw::getFramePointNum(bool isTarget) cons
 void OctreePointCloudCompressionZjw::writeFrameHeader(std::ostream & compressed_tree_data_out_arg)
 {
 	// encode header identifier
-	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (frame_header_identifier_.c_str()), strlen(frame_header_identifier_.c_str()));
+	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (frame_header_identifier_), strlen(frame_header_identifier_));
 	// encode point cloud header id
 	compressed_tree_data_out_arg.write(reinterpret_cast<const char*> (&frame_ID_), sizeof(frame_ID_));
 	// encode frame type (I/P-frame)
@@ -387,7 +384,7 @@ void OctreePointCloudCompressionZjw::syncToHeader(std::istream & compressed_tree
 {
 	// sync to frame header  读出 frame_header_identifier_的内容， 先进行检测
 	unsigned int header_id_pos = 0;
-	while (header_id_pos < strlen(frame_header_identifier_.c_str()))
+	while (header_id_pos < strlen(frame_header_identifier_))
 	{
 		char readChar;
 		compressed_tree_data_in_arg.read(static_cast<char*> (&readChar), sizeof(readChar));
