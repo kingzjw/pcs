@@ -97,7 +97,7 @@ public:
 	//检测nodeData是否创建对象 true:表示Null
 	bool checkNodeDataNull(bool isTarget);
 
-	//得到孩子的指针
+	//得到孩子的指针,如果是空指针，一定要特别注意，不能把空指针赋值给一个空指针//
 	OctreeDoubelBufferNode* getChildren(int index);
 	Vec3 getMinPos();
 	Vec3 getMaxPos();
@@ -209,8 +209,8 @@ OctreeDoubelBufferNode<NodeDataType>::OctreeDoubelBufferNode(DoubleBufferOctree<
 
 	leafFlag = -1;
 	//初始化两个node data
-	nodeData[0] = nullptr;
-	nodeData[1] = nullptr;
+	nodeData[0] = 0;
+	nodeData[1] = 0;
 
 	//初始化八个孩子的结点
 	for (int i = 0; i < 8; i++)
@@ -226,6 +226,11 @@ OctreeDoubelBufferNode<NodeDataType>::OctreeDoubelBufferNode(DoubleBufferOctree<
 	this->oct = oct;
 
 	leafFlag = -1;
+	
+	//初始化两个node data
+	nodeData[0] = 0;
+	nodeData[1] = 0;
+
 	//初始化八个孩子的结点
 	for (int i = 0; i < 8; i++)
 		children[i] = 0;
@@ -677,7 +682,7 @@ bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNode(OctreeDoubelBuf
 template<class NodeDataType>
 NodeDataType & DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Vec3 ppos, Callback * callback)
 {
-	assert(ppos >= min && ppos < max);
+	assert(ppos >= min && ppos <= max);
 
 	Vec3 currMin(min);
 	Vec3 currMax(max);

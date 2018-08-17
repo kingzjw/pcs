@@ -607,7 +607,7 @@ void OctreePointCloudCompressionZjw::deserializeTreeForPosAndColor(std::vector<V
 	//得到叶子节点的数量
 	int leafNodeNum = point_count_data_vector_.size();
 	//得到frame中的点的个数
-	assert(point_coder_.getDifferentialDataVector().size() & 3 == 0);
+	assert(point_coder_.getDifferentialDataVector().size() % 3 == 0);
 	int framePointsNUm = point_coder_.getDifferentialDataVector().size() / 3;
 
 	//订
