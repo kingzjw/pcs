@@ -17,15 +17,13 @@ struct DBufferNodeData
 {
 	DBufferNodeData()
 	{
-		pointPosList.clear();
-		pointIdxList.clear();
 	}
 
 	~DBufferNodeData()
 	{
 
 	}
-	//每个在空间有一堆的 particle的位置信息
+	//每个子空间有一堆的 particle的位置信息
 	vector<Vec3> pointPosList;
 
 	//每个在空间有一堆的 particle在obj中的序号

@@ -404,8 +404,10 @@ void pcsCompress::rlgr_mv_compress()
 void pcsCompress::byteStreamTestPointsCompress()
 {
 	cout << "byte Stream Test Points Compression ! " << endl;
-
-	ui.openGLWidget->fm.testOctreePCCompress();
+		
+	ui.openGLWidget->fm.testOctreePCCompress(ui.openGLWidget->testObjMesh);
+	ui.openGLWidget->renderState = 12;
+	ui.openGLWidget->updateGL();
 }
 
 pcsCompress::pcsCompress(QWidget *parent)

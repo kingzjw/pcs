@@ -69,7 +69,7 @@ bool Frame::octSgwt(Vec3 cellSize)
 FrameManage::FrameManage()
 {
 	//下面的参数，以后可以通过界面进行更改。
-	opcCompress = new OctreePointCloudCompressionZjw(compression_Profiles_e::MANUAL_CONFIGURATION, true, 0.001, 0.01, false, 30, false, 6);
+	opcCompress = new OctreePointCloudCompressionZjw(compression_Profiles_e::MANUAL_CONFIGURATION, true, 0.001, 0.1, false, 30, false, 6);
 
 	batchLoad = false;
 	getAllFilePath = false;
@@ -1156,11 +1156,10 @@ void FrameManage::pridicTargetFrameVertex(int frameId1, VectorXd Vt)
 #endif //debug
 }
 
-void FrameManage::testOctreePCCompress()
+void FrameManage::testOctreePCCompress(ObjMesh &frameObj_ref_out)
 {
 	opcCompress->useCase0_Encoder();
-
-	opcCompress->useCase0_Decoder();
+	opcCompress->useCase0_Decoder(frameObj_ref_out);
 }
 
 

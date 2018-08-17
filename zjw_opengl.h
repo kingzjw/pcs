@@ -78,6 +78,8 @@ public:
 	//7: 只渲染预测出来的target frame
 	//8: 渲染预测出来的taget frame 和真实的target frame+ referece frame
 	//9: 渲染预测出来的taget frame + referece frame
+	//10:已经使用的。
+	//12:测试position的压缩和传输
 	int renderState;
 	//reference frame
 	int showFrameIdx;
@@ -100,6 +102,13 @@ public:
 
 	//对训练数据之间的data进行学习
 	void drawTrainMatchLine(double moveStep, Vec3 color = Vec3(1.0, 1.0, 0.0));
+
+	//==============test=============
+	//测试pos传输之后解压的得到的frame的点云的结果是否是正确的
+	//存储传输解压之后的结果
+	ObjMesh testObjMesh;
+	void drawPositionForFrameCompression(ObjMesh &objMesh);
+
 };
 
 #endif

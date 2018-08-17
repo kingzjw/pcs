@@ -160,7 +160,7 @@ public:
 	* 对frame中的点的位置，进行压缩。（利用bytestream，XOR等）
 	*/
 	
-	void testOctreePCCompress();
+	void testOctreePCCompress(ObjMesh &frameObj_ref_out);
 
 
 };

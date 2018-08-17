@@ -49,8 +49,6 @@ template <class NodeDataType>
 class OctreeDoubelBufferNode
 {
 private:
-	//点云
-	NodeDataType * nodeData[2];
 	
 	//存放reference target frame的指针
 	DoubleBufferOctree<NodeDataType> * oct;
@@ -66,6 +64,8 @@ private:
 public:
 	//元素是指针
 	OctreeDoubelBufferNode* children[8];
+	//点云
+	NodeDataType * nodeData[2];
 	//标记
 	bool flag[2][8];
 
@@ -174,7 +174,7 @@ public:
 	/** 因为是double buffer，所以需要对target 或者是reference 进行指定
 	* 返回的是叶子节点中的Node，可以进行叶子节点的处理
 	* */
-	NodeDataType& getCell(bool isTarget, const Vec3 ppos, Callback* callback = NULL);
+	NodeDataType* getCell(bool isTarget, const Vec3 ppos, Callback* callback = NULL);
 
 	//深度优先递归遍历整个树.并进行某种操作。（先操作后深入，深入是有条件判断的）
 	void traverse(Callback* callback);
@@ -540,8 +540,8 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 	if (!parentNode->getChildren(childIdx))
 	{
 		//没有这个孩子节点，那么创建这个节点
+		parentNode->children[childIdx] = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
 		OctreeDoubelBufferNode<NodeDataType> * temp = parentNode->getChildren(childIdx);
-		temp = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
 
 		//根据父亲节点的边界，得到孩子节点的边界
 		Vec3 newMin = parentNode->getMinPos();
@@ -611,10 +611,8 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 		{
 			parentNode->flag[refrenceFrameId][childIdx] = true;
 		}
-
-		NodeDataType * temp = parentNode->getNodeData(isTarget);
-		temp = new NodeDataType();
-
+				
+		parentNode->setNodeData(isTarget);
 		return parentNode->getChildren(childIdx);
 	}
 }
@@ -626,7 +624,7 @@ inline bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNodeForSigleF
 
 	bitset<8> bits = byte;
 	//处理当前节点的的8个孩子
-	for (int b_it; b_it < 8; b_it++)
+	for (int b_it=0; b_it < 8; b_it++)
 	{
 		//这一位是1，创建这个节点
 		if (bits[b_it])
@@ -680,7 +678,7 @@ bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNode(OctreeDoubelBuf
 }
 
 template<class NodeDataType>
-NodeDataType & DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Vec3 ppos, Callback * callback)
+NodeDataType * DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Vec3 ppos, Callback * callback)
 {
 	assert(ppos >= min && ppos <= max);
 
@@ -746,7 +744,7 @@ NodeDataType & DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Ve
 		currMax = newMax;
 		delta = currMax - currMin;
 	}
-	return *currNode->getNodeData(isTarget);
+	return currNode->getNodeData(isTarget);
 }
 
 template<class NodeDataType>

@@ -204,11 +204,11 @@ void PcsDBufferOctree::buildDBufferOctree(bool isTarget, ObjMesh * objMesh)
 	for (int v_it = 0; v_it < objMesh->vertexList.size(); v_it++)
 	{
 		//利用深度优先，创建八叉树
-		DBufferNodeData node = pcsDBufferOct->getCell(isTarget, objMesh->vertexList[v_it]);
+		DBufferNodeData * node = pcsDBufferOct->getCell(isTarget, objMesh->vertexList[v_it]);
 
 		//把点放到叶子节点所属的里面
-		node.pointPosList.push_back(objMesh->vertexList[v_it]);
-		node.pointIdxList.push_back(v_it);
+		node->pointPosList.push_back(objMesh->vertexList[v_it]);
+		node->pointIdxList.push_back(v_it);
 	}
 }
 
@@ -241,11 +241,11 @@ void PcsDBufferOctree::buildDBufferOctree(bool isTarget, vector<Vertex>& vertexL
 	for (int v_it = 0; v_it < vertexList.size(); v_it++)
 	{
 		//利用深度优先，创建八叉树
-		DBufferNodeData node = pcsDBufferOct->getCell(isTarget, vertexList[v_it]);
+		DBufferNodeData *node = pcsDBufferOct->getCell(isTarget, vertexList[v_it]);
 
 		//把点放到叶子节点所属的里面。
-		node.pointPosList.push_back(vertexList[v_it]);
-		node.pointIdxList.push_back(v_it);
+		node->pointPosList.push_back(vertexList[v_it]);
+		node->pointIdxList.push_back(v_it);
 	}
 }
 

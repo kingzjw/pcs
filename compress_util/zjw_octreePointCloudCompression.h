@@ -27,7 +27,7 @@ public:
 public:
 	/*测试用例*/
 	void useCase0_Encoder();
-	void useCase0_Decoder();
+	void useCase0_Decoder(ObjMesh &frameObj_ref_out);
 
 	void initialization();
 	/** \brief 把指定的点云压缩到指定的文件中去。i_frame_ 标记是i_frame还是p_frame

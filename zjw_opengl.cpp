@@ -211,6 +211,10 @@ void ZjwOpenGL::render()
 		drawPointCloud(*(fm.frameList[showFrameIdx]->objMesh));
 		drawPointCloud(*(fm.frameList[showFrameIdx2]->objMesh), Vec3(0, 0, 0));
 	}
+	else if (renderState == 12)
+	{
+		drawPositionForFrameCompression(testObjMesh);
+	}
 
 	glPopMatrix();
 }
@@ -407,6 +411,21 @@ void ZjwOpenGL::drawTrainMatchLine(double moveStep, Vec3 color)
 		glEnd();
 	}
 	glLineWidth(1.0f);
+}
+
+void ZjwOpenGL::drawPositionForFrameCompression(ObjMesh & objMesh)
+{
+	//黑色
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glBegin(GL_POINTS);
+	//glPointSize(3);
+	glPointSize(12);
+	
+	for (int i = 0; i < objMesh.vertexList.size(); i++)
+	{
+		glVertex3f(objMesh.vertexList[i].x, objMesh.vertexList[i].y, objMesh.vertexList[i].z);
+	}
+	glEnd();
 }
 
 void ZjwOpenGL::keyPressEvent(QKeyEvent * event)

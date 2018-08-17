@@ -59,16 +59,15 @@ void OctreePointCloudCompressionZjw::useCase0_Encoder()
 	of.close();
 }
 
-void OctreePointCloudCompressionZjw::useCase0_Decoder()
+void OctreePointCloudCompressionZjw::useCase0_Decoder(ObjMesh &frameObj_ref_out)
 {
 	std::ifstream in("frameCompressData.pcf", std::ios_base::binary);
 	if (in)
 	{
 		cout << "open the frameCompressData.pcf " << endl;
 	}
-
 	//reference frame
-	ObjMesh frameObj_ref_out;
+	
 	string path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_0.obj";
 	this->decodePointCloud(frameObj_ref_out, in);
 
@@ -641,7 +640,8 @@ void OctreePointCloudCompressionZjw::deserializeTreeForPosAndColor(std::vector<V
 			OctreeDoubelBufferNode<DBufferNodeData> * node = dbOctree->ctLeaf->nodeList[leaf_it];
 
 			//这个叶子节点中有多少点
-			pointNumInLeafNode = point_coder_.getDifferentialDataVector()[leaf_it];
+			//pointNumInLeafNode = point_coder_.getDifferentialDataVector()[leaf_it];
+			pointNumInLeafNode = point_count_data_vector_[leaf_it];
 			//目前要重建的frame中有多少点了。
 			framePointsNow = verPosList_out.size();
 

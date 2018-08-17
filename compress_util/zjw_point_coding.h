@@ -61,7 +61,7 @@ public:
 	}
 
 	/** \brief 对指定的一个叶子节点的所有的顶点，压缩的diff vector中
-	  * \param indexVector_arg 是一个叶子节点中含有的Points的序号
+	  * \param pointsInLeafNode 是一个叶子节点中含有的Points的序号
 	  * \param referencePoint_arg 是一个叶子节点中最小的点
 	  * \param inputCloud_arg input point cloud
 	  */
@@ -77,8 +77,8 @@ public:
 			unsigned char diffX, diffY, diffZ;
 
 			// retrieve point from cloud
-			const int& idx = pointsInLeafNode[i];
-			const PointT& point = frameVerList_in[idx];
+			//const int& idx = pointsInLeafNode[i];
+			const PointT& point = frameVerList_in[i];
 
 			// differentially encode point coordinates and truncate overflow
 			diffX = static_cast<unsigned char> (max(-127, min<int>(127, static_cast<int> ((point.x - referencePoint_arg.x) / pointCompressionResolution_))));
