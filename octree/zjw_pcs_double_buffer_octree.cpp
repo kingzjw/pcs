@@ -335,6 +335,10 @@ bool PcsDBufferOctree::recoverySigleFrameInDBufferOctree(vector<char>& byteListF
 	clearDBufferOctree();
 
 	referenceFrameLoaded = true;
+
+	//创建根节点上的关于isTarget这帧的Nodedata
+	pcsDBufferOct->root->setNodeData(isTarget);
+
 	//according to the byteList to recovery the target frame
 	std::queue<OctreeDoubelBufferNode<DBufferNodeData>*> nodeQue;
 	nodeQue.push(pcsDBufferOct->root);
@@ -371,6 +375,8 @@ bool PcsDBufferOctree::recoverySecondFrameInDBufferOctreeXOR(vector<char>& byteS
 		referenceFrameLoaded = true;
 	}
 
+	//创建根节点上的关于isTarget这帧的Nodedata
+	pcsDBufferOct->root->setNodeData(isTarget);
 
 	//according to the byteList to recovery the target frame
 	std::queue<OctreeDoubelBufferNode<DBufferNodeData>*> nodeQue;
@@ -379,7 +385,7 @@ bool PcsDBufferOctree::recoverySecondFrameInDBufferOctreeXOR(vector<char>& byteS
 	while (!nodeQue.empty())
 	{
 		OctreeDoubelBufferNode<DBufferNodeData>* tempNode = nodeQue.front();
-		pcsDBufferOct->recoveryDBufferOctreeNode(nodeQue.front(), byteStreamXOR[c_it++]);
+		pcsDBufferOct->recoveryDBufferOctreeNodeXOR(nodeQue.front(), byteStreamXOR[c_it++]);
 		nodeQue.pop();
 		for (int n_it = 0; n_it < 8; n_it++)
 		{
@@ -410,7 +416,7 @@ bool PcsDBufferOctree::recoveryDBufferOctreeForTarget(vector<Vertex>& swapFrameV
 	while (!nodeQue.empty())
 	{
 		OctreeDoubelBufferNode<DBufferNodeData>* tempNode = nodeQue.front();
-		pcsDBufferOct->recoveryDBufferOctreeNode(nodeQue.front(), byteList[c_it++]);
+		pcsDBufferOct->recoveryDBufferOctreeNodeXOR(nodeQue.front(), byteList[c_it++]);
 		nodeQue.pop();
 		for (int n_it = 0; n_it < 8; n_it++)
 		{

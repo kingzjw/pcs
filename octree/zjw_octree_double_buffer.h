@@ -64,7 +64,7 @@ private:
 public:
 	//元素是指针
 	OctreeDoubelBufferNode* children[8];
-	//点云
+	//这个Node上的相关的点云数据
 	NodeDataType * nodeData[2];
 	//标记
 	bool flag[2][8];
@@ -153,7 +153,7 @@ public:
 	bool recoveryDBufferOctreeNodeForSigleFrame(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte, bool isTarget =false);
 
 	//decode: 根据字节，恢复这个node的孩子信息。前提是已经有单帧存在这个八叉树上了，用于恢复另外一帧
-	bool recoveryDBufferOctreeNode(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byteXOR);
+	bool recoveryDBufferOctreeNodeXOR(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byteXOR);
 
 	
 	//////////////////////////////////////////////
@@ -598,11 +598,17 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 		else
 			parentNode->flag[refrenceFrameId][childIdx] = true;
 
+		//创建该叶子节点的nodedata
+		temp->setNodeData(isTarget);
+
+
 		return temp;
 	}
 	else
 	{
 		//已经有这个孩子节点，那么创建的是另一帧的情况
+
+		//flag
 		if (isTarget)
 		{
 			parentNode->flag[targetFrameId][childIdx] = true;
@@ -611,8 +617,12 @@ OctreeDoubelBufferNode<NodeDataType>* DoubleBufferOctree<NodeDataType>::createCh
 		{
 			parentNode->flag[refrenceFrameId][childIdx] = true;
 		}
-				
-		parentNode->setNodeData(isTarget);
+		//node data： 叶子节点存在，需要创建这个叶子节点上，针对该帧的nodedata
+		parentNode->getChildren(childIdx)->setNodeData(isTarget);
+
+		//if (parentNode->checkNodeDataNull(isTarget))
+			//parentNode->setNodeData(isTarget);
+
 		return parentNode->getChildren(childIdx);
 	}
 }
@@ -637,13 +647,13 @@ inline bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNodeForSigleF
 }
 
 template<class NodeDataType>
-bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNode(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte)
+bool DoubleBufferOctree<NodeDataType>::recoveryDBufferOctreeNodeXOR(OctreeDoubelBufferNode<NodeDataType>* parentNode, const char byte)
 {
 	assert(parentNode);
 
 	bitset<8> bits = byte;
 	//处理当前节点的的8个孩子
-	for (int b_it; b_it < 8; b_it++)
+	for (int b_it = 0; b_it < 8; b_it++)
 	{
 		//这一位是1，那么说明孩子节点上是不一样，需要进行处理
 		if (bits[b_it])
