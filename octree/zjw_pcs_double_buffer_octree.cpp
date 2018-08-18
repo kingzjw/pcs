@@ -576,19 +576,24 @@ bool TraverseGetInfoSetLeaf::operator()(const Vec3 min, const Vec3 max, OctreeDo
 	if (currNode->flag[idx][0] || currNode->flag[idx][1] || currNode->flag[idx][2] || currNode->flag[idx][3]
 		|| currNode->flag[idx][4] || currNode->flag[idx][5] || currNode->flag[idx][6] || currNode->flag[idx][7])
 	{
+		//判断不是叶子节点
 		flag = true;
 	}
 	else
 	{
-		//是叶子节点，那么保留叶子节点的矩形范围，然后退出
+		//是叶子节点，那么保留isTarget的叶子节点的矩形范围，然后退出
 		flag = false;
-		minVList.push_back(currNode->getMinPos());
-		maxVList.push_back(currNode->getMaxPos());
+		//判断对应frame是否在这个叶子节点上有内容
+		if (!currNode->checkNodeDataNull(isTarget))
+		{
+			minVList.push_back(currNode->getMinPos());
+			maxVList.push_back(currNode->getMaxPos());
 
-		//保存叶子节点的序列
-		nodeList.push_back(currNode);
-		currNode->setLeafFlag(leafIncr);
-		leafIncr++;
+			//保存叶子节点的序列
+			nodeList.push_back(currNode);
+			currNode->setLeafFlag(leafIncr);
+			leafIncr++;
+		}
 	}
 	return flag;
 }
