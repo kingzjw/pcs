@@ -67,11 +67,64 @@ void OctreePointCloudCompressionZjw::useCase0_Decoder(ObjMesh &frameObj_ref_out)
 		cout << "open the frameCompressData.pcf " << endl;
 	}
 	//reference frame
-	
-	string path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_0.obj";
 	this->decodePointCloud(frameObj_ref_out, in);
 
 	in.close();
+}
+
+void OctreePointCloudCompressionZjw::useCase1_Encoder()
+{
+	//pcf: point cloud frame byte stream ÐÞ¸Ä
+	std::ofstream of("frameCompressData.pcf", std::ios_base::binary);
+	if (of)
+	{
+		cout << "open the frameCompressData.pcf " << endl;
+	}
+
+	//reference frame
+	ObjMesh frameObj_ref;
+	string path = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_0.obj";
+	frameObj_ref.loadObjMesh(path);
+	this->encodePointCloud(frameObj_ref, of);
+	
+	of.close();
+
+	//======================================================
+	std::ofstream of2("frameCompressData1.pcf", std::ios_base::binary);
+	if (of2)
+	{
+		cout << "open the frameCompressData1.pcf " << endl;
+	}
+	ObjMesh frameObj_ref1;
+	string path1 = "E://1.study//pointCloud//code//pcsCompress//pcsCompress//testData//walk_foot_rotate3//walkTexture_0_1.obj";
+	frameObj_ref1.loadObjMesh(path1);
+	this->encodePointCloud(frameObj_ref1, of2);
+	of2.close();
+}
+
+void OctreePointCloudCompressionZjw::useCase1_Decoder(ObjMesh & frameObj_ref_out)
+{
+	std::ifstream in("frameCompressData.pcf", std::ios_base::binary);
+	if (in)
+	{
+		cout << "open the frameCompressData.pcf " << endl;
+	}
+	//reference frame
+
+	this->decodePointCloud(frameObj_ref_out, in);
+	in.close();
+
+	//===============================================
+
+	std::ifstream in2("frameCompressData1.pcf", std::ios_base::binary);
+	if (in2)
+	{
+		cout << "open the frameCompressData1.pcf " << endl;
+	}
+	//reference fram
+	this->decodePointCloud(frameObj_ref_out, in2);
+
+	in2.close();
 }
 
 void OctreePointCloudCompressionZjw::initialization() {

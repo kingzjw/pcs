@@ -537,6 +537,7 @@ TraverseGetInfoSetLeaf::TraverseGetInfoSetLeaf(bool isTarget_in)
 {
 	minVList.clear();
 	maxVList.clear();
+	nodeList.clear();
 	leafIncr = 0;
 	isTarget = isTarget_in;
 }
@@ -555,6 +556,7 @@ void TraverseGetInfoSetLeaf::initParam()
 {
 	minVList.clear();
 	maxVList.clear();
+	nodeList.clear();
 	leafIncr = 0;
 }
 

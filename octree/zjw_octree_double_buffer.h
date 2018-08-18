@@ -727,12 +727,13 @@ NodeDataType * DoubleBufferOctree<NodeDataType>::getCell(bool isTarget, const Ve
 		{
 			currNode->children[index] = new OctreeDoubelBufferNode<NodeDataType>(this, isTarget);
 			//设置flag
-			currNode->setFlag(isTarget, index);
+			//currNode->setFlag(isTarget, index);
 		}
-		
 		//如果子空间节点已经分配，那么检查特定frame中的子节点的nodedata的分配情况
 		if (currNode->children[index]->checkNodeDataNull(isTarget))
 			currNode->children[index]->setNodeData(isTarget);
+
+		currNode->setFlag(isTarget, index);
 
 		//currNode = currNode->getChildren(index);
 		currNode = currNode->children[index];

@@ -1158,8 +1158,12 @@ void FrameManage::pridicTargetFrameVertex(int frameId1, VectorXd Vt)
 
 void FrameManage::testOctreePCCompress(ObjMesh &frameObj_ref_out)
 {
-	opcCompress->useCase0_Encoder();
-	opcCompress->useCase0_Decoder(frameObj_ref_out);
+
+	//opcCompress->useCase0_Encoder();
+	//opcCompress->useCase0_Decoder(frameObj_ref_out);
+
+	opcCompress->useCase1_Encoder();
+	opcCompress->useCase1_Decoder(frameObj_ref_out);
 }
 
 
