@@ -131,6 +131,7 @@ void pcsCompress::changeOctCellSize()
 	}
 }
 
+
 void pcsCompress::changeClusterNum()
 {
 	//string to doubel
@@ -150,7 +151,6 @@ void pcsCompress::changeClusterNum()
 		cout << "error input,please input range [2,+inf) !" << endl;
 	}
 }
-
 void pcsCompress::changeU()
 {
 	//string to doubel

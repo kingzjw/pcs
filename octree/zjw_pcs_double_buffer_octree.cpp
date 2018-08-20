@@ -440,6 +440,23 @@ bool PcsDBufferOctree::getTargetOctreeByClearReference()
 	return true;
 }
 
+string PcsDBufferOctree::getPosCompressFileName(int frameId, string filePrefix, string fileSuffix)
+{
+	string temp;
+	temp.append(filePrefix);
+	
+	//change the frame id to string
+	std::stringstream stream;
+	std::string result;
+	stream << frameId;
+	stream >> result;
+	temp.append(result);
+
+	temp.append(fileSuffix);
+	return string();
+}
+
+
 void PcsDBufferOctree::getNextTwoFrame(ObjMesh * newObjMesh)
 {
 	assert(targetFrameLoaded && referenceFrameLoaded);

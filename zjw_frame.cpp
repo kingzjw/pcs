@@ -1166,5 +1166,78 @@ void FrameManage::testOctreePCCompress(ObjMesh &frameObj_ref_out)
 	opcCompress->useCase1_Decoder(frameObj_ref_out);
 }
 
+void FrameManage::encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2)
+{
+	Frame* frame1 = frameList[frameId1];
+	ObjMesh * objMesh1 = frame1->objMesh;
+	Frame* frame2 = frameList[frameId1];
+	ObjMesh * objMesh2 = frame2->objMesh;
+
+	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
+	pridicTargetFrameVertex(frameId1, Vt_in);
+
+	//build swap mesh
+	ObjMesh swapObjMesh;
+	swapObjMesh.vertexList = objMesh1->vertexPredictTargetList;
+
+	//pcf: point cloud frame byte stream 修改
+	string pathName = getPosCompressFileName(frameId1);
+	std::ofstream of(pathName, std::ios_base::binary);
+	if (of)
+	{
+		cout << "open  " << pathName << endl;
+	}
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ofstream of2(pathName2, std::ios_base::binary);
+	if (of2)
+	{
+		cout << "open  "<< pathName2 << endl;
+	}
+	
+	opcCompress->encodePointCloud(swapObjMesh, of);
+	opcCompress->encodePointCloud(*objMesh2, of2);
+
+	of.close();
+	of2.close();
+}
+
+void FrameManage::decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd & Vt_in, int frameId2, ObjMesh & frameObj_ref_out)
+{
+	string pathName = getPosCompressFileName(frameId1);
+	std::ifstream in(pathName, std::ios_base::binary);
+	if (in)
+	{
+		cout << "open  " << pathName << endl;
+	}
+	
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ifstream in2(pathName2, std::ios_base::binary);
+	if (in2)
+	{
+		cout << "open  " << pathName2 << endl;
+	}
+
+	opcCompress->decodePointCloud(frameObj_ref_out, in);
+	opcCompress->decodePointCloud(frameObj_ref_out, in2);
+	in.close();
+	in2.close();
+}
+
+string FrameManage::getPosCompressFileName(int frameId, string filePrefix, string fileSuffix)
+{
+	string temp;
+	temp.append(filePrefix);
+
+	//change the frame id to string
+	std::stringstream stream;
+	std::string result;
+	stream << frameId;
+	stream >> result;
+	temp.append(result);
+
+	temp.append(fileSuffix);
+	return string();
+}
+
 
 

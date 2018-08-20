@@ -156,11 +156,23 @@ public:
 	void pridicTargetFrameVertex(int frameId1,  VectorXd  Vt); //
 	
 	
+	///////////////////////////////////////////////////////////////////
 	/*
 	* 对frame中的点的位置，进行压缩。（利用bytestream，XOR等）
 	*/
 	
 	void testOctreePCCompress(ObjMesh &frameObj_ref_out);
 
+	/*
+	*通过bytestream 和pos diff来传递swapframe 和target frame的之间的差异
+	* swapVertexList_in： reference frame 根据每个节点上的Mv得到的swap vertex list
+	* Vt_in: motion vectotr
+	* TargetVertexList_in: target frame vertex list
+	*/
+	
+	void encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in ,int frameId2);
+	void decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
+
+	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
 
 };
