@@ -34,6 +34,7 @@ public:
 	void initialization();
 	/** \brief 把指定的点云压缩到指定的文件中去。i_frame_ 标记是i_frame还是p_frame
 	* \param compressed_tree_data_out_arg:  binary output stream containing compressed data
+	* \使用方法：(除了第一帧)使用这个之前，对应的双buffer的八叉树，reference frame需要建好 
 	*/
 	void encodePointCloud(ObjMesh& frameObj, std::ostream& compressed_tree_data_out_arg);
 
@@ -86,10 +87,15 @@ private:
 
 	std::size_t getFramePointNum(bool isTarget = false) const;
 
-protected:
-
+public:
 	/** \brief Pointer to output point cloud dataset. */
 	PcsDBufferOctree *dbOctree;
+
+	//i_frame or p_frame
+	bool i_frame_;
+
+protected:
+
 
 	/** \brief Vector for storing binary tree structure (byte stream)*/
 	std::vector<char> binary_tree_data_vector_;
@@ -113,8 +119,6 @@ protected:
 	const char* frame_header_identifier_;
 
 	uint32_t frame_ID_;
-	//i_frame or p_frame
-	bool i_frame_;
 
 
 	//30帧每秒，第一帧作为I-frame，后面的作为P-frame

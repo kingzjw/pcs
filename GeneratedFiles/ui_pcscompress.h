@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -68,6 +69,14 @@ public:
     QLineEdit *num_scalesLineEdit;
     QLabel *num_scales;
     QWidget *others;
+    QWidget *algorithmWidget_2;
+    QLabel *oct_3;
+    QLineEdit *pointResolutionLineEdit;
+    QLineEdit *octreeResolutionLineEdit;
+    QLabel *oct_4;
+    QLabel *oct_5;
+    QLineEdit *iFrameRateLineEdit;
+    QCheckBox *showInfoCheckBox;
     ZjwOpenGL *openGLWidget;
     QMenuBar *menuBar;
     QMenu *menuFile;
@@ -192,6 +201,33 @@ public:
         tabWidget->addTab(parameter, QString());
         others = new QWidget();
         others->setObjectName(QStringLiteral("others"));
+        algorithmWidget_2 = new QWidget(others);
+        algorithmWidget_2->setObjectName(QStringLiteral("algorithmWidget_2"));
+        algorithmWidget_2->setGeometry(QRect(0, 10, 120, 191));
+        oct_3 = new QLabel(algorithmWidget_2);
+        oct_3->setObjectName(QStringLiteral("oct_3"));
+        oct_3->setGeometry(QRect(10, 10, 101, 20));
+        pointResolutionLineEdit = new QLineEdit(algorithmWidget_2);
+        pointResolutionLineEdit->setObjectName(QStringLiteral("pointResolutionLineEdit"));
+        pointResolutionLineEdit->setGeometry(QRect(10, 30, 91, 20));
+        pointResolutionLineEdit->setDragEnabled(false);
+        octreeResolutionLineEdit = new QLineEdit(algorithmWidget_2);
+        octreeResolutionLineEdit->setObjectName(QStringLiteral("octreeResolutionLineEdit"));
+        octreeResolutionLineEdit->setGeometry(QRect(10, 70, 91, 20));
+        octreeResolutionLineEdit->setDragEnabled(false);
+        oct_4 = new QLabel(algorithmWidget_2);
+        oct_4->setObjectName(QStringLiteral("oct_4"));
+        oct_4->setGeometry(QRect(10, 50, 101, 20));
+        oct_5 = new QLabel(algorithmWidget_2);
+        oct_5->setObjectName(QStringLiteral("oct_5"));
+        oct_5->setGeometry(QRect(10, 90, 101, 20));
+        iFrameRateLineEdit = new QLineEdit(algorithmWidget_2);
+        iFrameRateLineEdit->setObjectName(QStringLiteral("iFrameRateLineEdit"));
+        iFrameRateLineEdit->setGeometry(QRect(10, 110, 91, 20));
+        iFrameRateLineEdit->setDragEnabled(false);
+        showInfoCheckBox = new QCheckBox(algorithmWidget_2);
+        showInfoCheckBox->setObjectName(QStringLiteral("showInfoCheckBox"));
+        showInfoCheckBox->setGeometry(QRect(10, 140, 91, 16));
         tabWidget->addTab(others, QString());
         openGLWidget = new ZjwOpenGL(centralWidget);
         openGLWidget->setObjectName(QStringLiteral("openGLWidget"));
@@ -227,7 +263,7 @@ public:
 
         retranslateUi(pcsCompressClass);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(pcsCompressClass);
@@ -276,6 +312,16 @@ public:
         num_scalesLineEdit->setText(QApplication::translate("pcsCompressClass", "4", Q_NULLPTR));
         num_scales->setText(QApplication::translate("pcsCompressClass", "num scales", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(parameter), QApplication::translate("pcsCompressClass", "param", Q_NULLPTR));
+        oct_3->setText(QApplication::translate("pcsCompressClass", "point resulation", Q_NULLPTR));
+        pointResolutionLineEdit->setInputMask(QString());
+        pointResolutionLineEdit->setText(QApplication::translate("pcsCompressClass", "0.001", Q_NULLPTR));
+        octreeResolutionLineEdit->setInputMask(QString());
+        octreeResolutionLineEdit->setText(QApplication::translate("pcsCompressClass", "0.01", Q_NULLPTR));
+        oct_4->setText(QApplication::translate("pcsCompressClass", "octree resulation", Q_NULLPTR));
+        oct_5->setText(QApplication::translate("pcsCompressClass", "iframe rate", Q_NULLPTR));
+        iFrameRateLineEdit->setInputMask(QString());
+        iFrameRateLineEdit->setText(QApplication::translate("pcsCompressClass", "30", Q_NULLPTR));
+        showInfoCheckBox->setText(QApplication::translate("pcsCompressClass", "show info", Q_NULLPTR));
         tabWidget->setTabText(tabWidget->indexOf(others), QApplication::translate("pcsCompressClass", "others", Q_NULLPTR));
         menuFile->setTitle(QApplication::translate("pcsCompressClass", "File", Q_NULLPTR));
         menuOperation->setTitle(QApplication::translate("pcsCompressClass", "Operation", Q_NULLPTR));

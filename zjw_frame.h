@@ -166,13 +166,22 @@ public:
 	/*
 	*通过bytestream 和pos diff来传递swapframe 和target frame的之间的差异
 	* swapVertexList_in： reference frame 根据每个节点上的Mv得到的swap vertex list
-	* Vt_in: motion vectotr
+	* Vt_in: motion vectotr  是frameId1和fraemID2对应的frame得到的mv
 	* TargetVertexList_in: target frame vertex list
 	*/
 	
+	//废弃了：因为把swap frame也传过去了
 	void encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in ,int frameId2);
+	//废弃了：因为把swap frame也接受了
 	void decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
 
-	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
+	//压缩解压第一帧.(这个接口对单帧进行压缩传输，利用了double buffer octree的一半)
+	void encoderDiffByteStreamForFirstFrame(int frameId1);
+	void decoderDiffByteStreamForFirstFrame(int frameId1, ObjMesh & frameObj_ref_out);
+	//利用swap frame来进行压缩的后续帧
+	void encoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd  &Vt_in, int frameId2);
+	//前提frameId1中的Objmesh的VertexList已经恢复了,而且对应的八叉树也已经建立了，叶子节点的信息也已经OK了
+	void decoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
 
+	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
 };

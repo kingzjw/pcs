@@ -159,7 +159,11 @@ void OctreePointCloudCompressionZjw::initialization() {
 
 void OctreePointCloudCompressionZjw::encodePointCloud(ObjMesh& frameObj, std::ostream & compressed_tree_data_out_arg)
 {
-
+	//结合motion vector之后进行添加的限制。
+	//使用这个之前，对应的双buffer的八叉树，reference frame（motion vector建好的swap frame）需要建好 
+	//assert(dbOctree->referenceFrameLoaded);
+	//end motion vector
+	
 	//init 确定是否需要编码颜色
 	cloud_with_color_ = false;
 
@@ -262,7 +266,11 @@ void OctreePointCloudCompressionZjw::encodePointCloud(ObjMesh& frameObj, std::os
 
 void OctreePointCloudCompressionZjw::decodePointCloud(ObjMesh& frameObj_out, std::istream & compressed_tree_data_in_arg)
 {
-
+	//结合motion vector之后进行添加的限制。
+	//使用这个之前，对应的双buffer的八叉树，reference frame（motion vector建好的swap frame）需要建好 
+	//assert(dbOctree->referenceFrameLoaded);
+	//end motion vector
+	
 	// synchronize to frame header
 	syncToHeader(compressed_tree_data_in_arg);
 

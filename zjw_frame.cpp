@@ -1125,7 +1125,10 @@ void FrameManage::pridicTargetFrameVertex(int frameId1, VectorXd Vt)
 	cout << "start compute pridic TargetFrame Vertex postion ...." << endl;
 #endif //debug
 	assert(frameId1 > -1);
+
 	Frame* frame1 = frameList[frameId1];
+	//确定ctleaf信息是否得到了
+	assert(frame1->pcsOct->ctLeaf->nodeList.size()==0);
 	ObjMesh * objMesh = frame1->objMesh;
 
 	//初始化,分配空间
@@ -1170,7 +1173,7 @@ void FrameManage::encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_
 {
 	Frame* frame1 = frameList[frameId1];
 	ObjMesh * objMesh1 = frame1->objMesh;
-	Frame* frame2 = frameList[frameId1];
+	Frame* frame2 = frameList[frameId2];
 	ObjMesh * objMesh2 = frame2->objMesh;
 
 	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
@@ -1220,6 +1223,104 @@ void FrameManage::decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd & Vt_
 	opcCompress->decodePointCloud(frameObj_ref_out, in);
 	opcCompress->decodePointCloud(frameObj_ref_out, in2);
 	in.close();
+	in2.close();
+}
+
+//单帧的压缩
+void FrameManage::encoderDiffByteStreamForFirstFrame(int frameId1)
+{
+	Frame* frame1 = frameList[frameId1];
+	ObjMesh * objMesh1 = frame1->objMesh;
+	//pcf: point cloud frame byte stream 修改
+	string pathName = getPosCompressFileName(frameId1);
+	std::ofstream of(pathName, std::ios_base::binary);
+	if (of)
+	{
+		cout << "open  " << pathName << endl;
+	}
+	//保证第一帧在double buffer octree中只有自己这么一帧
+	opcCompress->i_frame_ = true;
+	//opcCompress->dbOctree->clearDBufferOctree();
+	opcCompress->encodePointCloud(*objMesh1, of);
+	of.close();
+}
+//单帧的解压
+void FrameManage::decoderDiffByteStreamForFirstFrame(int frameId1, ObjMesh & frameObj_ref_out)
+{
+	string pathName = getPosCompressFileName(frameId1);
+	std::ifstream in(pathName, std::ios_base::binary);
+	if (in)
+	{
+		cout << "open  " << pathName << endl;
+	}
+	//保证第一帧在double buffer octree中只有自己这么一帧
+	opcCompress->i_frame_ = true;
+	//opcCompress->dbOctree->clearDBufferOctree();
+	opcCompress->decodePointCloud(frameObj_ref_out, in);
+	in.close();
+}
+
+//利用swap frame来进行压缩和解压的后续帧
+void FrameManage::encoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd & Vt_in, int frameId2)
+{
+	ObjMesh * objMesh1 = frameList[frameId1]->objMesh;
+
+	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
+	pridicTargetFrameVertex(frameId1, Vt_in);
+
+	//build swap mesh
+	ObjMesh swapObjMesh;
+	swapObjMesh.vertexList = objMesh1->vertexPredictTargetList;
+
+	//build octree for swap frame (false 表示reference frame)
+	opcCompress->dbOctree->clearDBufferOctree();
+	opcCompress->dbOctree->buildDBufferOctree(false, &swapObjMesh);
+	
+	//压缩和传输frame2 (bytestream and pos diff)
+	Frame* frame2 = frameList[frameId2];
+	ObjMesh * objMesh2 = frame2->objMesh;
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ofstream of2(pathName2, std::ios_base::binary);
+	if (of2)
+	{
+		cout << "open  " << pathName2 << endl;
+	}
+
+	//保证已经利用的双Buffer Octree
+	opcCompress->i_frame_ = false;
+	opcCompress->encodePointCloud(*objMesh2, of2);
+
+	of2.close();
+}
+
+void FrameManage::decoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd & Vt_in, int frameId2, ObjMesh & frameObj_ref_out)
+{
+	ObjMesh * objMesh1 = frameList[frameId1]->objMesh;
+	assert(objMesh1->vertexList.size());
+	assert(frameList[frameId1]->pcsOct->ctLeaf->nodeList.size() == 0);
+
+	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
+	pridicTargetFrameVertex(frameId1, Vt_in);
+
+	//build swap mesh
+	ObjMesh swapObjMesh;
+	swapObjMesh.vertexList = objMesh1->vertexPredictTargetList;
+
+	//build octree for swap frame (false 表示reference frame)
+	opcCompress->dbOctree->clearDBufferOctree();
+	opcCompress->dbOctree->buildDBufferOctree(false, &swapObjMesh);
+
+	//解压frame2 (bytestream and pos diff)
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ifstream in2(pathName2, std::ios_base::binary);
+	if (in2)
+	{
+		cout << "open  " << pathName2 << endl;
+	}
+
+	//保证已经利用的双Buffer Octree
+	opcCompress->i_frame_ = false;
+	opcCompress->decodePointCloud(frameObj_ref_out, in2);
 	in2.close();
 }
 
