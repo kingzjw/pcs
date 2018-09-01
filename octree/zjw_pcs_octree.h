@@ -89,6 +89,8 @@ public:
 	//叶子节点的中间位置，用于kmeans
 	vector<Vec3> *midVList;
 
+	//保存Node上颜色的均值
+	vector<Vec3> nodeColorList;
 	//保存叶子节点的list,并给叶子节点编号
 	vector<Octree<Node>::OctreeNode*> nodeList;
 	//叶子节点的编号器

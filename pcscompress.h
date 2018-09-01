@@ -86,10 +86,10 @@ public slots:
 		return false;
 	}
 
-	//利用rlgr编码对motion vector进行压缩
+	//测试：利用rlgr编码对motion vector进行压缩
 	void rlgr_mv_compress();
 
-	//byte stream 对frame的点的位置进行压缩
+	//测试：byte stream 对frame的点的位置进行压缩
 	void byteStreamTestPointsCompress();
 
 

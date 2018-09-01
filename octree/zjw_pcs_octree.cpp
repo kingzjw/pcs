@@ -977,7 +977,15 @@ void PcsOctree::getLeafSignal()
 	{
 		Octree<Node>::OctreeNode* octNode = ctLeaf->nodeList[leaf_it];
 
-		//遍历当前叶子节点的八个象限
+		//遍历这个node上所有的点，保存这个node的平均颜色
+		Color nodeTotalColor(0,0,0);
+		for (int i = 0; i < octNode->nodeData.colorList.size(); i++)
+		{
+			nodeTotalColor += octNode->nodeData.colorList[i];
+		}
+		ctLeaf->nodeColorList.push_back(nodeTotalColor / octNode->nodeData.colorList.size());
+
+		//遍历当前叶子节点的八个象限,分别得到每个象限的颜色值以及位置信息
 		for (int i = 0; i < octNode->nodeData.leafNodePos8Areas.size(); i++)
 		{
 			//这个象限没有point

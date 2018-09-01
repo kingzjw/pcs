@@ -1169,6 +1169,7 @@ void FrameManage::testOctreePCCompress(ObjMesh &frameObj_ref_out)
 	opcCompress->useCase1_Decoder(frameObj_ref_out);
 }
 
+
 void FrameManage::encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2)
 {
 	Frame* frame1 = frameList[frameId1];
@@ -1337,8 +1338,145 @@ string FrameManage::getPosCompressFileName(int frameId, string filePrefix, strin
 	temp.append(result);
 
 	temp.append(fileSuffix);
-	return string();
+	return temp;
 }
+
+//==========================color compressiong =====================================
+string FrameManage::getColorCompressFileName(int frameId, string filePrefix, string fileSuffix)
+{
+	string temp;
+	temp.append(filePrefix);
+
+	//change the frame id to string
+	std::stringstream stream;
+	std::string result;
+	stream << frameId;
+	stream >> result;
+	temp.append(result);
+
+	temp.append(fileSuffix);
+	return temp;
+}
+
+bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, vector<Color>& colorDiffList_out)
+{
+	//配置需要求多少个swap frame上最近的
+	const int nearestNodeNum = 3;
+	Frame * targetFrame = frameList[targetFrameId_in];
+	ObjMesh * objMesh1 = targetFrame->objMesh;
+	
+	//针对swap的信息，构建swap frame的八叉树
+	PcsOctree *swapOct = new PcsOctree(m, Nscales);
+	for (int v_it = 0; v_it < swapObjMesh_in.vertexList.size(); v_it++)
+	{
+		Node& n = swapOct->pcsOct->getCell(swapObjMesh_in.vertexList[v_it]);
+
+		//把点放到叶子节点所属的里面。
+		n.pointPosList.push_back(swapObjMesh_in.vertexList[v_it]);
+		n.colorList.push_back(swapObjMesh_in.colorList[v_it]);
+		n.pointIdxList.push_back(v_it);
+	}
+	//并得到相关叶子节点的信息
+	swapOct->pcsOct->traverse(swapOct->ctLeaf);
+
+	//遍历所有的叶子节点
+	for (int n_it = 0; n_it < targetFrame->pcsOct->ctLeaf->nodeList.size(); n_it++)
+	{
+		//针对target frame中的每个Node计算在swap frame中的最近的几个node，并得到这几个node上颜色值的之和
+		Vec3 nodePos = (*targetFrame->pcsOct->ctLeaf->midVList)[n_it];
+		Color predictColor(0, 0, 0);
+		
+		//?????????????
+
+
+		//求平均，计算出target frame中的node颜色的预测值
+		predictColor = predictColor / nearestNodeNum;
+
+		//得到targetframe在这个node上的实际颜色值
+		Color actualColor(0, 0, 0);
+		Octree<Node>::OctreeNode* octNode = swapOct->ctLeaf->nodeList[n_it];
+		for (int p_it = 0; p_it < octNode->nodeData.colorList.size(); p_it++)
+		{
+			actualColor += octNode->nodeData.colorList[p_it];
+		}
+		actualColor /= octNode->nodeData.colorList.size();
+		
+		//保存实际值和预测值的差异
+		colorDiffList_out.push_back(actualColor - predictColor);
+	}
+	
+	//free some thing
+	delete swapOct;
+	return true;
+}
+
+void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frameId2)
+{
+	assert((frameId2 - frameId1) == 1);
+	ObjMesh * objMesh1 = frameList[frameId1]->objMesh;
+
+	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
+	pridicTargetFrameVertex(frameId1, Vt_in);
+
+	//build swap mesh (position and color)
+	ObjMesh swapObjMesh;
+	swapObjMesh.vertexList = objMesh1->vertexPredictTargetList;
+	swapObjMesh.colorList = objMesh1->colorList;
+
+	//计算得到color diff信息
+	//add some thing
+	
+	int addSomeThing = 0;
+	
+	//调用压缩接口，保存压缩内容到文件中
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ofstream of2(pathName2, std::ios_base::binary);
+	if (of2)
+	{
+		cout << "open  " << pathName2 << endl;
+	}
+
+	//call the compress interface
+	//opcCompress->encodePointCloud(*objMesh2, of2);
+	int addCompressInterface = 0;
+
+	of2.close();
+}
+
+void FrameManage::decoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frameId2, ObjMesh & frameObj_ref_out)
+{
+	ObjMesh * objMesh1 = frameList[frameId1]->objMesh;
+	assert(objMesh1->vertexList.size());
+	assert(frameList[frameId1]->pcsOct->ctLeaf->nodeList.size() == 0);
+
+	//build swap mesh
+	//frameId1得到相应的swapframe的vertex list,预测结果保存到objmesh对象中的 vertexPredictTargetList
+	pridicTargetFrameVertex(frameId1, Vt_in);
+	ObjMesh swapObjMesh;
+	swapObjMesh.vertexList = objMesh1->vertexPredictTargetList;
+
+
+	//调用解压接口，读取压缩内容到恢复frame2的color信息。
+	string pathName2 = getPosCompressFileName(frameId2);
+	std::ifstream in2(pathName2, std::ios_base::binary);
+	if (in2)
+	{
+		cout << "open  " << pathName2 << endl;
+	}
+
+	//保证已经利用的双Buffer Octree
+	//call the compress interface
+	//opcCompress->decodePointCloud(frameObj_ref_out, in2);
+	int addCompressInterface = 0;
+
+	//根据得到的信息，恢复出相应的color信息，这个也可以解压接口中做好
+	//add some thing
+	int addSomeThing = 0;
+
+	in2.close();
+	
+}
+
 
 
 

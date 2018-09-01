@@ -156,19 +156,16 @@ public:
 	void pridicTargetFrameVertex(int frameId1,  VectorXd  Vt); //
 	
 	
-	///////////////////////////////////////////////////////////////////
-	/*
-	* 对frame中的点的位置，进行压缩。（利用bytestream，XOR等）
-	*/
-	
-	void testOctreePCCompress(ObjMesh &frameObj_ref_out);
+
+	/////////////////////////////////position comporession//////////////////////////////////
 
 	/*
 	*通过bytestream 和pos diff来传递swapframe 和target frame的之间的差异
-	* swapVertexList_in： reference frame 根据每个节点上的Mv得到的swap vertex list
 	* Vt_in: motion vectotr  是frameId1和fraemID2对应的frame得到的mv
-	* TargetVertexList_in: target frame vertex list
 	*/
+	
+	//确定position 压缩文件的名字
+	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
 	
 	//废弃了：因为把swap frame也传过去了
 	void encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in ,int frameId2);
@@ -182,6 +179,32 @@ public:
 	void encoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd  &Vt_in, int frameId2);
 	//前提frameId1中的Objmesh的VertexList已经恢复了,而且对应的八叉树也已经建立了，叶子节点的信息也已经OK了
 	void decoderDiffBetweenSwapTargetFrame2(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
+	
+	//测试: Position 压缩测试接口。（利用bytestream，XOR等）
+	void testOctreePCCompress(ObjMesh &frameObj_ref_out);
 
-	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
+
+	/////////////////////////////////color compression//////////////////////////////////
+
+	/*
+	* 利用color diff信息进行压缩
+	* Vt_in: motion vectotr  是frameId1和fraemID2对应的frame得到的mv
+	* frameId1: reference frame index
+	* frameId2: target frame id 
+	*/
+	
+	//确定color信息压缩文件的名字
+	string getColorCompressFileName(int frameId, string filePrefix = "frameColorCompress", string fileSuffix = ".ccf");
+	//根据swap frame以及target frame计算出color diff
+	bool getColorDiff(ObjMesh &swapObjMesh_in,int targetFrameId_in, vector<Color> &colorDiffList_out);
+	
+	//color压缩：压缩解压第一帧.(这个接口对单帧进行压缩传输，利用了double buffer octree的一半)
+	void encoderColorInfoForFirstFrame(int frameId1);
+	void decoderColorInfoForFirstFrame(int frameId1, ObjMesh & frameObj_ref_out);
+
+	//color压缩: 利用swap frame来求出t+1frame中的node最近的node，计算出预测颜色值，和color diff
+	void encoderColorDiffInfo(int frameId1, VectorXd  &Vt_in, int frameId2);
+	//前提frameId1中的Objmesh的VertexList已经恢复了,而且对应的八叉树也已经建立了，叶子节点的信息也已经OK了
+	void decoderColorDiffInfo(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
+
 };
