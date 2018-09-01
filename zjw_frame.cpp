@@ -1385,22 +1385,29 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 		//针对target frame中的每个Node计算在swap frame中的最近的几个node，并得到这几个node上颜色值的之和
 		Vec3 nodePos = (*targetFrame->pcsOct->ctLeaf->midVList)[n_it];
 		Color predictColor(0, 0, 0);
+		vector<double> disList;
+		//int表示序号，double表示距离,map自动按照key进行排序,但是Key是唯一的，要保证
 		
-		//?????????????
-
+		vector<pair<int, double>> vecDisAndIndex;
+		for (int i = 0; i < swapOct->ctLeaf->nodeList.size(); i++)
+		{
+			//遍历所有的node的点计算与nodePos的距离，保留最近的nearestNodeNum个
+			vecDisAndIndex.push_back(pair<double,int>(i, nodePos.Distance((*swapOct->ctLeaf->midVList)[i])));
+		}
+		//转化成vector，利用sort函数针对value进行排序
+		sort(vecDisAndIndex.begin(), vecDisAndIndex.end(), CmpByValue());
+		auto it = vecDisAndIndex.begin();
+		for (int i = 0; i < nearestNodeNum; i++, it++)
+		{
+			predictColor += swapOct->ctLeaf->nodeColorList[it->second];
+		}
 
 		//求平均，计算出target frame中的node颜色的预测值
 		predictColor = predictColor / nearestNodeNum;
 
-		//得到targetframe在这个node上的实际颜色值
-		Color actualColor(0, 0, 0);
-		Octree<Node>::OctreeNode* octNode = swapOct->ctLeaf->nodeList[n_it];
-		for (int p_it = 0; p_it < octNode->nodeData.colorList.size(); p_it++)
-		{
-			actualColor += octNode->nodeData.colorList[p_it];
-		}
-		actualColor /= octNode->nodeData.colorList.size();
-		
+		//得到targetframe在这个node上的实际颜色值(不是swap上的颜色信息)
+		Color actualColor = targetFrame->pcsOct->ctLeaf->nodeColorList[n_it];
+
 		//保存实际值和预测值的差异
 		colorDiffList_out.push_back(actualColor - predictColor);
 	}

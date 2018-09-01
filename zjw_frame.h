@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <algorithm>
 #include<assert.h>
-
+#include <map>
 #include <fstream>
 
 #include "zjw_macro.h"
@@ -192,7 +192,13 @@ public:
 	* frameId1: reference frame index
 	* frameId2: target frame id 
 	*/
-	
+ 
+	//会在getColorDiff中用到,作用根据pair中的value进行从小到大的排序
+	struct CmpByValue {
+		bool operator()(const pair<int, double>& lhs, const pair<int, double>& rhs) {
+			return lhs.second < rhs.second;
+		}
+	};
 	//确定color信息压缩文件的名字
 	string getColorCompressFileName(int frameId, string filePrefix = "frameColorCompress", string fileSuffix = ".ccf");
 	//根据swap frame以及target frame计算出color diff
