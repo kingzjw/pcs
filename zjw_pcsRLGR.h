@@ -58,6 +58,4 @@ private:
 
 	//mvSignal ∑÷¿ÎµΩ mvXSignal£¨mvYSignal, mvZSignal;
 	bool separateMotionVector();
-
-	bool combineMotionVector();
 };

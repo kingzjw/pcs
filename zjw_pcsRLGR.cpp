@@ -260,8 +260,6 @@ VectorXcd PCS_RLGR::testPCS_RLGR()
 #endif //  ZJW_DEBUG
 
 	return mvDecodeResult;
-
-
 }
 
 void PCS_RLGR::positiveNum(vector<int>& sourceDataNegativeList)

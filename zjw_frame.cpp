@@ -1360,6 +1360,9 @@ string FrameManage::getColorCompressFileName(int frameId, string filePrefix, str
 
 bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, vector<Color>& colorDiffList_out)
 {
+	//init 
+	colorDiffList_out.clear();
+
 	//配置需要求多少个swap frame上最近的
 	const int nearestNodeNum = 3;
 	Frame * targetFrame = frameList[targetFrameId_in];
@@ -1376,6 +1379,7 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 		n.colorList.push_back(swapObjMesh_in.colorList[v_it]);
 		n.pointIdxList.push_back(v_it);
 	}
+
 	//并得到相关叶子节点的信息
 	swapOct->pcsOct->traverse(swapOct->ctLeaf);
 
@@ -1392,10 +1396,14 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 		for (int i = 0; i < swapOct->ctLeaf->nodeList.size(); i++)
 		{
 			//遍历所有的node的点计算与nodePos的距离，保留最近的nearestNodeNum个
-			vecDisAndIndex.push_back(pair<double,int>(i, nodePos.Distance((*swapOct->ctLeaf->midVList)[i])));
+			vecDisAndIndex.push_back(pair<int,double>(i, nodePos.Distance((*swapOct->ctLeaf->midVList)[i])));
 		}
 		//转化成vector，利用sort函数针对value进行排序
-		sort(vecDisAndIndex.begin(), vecDisAndIndex.end(), CmpByValue());
+		//sort(vecDisAndIndex.begin(), vecDisAndIndex.end(), CmpByValue());
+		//利用lambda表达式
+		sort(vecDisAndIndex.begin(), vecDisAndIndex.end(), 
+			[](const pair<int, double>& pair1, const pair<int, double>& pair2) {return pair1.second < pair2.second; });
+
 		auto it = vecDisAndIndex.begin();
 		for (int i = 0; i < nearestNodeNum; i++, it++)
 		{
@@ -1417,6 +1425,108 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 	return true;
 }
 
+bool FrameManage::handleColorDiffBeforeCompress(vector<Color>& colorDiffList_in)
+{
+//	//separate color diff x,y,z独立处理;
+//	//mv信号的x,y,z三种信号，分别通过gft处理成gft信号，然后合并
+//	MatrixXd lapMat = MatrixXd(*(spLaplacian));
+//	GFT g = GFT(lapMat);
+//
+//	//---三种信号的结果
+//	//VectorXcd  signalGFTTotal;
+//	VectorXcd  signalGFTTemp[3];
+//	for (int signal_type = 0; signal_type < 3; signal_type++)
+//	{
+//		VectorXcd  signal(mvSignalXYZ[signal_type]);
+//		g.gft(signal, signalGFTTemp[signal_type]);
+//	}
+//
+//	//round  stepsize的处理 signalGFT中的内容，转化到numsList中。
+//	for (int i = 0; i < mvSignal->rows() / 3; i++)
+//	{
+//		/*signalGFTTotal(i * 3 + 0) = signalGFTTemp[0](i);
+//		signalGFTTotal(i * 3 + 1) = signalGFTTemp[1](i);
+//		signalGFTTotal(i * 3 + 2) = signalGFTTemp[2](i);*/
+//
+//
+//		//实部和虚部都进行压缩
+//		// 3 * 0
+//		inputList.push_back((int)(signalGFTTemp[0](i).real() / stepSize + 0.5));
+//		inputList.push_back((int)(signalGFTTemp[0](i).imag() / stepSize + 0.5));
+//		// 3 * 1
+//		inputList.push_back((int)(signalGFTTemp[1](i).real() / stepSize + 0.5));
+//		inputList.push_back((int)(signalGFTTemp[1](i).imag() / stepSize + 0.5));
+//		// 3 * 2
+//		inputList.push_back((int)(signalGFTTemp[2](i).real() / stepSize + 0.5));
+//		inputList.push_back((int)(signalGFTTemp[2](i).imag() / stepSize + 0.5));
+//	}
+//	//处理负数
+//	PCS_RLGR::positiveNum(inputList, inputList_u);
+//
+//#ifdef  ZJW_DEBUG
+//	cout << "start encode signal of gft and decode get the signal ....." << endl;
+//#endif //  ZJW_DEBUG
+//
+//
+//	//然后gft信号经过  rlgb处理成 压缩内容。存储在文件中
+//	//rlgr encode and compress to the file
+//	RLGR rlgr = RLGR(&inputList_u, &resList_u);
+//	rlgr.encode();
+//
+//	resList.clear();
+//#ifdef  ZJW_DEBUG
+//	cout << "=========================================" << endl;
+//	cout << "start RLGR motion vector decompress ...." << endl;
+//	cout << "start RLGR decoding ....." << endl;
+//#endif //  ZJW_DEBUG
+//
+//	//解压数据，恢复成gft信号。解压之后数据再resList中了
+//	RLGR rlgr2 = RLGR(&inputList_u, &resList_u);
+//	rlgr2.decode();
+//	//回复成负数
+//	PCS_RLGR::restoreNum(resList_u, resList);
+//
+//
+//
+//	//解压数据，吸纳打包成规定gft signal 的形式，然后gft解析成 原始mv信号
+//	VectorXcd  gftDecodeSignal[3];
+//	//x  2表示实部和虚部，3表示三种信号
+//	gftDecodeSignal[0].resize(resList.size() / 2 / 3);
+//	//y
+//	gftDecodeSignal[1].resize(resList.size() / 2 / 3);
+//	//z
+//	gftDecodeSignal[2].resize(resList.size() / 2 / 3);
+//
+//	for (int i = 0; i < gftDecodeSignal[0].size(); i++)
+//	{
+//		gftDecodeSignal[0](i) = complex<double>(resList[(i * 3 + 0) * 2] * stepSize, resList[(i * 3 + 0) * 2 + 1] * stepSize);
+//		gftDecodeSignal[1](i) = complex<double>(resList[(i * 3 + 1) * 2] * stepSize, resList[(i * 3 + 1) * 2 + 1] * stepSize);
+//		gftDecodeSignal[2](i) = complex<double>(resList[(i * 3 + 2) * 2] * stepSize, resList[(i * 3 + 2) * 2 + 1] * stepSize);
+//	}
+//
+//	//存放，igft出来的三种信号结果
+//	VectorXcd mvDecodeSignal[3];
+//
+//	//x，y,z三种信号
+//	for (int i = 0; i < 3; i++)
+//	{
+//		g.igft(gftDecodeSignal[i], mvDecodeSignal[i]);
+//	}
+//
+//	//合并三种xyz信号，f_Result的result可能已经从系数变成复数的形式了
+//	VectorXcd mvDecodeResult;
+//	mvDecodeResult.resize(mvDecodeSignal[0].rows() * 3);
+//
+//	for (int i = 0; i < mvDecodeSignal[0].rows(); i++)
+//	{
+//		mvDecodeResult(3 * i + 0) = mvDecodeSignal[0](i);
+//		mvDecodeResult(3 * i + 1) = mvDecodeSignal[1](i);
+//		mvDecodeResult(3 * i + 2) = mvDecodeSignal[2](i);
+//	}
+//
+//	return true;
+}
+
 void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frameId2)
 {
 	assert((frameId2 - frameId1) == 1);
@@ -1431,8 +1541,10 @@ void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frame
 	swapObjMesh.colorList = objMesh1->colorList;
 
 	//计算得到color diff信息
-	//add some thing
+	vector<Color> colorDiffList;
+	getColorDiff(swapObjMesh, frameId2, colorDiffList);
 	
+	//对color diff信息进行处理
 	int addSomeThing = 0;
 	
 	//调用压缩接口，保存压缩内容到文件中

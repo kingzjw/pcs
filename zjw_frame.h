@@ -168,9 +168,9 @@ public:
 	string getPosCompressFileName(int frameId, string filePrefix = "framePosCompress", string fileSuffix = ".pcf");
 	
 	//废弃了：因为把swap frame也传过去了
-	void encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in ,int frameId2);
+	void encoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in ,int frameId2) = delete;
 	//废弃了：因为把swap frame也接受了
-	void decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out);
+	void decoderDiffBetweenSwapTargetFrame(int frameId1, VectorXd  &Vt_in, int frameId2, ObjMesh &frameObj_ref_out) = delete;
 
 	//压缩解压第一帧.(这个接口对单帧进行压缩传输，利用了double buffer octree的一半)
 	void encoderDiffByteStreamForFirstFrame(int frameId1);
@@ -201,9 +201,13 @@ public:
 	};
 	//确定color信息压缩文件的名字
 	string getColorCompressFileName(int frameId, string filePrefix = "frameColorCompress", string fileSuffix = ".ccf");
+	
 	//根据swap frame以及target frame计算出color diff
 	bool getColorDiff(ObjMesh &swapObjMesh_in,int targetFrameId_in, vector<Color> &colorDiffList_out);
 	
+	//对color diff信息，进行GFT，量化
+	bool handleColorDiffBeforeCompress(vector<Color> &colorDiffList_in);
+
 	//color压缩：压缩解压第一帧.(这个接口对单帧进行压缩传输，利用了double buffer octree的一半)
 	void encoderColorInfoForFirstFrame(int frameId1);
 	void decoderColorInfoForFirstFrame(int frameId1, ObjMesh & frameObj_ref_out);
