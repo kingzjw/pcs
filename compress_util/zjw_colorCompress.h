@@ -14,6 +14,7 @@
 
 #include "zjw_macro.h"
 #include "zjw_GFT.h"
+#include "zjw_math.h"
 
 using namespace std;
 using namespace Eigen;
@@ -28,19 +29,18 @@ enum class Terms {
 class ProbabilityAAC
 {
 public:
-	ProbabilityAAC(Terms term) {
-		term_ = term;
-	}
-	~ProbabilityAAC() {	}
+	ProbabilityAAC() = default;
+	~ProbabilityAAC() = default;
 
+	void setParam(double b ,double u = 0);
+	//根据累计分布函数，得到从到自变量x的概率 cumulative Distribution Function
+	double getCDF(double x) const;
 
 public:
-	Terms term_;
-
 	//拉普拉斯分布中的参数 
 	//https://zh.wikipedia.org/wiki/%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%88%86%E5%B8%83
-	double b;
-	double u = 0;
+	double b_ = 1;
+	double u_ = 0;
 };
 
 class PCS_Color_AACoder
@@ -50,15 +50,15 @@ private:
 	//pcs论文中的测试数据： 32,64,128,512,1024
 	double qround = 4;
 	Eigen::SparseMatrix<double> *spLaplacian;
-
 	//接受外面的数据,维度 (3* Nt,1),包含x,y,z三种信息
-	VectorXd *mvSignal;
-
+	VectorXd *inputSignal;
+	vector<Vec3> *m_colorInfo;
 	//压缩时用到：motion vector分离成关于x,y,z的特征
 	VectorXd mvSignalXYZ[3];
 	
 public:
-	PCS_Color_AACoder(VectorXd *mvSignal, Eigen::SparseMatrix<double> *spLaplacian);
+	PCS_Color_AACoder(VectorXd *signal, Eigen::SparseMatrix<double> *spLaplacian);
+	PCS_Color_AACoder(vector<Vec3> *colorInfo, Eigen::SparseMatrix<double> *spLaplacian);
 	~PCS_Color_AACoder();
 
 	//服务器压缩部分
@@ -66,9 +66,13 @@ public:
 	//客户端解压部分
 	
 	//测试部分(解压缩)
-	
+	void testColorByAAC();
 
 private:
-	//mvSignal 分离到 mvXSignal，mvYSignal, mvZSignal;
-	bool separateVector();
+	//VectorXd inputSignal 分离到 mvXSignal，mvYSignal, mvZSignal;
+	bool separateVectorFromVecXd();
+
+	// 从vector<Vec3> color info 变成到 VectorXd mvSignalXYZ[3]
+	bool separateVectorFromColorInfo();
+
 };

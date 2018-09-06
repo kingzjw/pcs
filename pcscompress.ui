@@ -580,6 +580,7 @@
     </property>
     <addaction name="actionRLGR_MV"/>
     <addaction name="actionPointsCompress"/>
+    <addaction name="actionColorCompress"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuOperation"/>
@@ -627,6 +628,11 @@
   <action name="actionPointsCompress">
    <property name="text">
     <string>PointsCompress</string>
+   </property>
+  </action>
+  <action name="actionColorCompress">
+   <property name="text">
+    <string>ColorCompress</string>
    </property>
   </action>
  </widget>

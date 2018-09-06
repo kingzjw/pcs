@@ -410,6 +410,21 @@ void pcsCompress::byteStreamTestPointsCompress()
 	ui.openGLWidget->updateGL();
 }
 
+void pcsCompress::colorCompress()
+{
+	//得到Lap mat稀疏的。
+	testLapMat();
+	Frame * frame = ui.openGLWidget->fm.frameList[0];
+
+	//读入 color信号
+	VectorXd colorSignal;
+	vector<Vec3> &colorInfo = frame->getLeafAvgColor();
+
+	//mv信号通过gft处理成gft信号
+	PCS_Color_AACoder pcsAAC(&colorInfo, frame->pcsOct->spLaplacian);
+	pcsAAC.testColorByAAC();
+}
+
 pcsCompress::pcsCompress(QWidget *parent)
 	: QMainWindow(parent)
 {
@@ -451,6 +466,7 @@ pcsCompress::pcsCompress(QWidget *parent)
 	//compress
 	connect(ui.actionRLGR_MV, SIGNAL(triggered()), this, SLOT(rlgr_mv_compress()));
 	connect(ui.actionPointsCompress, SIGNAL(triggered()), this, SLOT(byteStreamTestPointsCompress()));
+	connect(ui.actionColorCompress, SIGNAL(triggered()), this, SLOT(colorCompress()));
 
 
 }

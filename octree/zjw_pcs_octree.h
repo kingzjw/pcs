@@ -253,6 +253,9 @@ public:
 	//计算叶子节点在每个象限上的信号
 	void getLeafSignal();
 
+	//拿到叶子节点上的平均颜色
+	vector<Vec3> & getLeafAvgColor() const;
+
 	//把8个象限的信号（x,y,z,r,g,b）放到向量中:并封装到vector中
 	//8个vectorXd， 分别表示不同象限的信号。每个vector表示的是：所有在节点在这个象限中的该型号的具体的值
 	vector<VectorXd> getSignalF(SignalType sType);

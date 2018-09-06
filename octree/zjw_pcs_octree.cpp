@@ -1021,6 +1021,12 @@ void PcsOctree::getLeafSignal()
 #endif
 }
 
+vector<Vec3>& PcsOctree::getLeafAvgColor() const
+{
+	// TODO: 在此处插入 return 语句
+	return ctLeaf->nodeColorList;
+}
+
 void PcsOctree::printMat()
 {
 	cout << "****************************" << endl;

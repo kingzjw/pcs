@@ -66,6 +66,12 @@ bool Frame::octSgwt(Vec3 cellSize)
 	return true;
 }
 
+vector<Vec3>& Frame::getLeafAvgColor() const
+{
+	// TODO: 在此处插入 return 语句
+	return pcsOct->getLeafAvgColor();
+}
+
 FrameManage::FrameManage()
 {
 	//下面的参数，以后可以通过界面进行更改。

@@ -13,7 +13,8 @@
 
 #include "ui_pcscompress.h"
 #include "util/zjw_obj.h"
-#include"zjw_pcsRLGR.h"
+#include "zjw_pcsRLGR.h"
+#include "compress_util/zjw_colorCompress.h"
 
 class pcsCompress : public QMainWindow
 {
@@ -59,7 +60,6 @@ public slots:
 
 	//单独拿到特定frame 的lap mat 矩阵
 	void testLapMat();
-	
 	//读入保存好的motion vector 
 	bool getMotionVectorFromFile(VectorXd & vt)
 	{
@@ -85,13 +85,12 @@ public slots:
 
 		return false;
 	}
-
 	//测试：利用rlgr编码对motion vector进行压缩
 	void rlgr_mv_compress();
-
 	//测试：byte stream 对frame的点的位置进行压缩
 	void byteStreamTestPointsCompress();
-
+	//测试：利用自适应算术编码，对color进行压缩
+	void colorCompress();
 
 public:
 	pcsCompress(QWidget *parent = 0);
@@ -105,3 +104,4 @@ private:
 };
 
 #endif // PCSCOMPRESS_H
+

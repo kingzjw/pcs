@@ -31,6 +31,8 @@ public:
 	bool loadObj(string path);
 	//建立八叉树，并进行基本操作，并计算得到所有sgwt系数
 	bool octSgwt(Vec3 cellSize);
+
+	vector<Vec3> & getLeafAvgColor() const;
 };
 
 //序列管理器
