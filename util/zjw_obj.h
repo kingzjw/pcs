@@ -121,6 +121,7 @@ public:
 	vector<Color> colorList;
 	vector<Normal> normalList;
 	vector<Texture> texList;
+
 	//temp 其他应用中可以删除
 	vector<Vertex> colorTexList;
 	//end temp

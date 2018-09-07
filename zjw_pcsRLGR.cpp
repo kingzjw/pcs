@@ -349,9 +349,3 @@ bool PCS_RLGR::separateMotionVector()
 	}
 	return true;
 }
-
-bool PCS_RLGR::combineMotionVector()
-{
-
-	return false;
-}

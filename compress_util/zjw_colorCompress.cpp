@@ -20,7 +20,7 @@ PCS_Color_AACoder::~PCS_Color_AACoder()
 
 void PCS_Color_AACoder::testColorByAAC()
 {
-	//1.分离RGB通道
+	//1.分离RGB通道，并将颜色 从0-1切换到 0-255
 	separateVectorFromColorInfo();
 
 	//2.GFT处理
@@ -35,6 +35,19 @@ void PCS_Color_AACoder::testColorByAAC()
 	}
 
 	//3.uniform quantization处理
+	//test
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << signalGFTTemp[0] << endl;
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	//end test
+
 	vector<int> dataBeforeCompress;
 	//round  stepsize的处理 signalGFT中的内容，转化到numsList中。
 	for (int i = 0; i < signalGFTTemp[0].rows(); i++)
@@ -62,6 +75,7 @@ void PCS_Color_AACoder::testColorByAAC()
 	//7.IGFT处理
 
 	//8.恢复得到颜色
+	return;
 }
 
 bool PCS_Color_AACoder::separateVectorFromVecXd()
@@ -85,19 +99,30 @@ bool PCS_Color_AACoder::separateVectorFromVecXd()
 
 bool PCS_Color_AACoder::separateVectorFromColorInfo()
 {
+//#define COLOR_0_1
+#define COLOR_0_255
+
 	assert(m_colorInfo);
 	//r
-	mvSignalXYZ[0].resize(inputSignal->rows() / 3);
+	mvSignalXYZ[0].resize(m_colorInfo->size());
 	//g
-	mvSignalXYZ[1].resize(inputSignal->rows() / 3);
+	mvSignalXYZ[1].resize(m_colorInfo->size());
 	//b
-	mvSignalXYZ[2].resize(inputSignal->rows() / 3);
+	mvSignalXYZ[2].resize(m_colorInfo->size());
 
 	for (int i = 0; i < m_colorInfo->size(); i++)
 	{
+#ifdef COLOR_0_255
+		mvSignalXYZ[0](i) = (*m_colorInfo)[i].x * 255;
+		mvSignalXYZ[1](i) = (*m_colorInfo)[i].y * 255;
+		mvSignalXYZ[2](i) = (*m_colorInfo)[i].z * 255;
+#endif // COLOR_0_255
+
+#ifdef COLOR_0_1
 		mvSignalXYZ[0](i) = (*m_colorInfo)[i].x;
 		mvSignalXYZ[1](i) = (*m_colorInfo)[i].y;
 		mvSignalXYZ[2](i) = (*m_colorInfo)[i].z;
+#endif // COLOR_0_255
 	}
 	return true;
 }

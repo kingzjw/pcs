@@ -1431,8 +1431,8 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 	return true;
 }
 
-bool FrameManage::handleColorDiffBeforeCompress(vector<Color>& colorDiffList_in)
-{
+//bool FrameManage::handleColorDiffBeforeCompress(vector<Color>& colorDiffList_in)
+//{
 //	//separate color diff x,y,z独立处理;
 //	//mv信号的x,y,z三种信号，分别通过gft处理成gft信号，然后合并
 //	MatrixXd lapMat = MatrixXd(*(spLaplacian));
@@ -1531,7 +1531,7 @@ bool FrameManage::handleColorDiffBeforeCompress(vector<Color>& colorDiffList_in)
 //	}
 //
 //	return true;
-}
+//}
 
 void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frameId2)
 {
