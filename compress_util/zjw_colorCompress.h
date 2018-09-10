@@ -16,6 +16,7 @@
 #include "zjw_GFT.h"
 #include "zjw_math.h"
 
+
 using namespace std;
 using namespace Eigen;
 
@@ -60,13 +61,15 @@ public:
 	PCS_Color_AACoder(VectorXd *signal, Eigen::SparseMatrix<double> *spLaplacian);
 	PCS_Color_AACoder(vector<Vec3> *colorInfo, Eigen::SparseMatrix<double> *spLaplacian);
 	~PCS_Color_AACoder();
-
+	void setColorInfo(vector<Vec3> *colorInfo);
 	//服务器压缩部分
 	
 	//客户端解压部分
 	
-	//测试部分(解压缩)
-	void testColorByAAC();
+	//压缩：用于对color diff 信息，在压缩前进行处理。  
+	void colorDiffSolving(vector<double> &dataBeforeCompress_out);
+	//解压：用于传输之后，GFT传输内容的解压
+	void colorDiffSolvingDeCompress(vector<Vec3> & colorInfo_out);
 
 private:
 	//VectorXd inputSignal 分离到 mvXSignal，mvYSignal, mvZSignal;

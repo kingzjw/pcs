@@ -412,17 +412,20 @@ void pcsCompress::byteStreamTestPointsCompress()
 
 void pcsCompress::colorCompress()
 {
-	//得到Lap mat稀疏的。
+	//主要的借口躲在 zjw_frame.h的文件中，这个只是测试函数。
+
+	int targetFrameId = 1;
 	testLapMat();
-	Frame * frame = ui.openGLWidget->fm.frameList[0];
+	Frame * frame = ui.openGLWidget->fm.frameList[targetFrameId];
+	//读入 motion vectorx信号
+	VectorXd mvSignal;
+	getMotionVectorFromFile(mvSignal);
 
-	//读入 color信号
-	VectorXd colorSignal;
-	vector<Vec3> &colorInfo = frame->getLeafAvgColor();
+	//encoder ..
+	ui.openGLWidget->fm.encoderColorDiffInfo(0, mvSignal,1);
 
-	//mv信号通过gft处理成gft信号
-	PCS_Color_AACoder pcsAAC(&colorInfo, frame->pcsOct->spLaplacian);
-	pcsAAC.testColorByAAC();
+	//decoder...
+	//need to add something....
 }
 
 pcsCompress::pcsCompress(QWidget *parent)

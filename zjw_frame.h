@@ -13,6 +13,8 @@
 #include "zjw_minresQLP.h"
 #include "zjw_octree_compression_profiles.h"
 #include "zjw_octreePointCloudCompression.h"
+#include "compress_util/zjw_colorCompress.h"
+#include "zjw_colorCompress.h"
 
 using namespace std;
 
@@ -204,7 +206,7 @@ public:
 	//确定color信息压缩文件的名字
 	string getColorCompressFileName(int frameId, string filePrefix = "frameColorCompress", string fileSuffix = ".ccf");
 	
-	//根据swap frame以及target frame计算出color diff
+	//在encoderColorDiffInfo接口中被调用，根据swap frame以及target frame计算出color diff
 	bool getColorDiff(ObjMesh &swapObjMesh_in,int targetFrameId_in, vector<Color> &colorDiffList_out);
 	
 	//对color diff信息，进行GFT，量化

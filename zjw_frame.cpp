@@ -1382,6 +1382,7 @@ bool FrameManage::getColorDiff(ObjMesh & swapObjMesh_in, int targetFrameId_in, v
 
 		//把点放到叶子节点所属的里面。
 		n.pointPosList.push_back(swapObjMesh_in.vertexList[v_it]);
+		assert(swapObjMesh_in.colorList.size());
 		n.colorList.push_back(swapObjMesh_in.colorList[v_it]);
 		n.pointIdxList.push_back(v_it);
 	}
@@ -1551,7 +1552,10 @@ void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frame
 	getColorDiff(swapObjMesh, frameId2, colorDiffList);
 	
 	//对color diff信息进行处理
-	int addSomeThing = 0;
+	//调用类PCS_Color_AACoder类中的接口，colorDiffSolving
+	cout << "==================================" << endl;
+	cout << "not finish here ,need to add something...... add PCS_Color_AACoder object and call the colorDiffSolving interface" << endl;
+	cout << "==================================" << endl;
 	
 	//调用压缩接口，保存压缩内容到文件中
 	string pathName2 = getPosCompressFileName(frameId2);
@@ -1562,6 +1566,9 @@ void FrameManage::encoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frame
 	}
 
 	//call the compress interface
+	cout << "==================================" << endl;
+	cout << "encoderColorDiffInfo: not finish here ,need to add encoder code" << endl;
+	cout << "==================================" << endl;
 	//opcCompress->encodePointCloud(*objMesh2, of2);
 	int addCompressInterface = 0;
 
@@ -1591,11 +1598,17 @@ void FrameManage::decoderColorDiffInfo(int frameId1, VectorXd & Vt_in, int frame
 
 	//保证已经利用的双Buffer Octree
 	//call the compress interface
+	cout << "==================================" << endl;
+	cout << "not finish here ,need to add something...... add PCS_Color_AACoder object and call the colorDiffSolvingDeCompress interface" << endl;
+	cout << "==================================" << endl;
 	//opcCompress->decodePointCloud(frameObj_ref_out, in2);
 	int addCompressInterface = 0;
 
 	//根据得到的信息，恢复出相应的color信息，这个也可以解压接口中做好
 	//add some thing
+	cout << "==================================" << endl;
+	cout << "decoderColorDiffInfo: not finish here ,need to add decode code" << endl;
+	cout << "==================================" << endl;
 	int addSomeThing = 0;
 
 	in2.close();

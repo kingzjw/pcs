@@ -18,16 +18,25 @@ PCS_Color_AACoder::~PCS_Color_AACoder()
 
 }
 
-void PCS_Color_AACoder::testColorByAAC()
+void PCS_Color_AACoder::setColorInfo(vector<Vec3>* colorInfo)
 {
+	this->m_colorInfo = colorInfo;
+}
+
+void PCS_Color_AACoder::colorDiffSolving(vector<double> &dataBeforeCompress)
+{
+	//判断color info
+	assert(m_colorInfo);
+
 	//1.分离RGB通道，并将颜色 从0-1切换到 0-255
 	separateVectorFromColorInfo();
 
 	//2.GFT处理
+	VectorXcd  signalGFTTemp[3];
 	MatrixXd lapMat = MatrixXd(*(spLaplacian));
 	//里面已经计算好特征向量
 	GFT g = GFT(lapMat);
-	VectorXcd  signalGFTTemp[3];
+	
 	for (int signal_type = 0; signal_type < 3; signal_type++)
 	{
 		VectorXcd  signal(mvSignalXYZ[signal_type]);
@@ -35,20 +44,6 @@ void PCS_Color_AACoder::testColorByAAC()
 	}
 
 	//3.uniform quantization处理
-	//test
-	cout << endl;
-	cout << endl;
-	cout << endl;
-	cout << endl;
-	cout << endl;
-	cout << endl;
-	cout << signalGFTTemp[0] << endl;
-	cout << endl;
-	cout << endl;
-	cout << endl;
-	//end test
-
-	vector<int> dataBeforeCompress;
 	//round  stepsize的处理 signalGFT中的内容，转化到numsList中。
 	for (int i = 0; i < signalGFTTemp[0].rows(); i++)
 	{
@@ -64,9 +59,17 @@ void PCS_Color_AACoder::testColorByAAC()
 		dataBeforeCompress.push_back((int)(signalGFTTemp[2](i).imag() / qround + 0.5));
 	}
 
+	return;
+}
+
+void PCS_Color_AACoder::colorDiffSolvingDeCompress(vector<Vec3> & colorInfo_out)
+{
+	cout << "==================================" << endl;
+	cout << "not finish colorDiffSolvingDeCompress ,need to add something......" << endl;
+	cout << "==================================" << endl;
 	//4.压缩
 	//???????????????????????????????????????????
-	
+
 	//5.解压缩
 	//???????????????????????????????????????????
 
